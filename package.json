@@ -1,0 +1,35 @@
+{
+  "name": "leipzig.js",
+  "version": "0.0.1",
+  "description": "Interlinear glossing for your browser",
+  "main": "dist/leipzig.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "gulp": "^3.9.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-umd": "^0.2.0",
+    "mocha": "^2.2.5"
+  },
+  "scripts": {
+    "test": "mocha test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdchauvette/leipzig.js.git"
+  },
+  "keywords": [
+    "linguistics",
+    "interlinear",
+    "glossing"
+  ],
+  "author": "Ben Chauvette <bdchauvette@gmail.com> (https://github.com/bdchauvette)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bdchauvette/leipzig.js/issues"
+  },
+  "homepage": "https://bdchauvette.github.io/leipzig.js/"
+}

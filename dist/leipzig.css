@@ -1,0 +1,33 @@
+/* Self-clear the gloss divs */
+[data-gloss]::after {
+  display: block;
+  clear: left;
+  content: '';
+}
+
+ul[data-gloss],
+ol[data-gloss] {
+  padding-left: 0;
+}
+
+[data-gloss] li {
+  list-style-type: none;
+}
+
+.gloss__free {
+  clear: left;
+}
+
+.gloss__aligned {
+  float: left;
+  margin-right: 1em;
+}
+
+.gloss__line--0 {
+  font-style: italic;
+}
+
+.gloss__orig {
+  font-weight: bold;
+  margin-bottom: 0;
+}
