@@ -30,8 +30,8 @@ automatically go from this:</p>
 </div>
 
 <p>to this:</p>
-<div class="example" data-gloss>
-  <p class="gloss__orig">Мы с Марко поехали автобусом в Переделкино.</p>
+<div class="example" data-gloss-orig-line>
+  <p>Мы с Марко поехали автобусом в Переделкино.</p>
   <p>My s Marko poexa-l-i avtobus-om v Peredelkino.</p>
   <p>1PL COM Marko go-PST-PL bus-INS All Peredelkino.</p>
   <p>we with Marko go-PST-PL bus-by to Peredelkino.</p>
@@ -158,8 +158,8 @@ adding a <abbr>css</abbr> class (<code>gloss__free</code> by default):</p>
 <h2>Original Language Line</h2>
 <p>Similarly, Leipzig.js can also mark the first line in the section as the
 <em>original language line</em>, and ignore it when aligning words, e.g.:</p>
-<div class="example" data-gloss>
-  <p class="gloss__orig">Мы с Марко поехали автобусом в Переделкино.</p>
+<div class="example" data-gloss-orig-line>
+  <p>Мы с Марко поехали автобусом в Переделкино.</p>
   <p>My s Marko poexa-l-i avtobus-om v Peredelkino.</p>
   <p>1PL COM Marko go-PST-PL bus-INS All Peredelkino.</p>
   <p>‘Marko and I went to Perdelkino by bus.’</p>
@@ -177,18 +177,10 @@ a different script, or if the glossing makes the text harder to read.</p>
 class to the line (<code>gloss__orig</code> by default):</p>
 <div class="highlight"><pre><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__orig&quot;</span><span class="nt">&gt;</span>Мы с Марко поехали автобусом в Переделкино.<span class="nt">&lt;/p&gt;</span>
 </pre></div>
-
-
-<script>
-  (function() {
-    document.addEventListener('DOMContentLoaded', function() {
-      var leipzig = Leipzig();
-      leipzig.gloss();
-    });
-  }());
-</script>
   </div>
 
-  <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.min.js"></script>
+    <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.min.js"></script>
+
+  <script src="/leipzig.js/theme/js/index.js"></script>
 </body>
 </html>
