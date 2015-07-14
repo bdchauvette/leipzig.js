@@ -112,7 +112,7 @@ turn them into nicely formatted interlinear glosses.</p>
 <h1>Configuration</h1>
 <p>Leipzig.js has several options that can be set using a <em>configuration
 object</em> when initialized, i.e.:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">strong</span><span class="o">&gt;</span><span class="p">{</span> <span class="nx">option</span><span class="o">:</span> <span class="nx">value</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/strong&gt;);</span>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">option</span><span class="o">:</span> <span class="nx">value</span> <span class="p">});</span>
 </pre></div>
 
 
@@ -177,6 +177,13 @@ a different script, or if the glossing makes the text harder to read.</p>
 class to the line (<code>gloss__orig</code> by default):</p>
 <div class="highlight"><pre><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__orig&quot;</span><span class="nt">&gt;</span>Мы с Марко поехали автобусом в Переделкино.<span class="nt">&lt;/p&gt;</span>
 </pre></div>
+
+    <footer id="page-footer">
+      <p>&copy; 2015 Benjamin Chauvette</p>
+      <p>Leipzig.js is licensed under the <a href="https://cdn.rawgit.com/bdchauvette/leipzig.js/master/LICENSE">ISC License</a>.
+      <p>Leipzig.js is not affiliated with the <a href="http://www.zv.uni-leipzig.de/">University of Leipzig</a>, nor with the authors of the <a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php">Leipzig Glossing Rules</a>.</p>
+      <p><a href="#">Back to Top &uarr;</a></p>
+    </footer>
   </div>
 
     <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.min.js"></script>

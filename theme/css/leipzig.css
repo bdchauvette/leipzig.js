@@ -21,9 +21,14 @@ code {
   max-width: 40em; /* 640px */
 }
 
-#masthead {
+#masthead,
+#page-footer {
   padding: 3em 0;
   text-align: center;
+}
+
+#page-footer {
+  font-size: 0.8em;
 }
 
 .page-title {
@@ -38,7 +43,7 @@ code {
 
 .example,
 .highlight {
-  background: #eee;
+  background: #f0f0f0;
   margin: 0 -1em;
   padding: .25em 1em;
 }
