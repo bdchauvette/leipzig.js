@@ -37,12 +37,14 @@ code {
 }
 
 .example,
-.code {
+.highlight {
   background: #eee;
   margin: 0 -1em;
   padding: .25em 1em;
 }
 
-.code {
+.highlight {
   font-family: monospace;
+  line-height: 1.75;
 }
+

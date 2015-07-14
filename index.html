@@ -1,201 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Leipzig.js: Interlinear glossing for your browser</title>
+        <meta charset="utf-8" />
+        <title>A Pelican Blog</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
 
-  <link rel="stylesheet" href="style/normalize.min.css">
-  <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Gentium+Basic:400,400italic,700,700italic&subset=latin,latin-ext'>
-  <link rel="stylesheet" href="style/main.css">
-  <link rel="stylesheet" href="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.css" type="text/css">
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
-<body>
-  <div id="wrapper">
-    <header id="masthead">
-      <h1 class="page-title">Leipzig.js</h1>
-      <h2 class="tagline">Interlinear glossing for your browser</h2>
-    </header>
 
-    <section id="intro">
-      <p>Leipzig.js is a lightweight JavaScript utility that makes it easy to add <a href="https://en.wikipedia.org/wiki/Interlinear_gloss" title="Wikipedia entry on Interlinear Glosses">interlinear glosses</a> to your webpages.</p>
-      <p>By including a bit of JavaScript and adding some <abbr>css</abbr>, you can automatically go from this:</p>
-      <div class="example">
-        <p>Мы с Марко поехали автобусом в Переделкино.</p>
-        <p>My s Marko poexa-l-i avtobus-om v Peredelkino.</p>
-        <p>1PL COM Marko go-PST-PL bus-INS All Peredelkino.</p>
-        <p>we with Marko go-PST-PL bus-by to Peredelkino.</p>
-        <p>&lsquo;Marko and I went to Perdelkino by bus.&rsquo;</p>
-      </div>
-      <p>to this:</p>
-      <div class="example" data-gloss>
-        <p class="gloss__orig">Мы с Марко поехали автобусом в Переделкино.</p>
-        <p>My s Marko poexa-l-i avtobus-om v Peredelkino.</p>
-        <p>1PL COM Marko go-PST-PL bus-INS All Peredelkino.</p>
-        <p>we with Marko go-PST-PL bus-by to Peredelkino.</p>
-        <p>&lsquo;Marko and I went to Perdelkino by bus.&rsquo;</p>
-      </div>
-    </section>
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+<h2>Pages</h2>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-    <section id="using">
-      <h1>Using Leipzig.js</h1>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
 
-      <h2>Download It</h2>
-      <p>You can install Leipzig.js using <code>npm</code> or Bower, or by downloading the latest version from the github repository:</p>
-      <div class="code">
-        <code>
-          <p>npm install --save leipzig</p>
-          <p>bower install --save leipzig</p>
-          <p>git clone https://github.com/bdchauvette/leipzig.js.git</p>
-        </code>
-      </div>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
 
-      <h2>2. Include It</h2>
-      <p>Once you have the files, include the main <code>leipzig.js</code> file somewhere on your page, ideally at the bottom of the <code>&lt;body&gt;</code>:</p>
-      <div class="code">
-        <code>
-          <p>&lt;script src="path/to/leipzig/<strong>dist/leipzig.min.js</strong>"&gt;&lt;/script&gt;</p>
-        </code>
-      </div>
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
 
-      <p>Leipzig.js comes with some basic styling, which you can include by adding the Leipzig.js stylesheet in the <code>&lt;head&gt;</code> of your page:</p>
-      <div class="code">
-        <code>
-          <p>&lt;link rel="stylesheet" href="path/to/leipzig/<strong>dist/leipzig.css</strong>"&gt;</p>
-        </code>
-      </div>
-
-      <h2>3. Mark Up Your Examples</h2>
-      <p>To use the Leipzig.js default configuration, just add a <code>data-gloss</code> attribute to the examples you want to be glossed:</p>
-      <div class="code">
-        <code>
-          <p>&lt;div <strong>data-gloss</strong>&gt;</p>
-          <p>&nbsp;&nbsp;&lt;p&gt;Gila abur-u-n ferma hamišaluǧ güǧüna amuq’-da-č.&lt;/p&gt;</p>
-          <p>&nbsp;&nbsp;&lt;p&gt;now they-OBL-GEN farm forever behind stay-FUT-NEG&lt;/p&gt;</p>
-          <p>&nbsp;&nbsp;&lt;p&gt;&lsquo;Now their farm will not stay behind forever.&rsquo;&lt;/p&gt;</p>
-          <p>&lt;/div&gt;</p>
-        </code>
-      </div>
-      <p>Leipzig.js will find all of the blocks that have the <code>data-gloss</code> attribute and turn them into nicely formatted interlinear glosses.</p>
-
-      <h2>4. Gloss &rsquo;Em</h2>
-      <p>Finally, you just need to tell Leipzig.js to go to work by adding the following <code>&lt;script&gt;</code> somewhere <em>after</em> the one you added above in Step 2:
-
-      <div class="code">
-        <code>
-          <p>&lt;script&gt;</p>
-          <p>&nbsp;&nbsp;window.onload = function() {</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;var leipzig = new Leipzig();</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;leipzig.gloss();</p>
-          <p>&nbsp;&nbsp;}</p>
-          <p>&lt;/script&gt;</p>
-        </code>
-      </div>
-
-      <h2>Minimal Example</h2>
-      <div class="code">
-        <code>
-          <p>&lt;html&gt;</p>
-          <p>&nbsp;&nbsp;&lt;head&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;link rel="stylesheet" href="path/to/leipzig/dist/leipzig.css"&gt;</p>
-          <p>&nbsp;&nbsp;&lt;/head&gt;</p>
-          <p>&nbsp;&nbsp;&lt;body&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;div data-gloss&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Gila abur-u-n ferma hamišaluǧ güǧüna amuq’-da-č.&lt;/p&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;now they-OBL-GEN farm forever behind stay-FUT-NEG&lt;/p&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lsquo;Now their farm will not stay behind forever.&rsquo;&lt;/p&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="path/to/leipzig/dist/leipzig.js"&gt;&lt;/script&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window.onload = function() {</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var leipzig = new Leipzig();</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leipzig.gloss();</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;</p>
-          <p>&nbsp;&nbsp;&lt;/body&gt;</p>
-          <p>&lt;/html&gt;</p>
-        </code>
-      </div>
-
-    </section>
-
-    <section id="configuration">
-      <h1>Configuration</h1>
-      <p>Leipzig.js has several options that can be set using a <em>configuration object</em> when initialized, i.e.:</p>
-      <div class="code">
-        <code>
-          <p>var leipzig = new Leipzig(<strong>{ option: value }</strong>);</p>
-        </code>
-      </div>
-
-      <h2>Defaults</h2>
-      <p>The default configuration is as follows:</p>
-      <div class="code">
-        <code>
-          <p>var leipzig = new Leipzig({</p>
-          <p>&nbsp;&nbsp;// Parsing</p>
-          <p>&nbsp;&nbsp;lastLineFree: true,</p>
-          <p>&nbsp;&nbsp;firstLineOrig: false,</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;&nbsp;// CSS</p>
-          <p>&nbsp;&nbsp;selector: '[data-gloss]',</p>
-          <p>&nbsp;&nbsp;classOrig: 'gloss__orig',</p>
-          <p>&nbsp;&nbsp;classFree: 'gloss__free',</p>
-          <p>&nbsp;&nbsp;classLine: 'gloss__line--',</p>
-          <p>&nbsp;&nbsp;classAligned: 'gloss__aligned'</p>
-          <p>});</p>
-        </code>
-      </div>
-      <p>You can read more about the individual options below.</p>
-
-      <h2>Free Translation Line</h2>
-      <p>Leipzig.js defaults to a three-line glossing pattern, where the first two lines are word-aligned, and the last line is a non-aligned free translation, e.g.:</p>
-      <div class="example" data-gloss>
-        <p>El perr-ito está durmiendo.</p>
-        <p>DET.M.SG dog-DIM be.3SG.PRS sleep.PTCP</p>
-        <p>&lsquo;The little dog is sleeping.&rsquo; (DIM=diminutive)</p>
-      </div>
-      <p>To disable automatically parsing the last line as a free translation, set <code>lastLineFree</code> to <code>false</code>:</p>
-      <div class="code">
-        <code>
-          <p>var leipzig = new Leipzig(<strong>{ lastLineFree: false }</strong>);</p>
-        </code>
-      </div>
-      <p>If you turn this option off, you can still mark a line as a free translation by adding a <abbr>css</abbr> class (<code>gloss__free</code> by default):
-      <div class="example">
-        <code>
-          <p>&lt;p <strong>class="gloss__free"</strong>&gt;&lsquo;The little dog is sleeping.&rsquo; (DIM=diminutive)&lt;/p&gt;</p>
-        </code>
-      </div>
-
-      <h2>Original Language Line</h2>
-      <p>Similarly, Leipzig.js can also mark the first line in the section as the <em>original language line</em>, and ignore it when aligning words, e.g.:</p>
-      <div class="example" data-gloss>
-        <p class="gloss__orig">Мы с Марко поехали автобусом в Переделкино.</p>
-        <p>My s Marko poexa-l-i avtobus-om v Peredelkino.</p>
-        <p>1PL COM Marko go-PST-PL bus-INS All Peredelkino.</p>
-        <p>&lsquo;Marko and I went to Perdelkino by bus.&rsquo;</p>
-      </div>
-      <p>This option is disabled by default, however it may be useful if a language has a different script, or if the glossing makes the text harder to read.</p>
-      <p>To enable automatically setting the first line as the original language, set <code>firstLineOrig</code> to <code>true</code>:
-      <div class="code">
-        <code>
-          <p>var leipzig = new Leipzig(<strong>{ firstLineOrig: true }</strong>);</p>
-        </code>
-      </div>
-      <p>You can also manually set original language lines by adding a <abbr>css</abbr> class to the line (<code>gloss__orig</code> by default):
-      <div class="example">
-        <code>
-          <p>&lt;p <strong>class="gloss__orig"</strong>&gt;Мы с Марко поехали автобусом в Переделкино.&lt;/p&gt;</p>
-        </code>
-      </div>
-
-    </section>
-  </div>
-
-  <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.min.js"></script>
-  <script>
-    var leipzig = new Leipzig();
-    leipzig.gloss();
-  </script>
 </body>
 </html>
