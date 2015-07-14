@@ -1,0 +1,48 @@
+body {
+  font-family: 'PT Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.example {
+  font-family: 'Gentium Plus', Georgia, serif;
+}
+
+abbr {
+  font-variant: small-caps;
+}
+
+code {
+  font-size: 14px;
+}
+
+#wrapper {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 40em; /* 640px */
+}
+
+#masthead {
+  padding: 3em 0;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 4em;
+}
+
+.tagline {
+  font-size: 2em;
+  font-style: italic;
+  font-weight: normal;
+}
+
+.example,
+.code {
+  background: #eee;
+  margin: 0 -1em;
+  padding: .25em 1em;
+}
+
+.code {
+  font-family: monospace;
+}
