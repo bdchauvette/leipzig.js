@@ -21,6 +21,11 @@ ol[data-gloss] {
 .gloss__aligned {
   float: left;
   margin-right: 1em;
+  margin-bottom: .5em;
+}
+
+.gloss__aligned p {
+  margin: 0;
 }
 
 .gloss__line--0 {
@@ -29,5 +34,5 @@ ol[data-gloss] {
 
 .gloss__orig {
   font-weight: bold;
-  margin-bottom: 0;
+  margin-bottom: .5em;
 }
