@@ -9,19 +9,44 @@
 }(this, function() {
 'use strict';
 
-var Leipzig = function(opts) {
+var Leipzig = function(elements, opts) {
   if (!(this instanceof Leipzig)) {
-    return new Leipzig(opts);
+    return new Leipzig(elements, opts);
   }
 
   var opts = opts || {};
 
+  if (typeof elements === 'string' ||
+      elements instanceof NodeList ||
+      elements instanceof Element) {
+    opts.elements = elements;
+  } else if (typeof elements === 'object') {
+    opts = elements;
+  }
+
+  // elements to run the glosser on
+  this.elements = opts.elements || '[data-gloss]';
+
   // css settings
-  this.selector = opts.selector || '[data-gloss]';
-  this.classOrig = opts.classOrig || 'gloss__orig';
-  this.classFree = opts.classFree || 'gloss__free';
-  this.classLine = opts.classLine || 'gloss__line--';
-  this.classAligned = opts.classAligned || 'gloss__aligned';
+  if (!opts.hasOwnProperty('class')) {
+    opts.class = {};
+  }
+
+  this.class = {
+    glossed: opts.class.glossed || 'gloss--glossed',
+    words: opts.class.words || 'gloss__words',
+    word: opts.class.word || 'gloss__word',
+    noSpace: opts.class.noSpace || 'gloss__word--no-space',
+    line: opts.class.line || 'gloss__line--',
+    original: opts.class.original || 'gloss__line--original',
+    freeTranslation: opts.class.freeTranslation || 'gloss__line--free',
+    skip: opts.class.skip || 'gloss__line--skip'
+  };
+
+  // remove horizontal spacing between gloss words
+  this.spacing = (typeof opts.spacing !== 'undefined')
+    ? opts.spacing
+    : true;
 
   // automatically mark the first line as 'original'
   this.firstLineOrig = (typeof opts.firstLineOrig !== 'undefined')
@@ -89,13 +114,21 @@ Leipzig.prototype.format = function(groups, wrapper) {
   var output = [];
 
   groups.forEach(function(group) {
-    output.push('<div class="' + _this.classAligned + '">');
+    var glossWordClasses = [_this.class.word];
+
+    if (!_this.spacing) {
+      glossWordClasses.push(_this.class.noSpace);
+    }
+
+    glossWordClasses = glossWordClasses.join(' ');
+
+    output.push('<div class="' + glossWordClasses + '">');
 
     group.forEach(function(line, i) {
       // to preserve appearance, add non-breaking space for empty gloss slots
       line = line ? line : '&nbsp;';
 
-      output.push('<p class="' + _this.classLine + '' + i + '">' + line + '</p>');
+      output.push('<p class="' + _this.class.line + '' + i + '">' + line + '</p>');
     });
 
     output.push('</div>');
@@ -103,6 +136,7 @@ Leipzig.prototype.format = function(groups, wrapper) {
 
   // create a new element with the html
   el.innerHTML = output.join('');
+  el.classList.add(this.class.words);
 
   return el;
 };
@@ -111,7 +145,17 @@ Leipzig.prototype.format = function(groups, wrapper) {
  * Runs the glosser
  */
 Leipzig.prototype.gloss = function() {
-  var glossElements = document.querySelectorAll(this.selector);
+  var glossElements;
+
+  if (typeof this.elements === 'string') {
+    glossElements = document.querySelectorAll(this.elements);
+  } else if (this.elements instanceof NodeList) {
+    glossElements = this.elements;
+  } else if (this.elements instanceof Element) {
+    glossElements = [this.elements];
+  } else {
+    throw new Error('Unknown selector');
+  }
 
   // process each gloss
   for (var i = 0; i < glossElements.length; i++) {
@@ -122,12 +166,12 @@ Leipzig.prototype.gloss = function() {
 
     if (this.firstLineOrig) {
       var firstLine = gloss.firstElementChild;
-      firstLine.classList.add(this.classOrig);
+      firstLine.classList.add(this.class.original);
     }
 
     if (this.lastLineFree) {
       var lastLine = gloss.lastElementChild;
-      lastLine.classList.add(this.classFree);
+      lastLine.classList.add(this.class.freeTranslation);
     }
 
     for (var j = 0; j < lines.length; j++) {
@@ -135,9 +179,10 @@ Leipzig.prototype.gloss = function() {
 
       // don't align lines that are free translations or original,
       // unformatted lines
-      var isOrig = line.classList.contains(this.classOrig);
-      var isFree = line.classList.contains(this.classFree);
-      var shouldAlign = !isOrig && !isFree;
+      var isOrig = line.classList.contains(this.class.original);
+      var isFree = line.classList.contains(this.class.freeTranslation);
+      var shouldSkip = line.classList.contains(this.class.skip);
+      var shouldAlign = !isOrig && !isFree && !shouldSkip;
 
       if (shouldAlign) {
         linesToAlign.push(this.tokenize(line.innerHTML));
@@ -160,6 +205,7 @@ Leipzig.prototype.gloss = function() {
     }
 
     var glossElement = this.format(alignedLines, alignedWrapper);
+    gloss.classList.add(this.class.glossed);
     gloss.insertBefore(glossElement, insertBefore);
   }
 };
