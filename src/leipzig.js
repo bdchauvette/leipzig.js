@@ -1,12 +1,22 @@
 'use strict';
 
-var Leipzig = function(opts) {
+var Leipzig = function(elements, opts) {
   if (!(this instanceof Leipzig)) {
-    return new Leipzig(opts);
+    return new Leipzig(elements, opts);
   }
 
   var opts = opts || {};
 
+  if (typeof elements === 'string' ||
+      elements instanceof NodeList ||
+      elements instanceof Element) {
+    opts.elements = elements;
+  } else if (typeof elements === 'object') {
+    opts = elements;
+  }
+
+  // elements to run the glosser on
+  this.elements = opts.elements || '[data-gloss]';
   // css settings
   this.selector = opts.selector || '[data-gloss]';
   this.classOrig = opts.classOrig || 'gloss__orig';
@@ -102,7 +112,17 @@ Leipzig.prototype.format = function(groups, wrapper) {
  * Runs the glosser
  */
 Leipzig.prototype.gloss = function() {
-  var glossElements = document.querySelectorAll(this.selector);
+  var glossElements;
+
+  if (typeof this.elements === 'string') {
+    glossElements = document.querySelectorAll(this.elements);
+  } else if (this.elements instanceof NodeList) {
+    glossElements = this.elements;
+  } else if (this.elements instanceof Element) {
+    glossElements = [this.elements];
+  } else {
+    throw new Error('Unknown selector');
+  }
 
   // process each gloss
   for (var i = 0; i < glossElements.length; i++) {
