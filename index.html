@@ -2,43 +2,119 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Leipzig.js: Interlinear glossing for your browser</title>
   <link rel="stylesheet" href="/leipzig.js/theme/css/normalize.min.css">
   <link rel="stylesheet" href="/leipzig.js/theme/css/pygments.css">
   <link rel="stylesheet" href="/leipzig.js/theme/css/leipzig.css">
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Gentium+Basic:400,400italic,700,700italic&subset=latin,latin-ext">
-  <link rel="stylesheet" href="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.css" type="text/css">
+  <link rel="stylesheet" href="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.css">
 </head>
 <body>
   <div id="wrapper">
     <header id="masthead">
       <h1 class="page-title">Leipzig.js</h1>
-      <h2 class="tagline">Interlinear glossing for your browser</h2>
+      <h2 class="tagline">Interlinear glossing for the browser</h2>
+      <nav id="main-nav">
+        <ul><li class="active"><a href="/leipzig.js/">Home</a></li><li><a href="/leipzig.js/examples">Examples</a></li><li><a href="/leipzig.js/demo">Demo</a></li><li><a href="/leipzig.js/documentation">Documentation</a></li><li><a href="https://github.com/bdchauvette/leipzig.js/">Code</a></li>
+        </ul>
+      </nav>
     </header>
 
 
-  <p>Leipzig.js is a lightweight JavaScript utility that makes it easy to add
-<a href="https://en.wikipedia.org/wiki/Interlinear_gloss">interlinear glosses</a> to your webpages.</p>
+  <p>Leipzig.js is a small JavaScript utility that makes it easy to add
+<a href="https://en.wikipedia.org/wiki/Interlinear_gloss">interlinear glosses</a> to webpages.</p>
 <p>By including a bit of JavaScript and adding some <abbr>css</abbr>, you can
 automatically go from this:</p>
 <div class="example">
-  <p>Мы с Марко поехали автобусом в Переделкино.</p>
-  <p>My s Marko poexa-l-i avtobus-om v Peredelkino.</p>
-  <p>1PL COM Marko go-PST-PL bus-INS All Peredelkino.</p>
-  <p>we with Marko go-PST-PL bus-by to Peredelkino.</p>
-  <p>‘Marko and I went to Perdelkino by bus.’</p>
+  <p>Die Umgangssprache ist ein Teil des menschlichen Organismus und nicht weniger kompliziert als dieser.</p>
+  <p>die umgangssprache ist ein teil des mensch-lich-en organismus und nich wenig-er komplizeiert als dies-er</p>
+  <p>DET.NOM.F.SG {colloquial language} be.3SG.PRES DET.NOM.M.SG part DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-COMP complicated COMP DET-AGR.M.SG</p>
+  <p>the {colloquial language} is a part {of the} human organism and not less complicated than it</p>
+  <p>‘Colloquial language is a part of the human organism and is not less complicated than it.’ &mdash; Wittgenstein, <i>Tractatus Logico-Philosophicus</i>, 4.002</p>
 </div>
 
 <p>to this:</p>
-<div class="example" data-gloss-orig-line>
-  <p>Мы с Марко поехали автобусом в Переделкино.</p>
-  <p>My s Marko poexa-l-i avtobus-om v Peredelkino.</p>
-  <p>1PL COM Marko go-PST-PL bus-INS All Peredelkino.</p>
-  <p>we with Marko go-PST-PL bus-by to Peredelkino.</p>
-  <p>‘Marko and I went to Perdelkino by bus.’</p>
+<div id="gloss-wittgenstein" class="example">
+  <p>Die Umgangssprache ist ein Teil des menschlichen Organismus und nicht weniger kompliziert als dieser.</p>
+  <p>die umgangssprache ist ein teil des mensch-lich-en organismus und nich wenig-er komplizeiert als dies-er</p>
+  <p>DET.NOM.F.SG {colloquial language} be.3SG.PRES DET.NOM.M.SG part DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-COMP complicated COMP DET-AGR.M.SG</p>
+  <p>the {colloquial language} is a part {of the} human organism and not less complicated than it</p>
+  <p>‘Colloquial language is a part of the human organism and is not less complicated than it.’ &mdash; Wittgenstein, <i>Tractatus Logico-Philosophicus</i>, 4.002</p>
 </div>
 
-<h1>Using Leipzig.js</h1>
+<hr />
+<h1>Overview</h1>
+<p>An <i>interlinear gloss</i> is a way of presenting linguistic data that helps
+makes it clear what the different words and morphemes of a phrase mean. They
+consist of multiple lines of data, aligned horizontally at the word boundaries
+of the original language.</p>
+<p>Many interlinear glosses consist of three lines:</p>
+<ol>
+<li>The first line is used for data in the original language;</li>
+<li>A morpheme-by-morpheme analysis of the original language;</li>
+<li>A free or colloquial translation, not aligned at word boundaries.</li>
+</ol>
+<p>Additional lines may be used to show phonemic information, or other analyses
+that might be relevant to the phrase being glossed.</p>
+<p>Interlinear glosses help linguists present language data to audiences that
+might not be familiar with the language being analyzed, and are an integral
+part of documenting and discussing languages.</p>
+<h2>Challenges in Creating Glosses</h2>
+<p>Unfortunately, writing interlinear glosses is difficult. While LaTeX users can
+use packages like <a href="https://www.ctan.org/pkg/gb4e"><code>gb4e</code></a> and
+<a href="https://www.ctan.org/pkg/linguex"><code>linguex</code></a>, typesetting glosses in <abbr
+title="&lsquo;what you see is what you get&rsquo;">WYSIWYG</abbr> editors like
+Microsoft Word is cumbersome. Likewise, presenting interlinear glosses on
+websites is also challenging.</p>
+<p>When using <abbr>wysiwyg</abbr> editors, Linguists typically use either tables
+or a monospaced &lsquo;typewriter&rsquo; font to make aligning words easier.
+While these solutions work, neither one is a decent solution. Tables are
+difficult to create and maintain, especially for longer glosses that need to
+span multiple lines.  Monospaced interlinear glosses are easy to create, but
+maintaining alignment manually is time-consuming, and monospace fonts are not
+suited for reading long runs of text.</p>
+<p>On the web, linguists also tend to use either tables or monospaced fonts to
+create glosses. Creating tables on the web is more time consuming than creating
+them in <abbr>WYSIWYG</abbr> editors, making them untenable for longer glosses.
+Using monospaced fonts on the web has the same problems of using monospaced
+fonts in <abbr>WYSIWYG</abbr> editors.</p>
+<h2>Existing Solutions</h2>
+<p>There have been some efforts to improve interlinear glossing on the web.</p>
+<p>Kevin McGowan <a href="http://kbmcgowan.github.io/blog/2009/02/28/css-interlinear-glosses.html">offers a
+solution</a>
+using pure <abbr>CSS</abbr>, but the markup is cumbersome and does not degrade
+gracefully if <abbr>CSS</abbr> is disabled. (He also hints at a JavaScript
+solution that seems similar to what Leipzig.js is doing.)</p>
+<p><a href="https://github.com/parryc/interlinear"><code>interlinear</code></a>, like Leipzig.js, is a
+JavaScript + <abbr>css</abbr> utility that automatically formats glosses
+selected <abbr>HTML</abbr>. While <code>interlinear</code> is a very functional library
+and currently contains more features than Leipzig.js, I personally dislike the
+glossing syntax, and would prefer a solution that relies more on
+<abbr>HTML</abbr> tags. I would also prefer a solution that degrades more
+gracefully when JavaScript is turned off.</p>
+<h2>Enter Leipzig.js</h2>
+<p>Leipzig.js aims to be a simple, lightweight solution for interlinear glossing
+on the web. By relying on existing <abbr>HTML</abbr> tags, it degrades
+gracefully when JavaScript is not present.</p>
+<p>While basic usage of Leipzig.js is dead simple (see the Usage section below),
+more customizable glossing can be achieved by using the library's flexible
+<abbr>API</abbr>.</p>
+<p>Glosses formatted with Leipzig.js are
+<a href="https://en.wikipedia.org/wiki/Responsive_web_design">responsive</a>, and contain
+<abbr>CSS</abbr> classes that can be used to style individual lines in the
+gloss.</p>
+<p>My hope is that Leipzig.js strikes the right balance between ease of creation
+and beauty of output. It should be easy enough to use for people new to web
+authorship, while remaining powerful and customizable enough for people that
+want more control over their interlinear glosses.</p>
+<h2>Further Reading</h2>
+<p>For more information about interlinear glossing, visit the homepage for the
+<a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php">Leipzig Glossing
+Rules</a> (from which
+Leipzig.js gets its name). The Leipzig Glossing rules homepage also contains
+references to other important works on interlinear glossing.</p>
+<hr />
+<h1>Usage</h1>
 <h2>1. Download It</h2>
 <p>You can install Leipzig.js using <code>npm</code> or Bower, or by downloading the latest
 version from the github repository:</p>
@@ -79,9 +155,15 @@ turn them into nicely formatted interlinear glosses.</p>
 <code>&lt;script&gt;</code> somewhere <em>after</em> the one you added in Step 2:</p>
 <div class="highlight"><pre><span class="nt">&lt;script&gt;</span>
   <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;DOMContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">();</span>
-    <span class="nx">leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">();</span>
+    <span class="nx">Leipzig</span><span class="p">().</span><span class="nx">gloss</span><span class="p">();</span>
   <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+
+<p>If you're already using <a href="https://jquery.com/">jQuery</a>, you can use the following script instead:</p>
+<div class="highlight"><pre><span class="nt">&lt;script&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">Leipzig</span><span class="p">().</span><span class="nx">gloss</span><span class="p">();</span> <span class="p">});</span>
 <span class="nt">&lt;/script&gt;</span>
 </pre></div>
 
@@ -93,15 +175,14 @@ turn them into nicely formatted interlinear glosses.</p>
   <span class="nt">&lt;/head&gt;</span>
   <span class="nt">&lt;body&gt;</span>
     <span class="nt">&lt;div</span> <span class="na">data-gloss</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>Gila abur-u-n ferma hamišaluǧ güǧüna amuq’-da-č.<span class="nt">&lt;/p&gt;</span>
-      <span class="nt">&lt;p&gt;</span>now they-OBL-GEN farm forever behind stay-FUT-NEG<span class="nt">&lt;/p&gt;</span>
-      <span class="nt">&lt;p&gt;</span>‘Now their farm will not stay behind forever.’<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>Ein Beispiel<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>DET.NOM.N.SG example<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>‘An example’<span class="nt">&lt;/p&gt;</span>
     <span class="nt">&lt;/div&gt;</span>
     <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;path/to/leipzig/dist/leipzig.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
     <span class="nt">&lt;script&gt;</span>
       <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;DOMContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">();</span>
-        <span class="nx">leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">();</span>
+        <span class="nx">Leipzig</span><span class="p">().</span><span class="nx">gloss</span><span class="p">();</span>
       <span class="p">});</span>
     <span class="nt">&lt;/script&gt;</span>
   <span class="nt">&lt;/body&gt;</span>
@@ -109,74 +190,15 @@ turn them into nicely formatted interlinear glosses.</p>
 </pre></div>
 
 
-<h1>Configuration</h1>
-<p>Leipzig.js has several options that can be set using a <em>configuration
-object</em> when initialized, i.e.:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">option</span><span class="o">:</span> <span class="nx">value</span> <span class="p">});</span>
-</pre></div>
-
-
-<h2>Defaults</h2>
-<p>The default configuration is as follows:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span>
-  <span class="c1">// Parsing</span>
-  <span class="nx">lastLineFree</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-
-  <span class="c1">// CSS</span>
-  <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;[data-gloss]&#39;</span><span class="p">,</span>
-  <span class="nx">classOrig</span><span class="o">:</span> <span class="s1">&#39;gloss__orig&#39;</span><span class="p">,</span>
-  <span class="nx">classFree</span><span class="o">:</span> <span class="s1">&#39;gloss__free&#39;</span><span class="p">,</span>
-  <span class="nx">classLine</span><span class="o">:</span> <span class="s1">&#39;gloss__line--&#39;</span><span class="p">,</span>
-  <span class="nx">classAligned</span><span class="o">:</span> <span class="s1">&#39;gloss__aligned&#39;</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>You can read more about the individual options below.</p>
-<h2>Free Translation Line</h2>
-<p>Leipzig.js defaults to a three-line glossing pattern, where the first two lines
-are word-aligned, and the last line is a non-aligned free translation, e.g.:</p>
 <div class="example" data-gloss>
-  <p>El perr-ito está durmiendo.</p>
-  <p>DET.M.SG dog-DIM be.3SG.PRS sleep.PTCP</p>
-  <p>‘The little dog is sleeping.’ (DIM=diminutive)</p>
+  <p>Ein Beispiel</p>
+  <p>DET.NOM.N.SG example</p>
+  <p>‘An example’</p>
 </div>
 
-<p>To disable automatically parsing the last line as a free translation, set
-<code>lastLineFree</code> to <code>false</code>:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">lastLineFree</span><span class="o">:</span> <span class="kc">false</span> <span class="p">});</span>
-</pre></div>
-
-
-<p>If you turn this option off, you can still mark a line as a free translation by
-adding a <abbr>css</abbr> class (<code>gloss__free</code> by default):</p>
-<div class="highlight"><pre><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__free&quot;</span><span class="nt">&gt;</span>‘The little dog is sleeping.’ (DIM=diminutive)<span class="nt">&lt;/p&gt;</span>
-</pre></div>
-
-
-<h2>Original Language Line</h2>
-<p>Similarly, Leipzig.js can also mark the first line in the section as the
-<em>original language line</em>, and ignore it when aligning words, e.g.:</p>
-<div class="example" data-gloss-orig-line>
-  <p>Мы с Марко поехали автобусом в Переделкино.</p>
-  <p>My s Marko poexa-l-i avtobus-om v Peredelkino.</p>
-  <p>1PL COM Marko go-PST-PL bus-INS All Peredelkino.</p>
-  <p>‘Marko and I went to Perdelkino by bus.’</p>
-</div>
-
-<p>This option is disabled by default, however it may be useful if a language has
-a different script, or if the glossing makes the text harder to read.</p>
-<p>To enable automatically setting the first line as the original language, set
-<code>firstLineOrig</code> to <code>true</code>:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
-</pre></div>
-
-
-<p>You can also manually set original language lines by adding a <abbr>css</abbr>
-class to the line (<code>gloss__orig</code> by default):</p>
-<div class="highlight"><pre><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__orig&quot;</span><span class="nt">&gt;</span>Мы с Марко поехали автобусом в Переделкино.<span class="nt">&lt;/p&gt;</span>
-</pre></div>
+<h1>Known Issues</h1>
+<p>To view current issues or to file a bug report, please visit the <a href="https://github.com/bdchauvette/leipzig.js/issues">Issues Page
+on GitHub</a>.</p>
 
     <footer id="page-footer">
       <p>&copy; 2015 Benjamin Chauvette</p>
@@ -186,7 +208,7 @@ class to the line (<code>gloss__orig</code> by default):</p>
     </footer>
   </div>
 
-    <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.min.js"></script>
+    <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.js"></script>
 
   <script src="/leipzig.js/theme/js/index.js"></script>
 </body>

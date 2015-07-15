@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'pIqaD';
+  src: url('../fonts/pIqaD.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+#klingon .gloss__line--original {
+  font-family: pIqaD;
+}

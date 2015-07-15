@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leipzig.js: Demo</title>
+  <link rel="stylesheet" href="/leipzig.js/theme/css/normalize.min.css">
+  <link rel="stylesheet" href="/leipzig.js/theme/css/pygments.css">
+  <link rel="stylesheet" href="/leipzig.js/theme/css/leipzig.css">
+  <link rel="stylesheet" href="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.css">
+
+  <link rel="stylesheet" href="/leipzig.js/theme/css/demo.css">
+</head>
+<body>
+  <div id="wrapper">
+    <header id="masthead">
+      <h1 class="page-title">Leipzig.js</h1>
+      <h2 class="tagline">Interlinear glossing for the browser</h2>
+      <nav id="main-nav">
+        <ul><li><a href="/leipzig.js/">Home</a></li><li><a href="/leipzig.js/examples">Examples</a></li><li class="active"><a href="/leipzig.js/demo">Demo</a></li><li><a href="/leipzig.js/documentation">Documentation</a></li><li><a href="https://github.com/bdchauvette/leipzig.js/">Code</a></li>
+        </ul>
+      </nav>
+    </header>
+
+
+<h1>Live Demo</h1>
+
+<p>Fill in the text area below, and watch Leipzig.js roll
+up its sleeves and get its hands dirty glossing your text.</p>
+
+<p>This live demo automatically adds the surrounding <abbr>HTML</abbr> for you,
+so you can concentrate on playing around with the Leipzig.js parser, rather
+than on wrangling errant <code>&lt;p&gt;</code> tags!
+
+<p>You can adjust the settings by clicking on the checkboxes below the text
+area.</p>
+
+<hr>
+
+<div id="demo-output" class="example"></div>
+
+<textarea id="demo-input"></textarea>
+
+<div id="settings">
+  <label for="first-line-original">
+    <input type="checkbox" id="first-line-original" checked>
+    First Line is Original Language Text
+  </label>
+
+  <label for="last-line-free">
+    <input type="checkbox" id="last-line-free" checked>
+    Last Line is Free Translation
+  </label>
+
+  <label for="spacing">
+    <input type="checkbox" id="spacing" checked>
+    Spacing Between Glossed Words
+  </label>
+</div>
+
+
+    <footer id="page-footer">
+      <p>&copy; 2015 Benjamin Chauvette</p>
+      <p>Leipzig.js is licensed under the <a href="https://raw.githubusercontent.com/bdchauvette/leipzig.js/master/LICENSE">ISC License</a>.
+      <p>Leipzig.js is not affiliated with the <a href="http://www.zv.uni-leipzig.de/">University of Leipzig</a>, nor with the authors of the <a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php">Leipzig Glossing Rules</a>.</p>
+      <p><a href="#">Back to Top &uarr;</a></p>
+    </footer>
+  </div>
+
+    <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.js"></script>
+
+  <script src="/leipzig.js/theme/js/demo.js"></script>
+</body>
+</html>

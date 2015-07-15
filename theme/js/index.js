@@ -1,12 +1,13 @@
+/* global Leipzig */
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
-    var leipzig = Leipzig();
-    var leipzig2 = Leipzig({
-      selector: '[data-gloss-orig-line]',
-      firstLineOrig: true
-    });
+    var glossers = [
+      Leipzig(),
+      Leipzig('#gloss-wittgenstein', { firstLineOrig: true })
+    ];
 
-    leipzig.gloss();
-    leipzig2.gloss();
+    glossers.forEach(function(glosser) {
+      glosser.gloss();
+    });
   });
 }());

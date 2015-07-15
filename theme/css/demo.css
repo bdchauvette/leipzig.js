@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'pIqaD';
+  src: url('../fonts/pIqaD.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+#settings label {
+  float: left;
+  clear: left;
+  margin-top: 1em;
+  cursor: pointer;
+}
+
+#settings::after {
+  display: block;
+  clear: left;
+  content: '';
+}
+
+.placeholder {
+  font-size: 1.5em;
+  font-style: italic;
+  color: #333;
+}

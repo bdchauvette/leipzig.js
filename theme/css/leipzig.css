@@ -1,24 +1,135 @@
+@font-face {
+  font-family: 'PlainBlack';
+  src: url('../fonts/plainblack.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Linux Libertine';
+  src: url('../fonts/LinLibertine_R.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Linux Libertine';
+  src: url('../fonts/LinLibertine_RB.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Linux Libertine';
+  src: url('../fonts/LinLibertine_RI.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Linux Libertine';
+  src: url('../fonts/LinLibertine_RBI.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Linux Biolinum';
+  src: url('../fonts/LinBiolinum_R.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Linux Biolinum';
+  src: url('../fonts/LinBiolinum_RI.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+}
+
 body {
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'Linux Biolinum', sans-serif;
+  font-size: 1.125em;
+  padding: 0 1em;
+}
+
+a {
+  text-decoration: none;
 }
 
 h1, h2, h3, h4, h5, h6,
 .example {
-  font-family: 'Gentium Plus', 'Gentium Basic', Georgia, serif;
+  font-family: 'Linux Libertine', 'Times New Roman', 'Georgia', serif;
 }
 
 abbr {
+  text-transform: lowercase;
   font-variant: small-caps;
+  text-decoration: none;
+  border-bottom: none;
+  cursor: help;
 }
 
 code {
   font-size: 14px;
 }
 
+hr {
+  background: url('../img/ornament.svg') center no-repeat;
+  background-size: contain;
+  border: 0;
+  display: block;
+  height: 2em;
+  margin: 3em 0;
+  width: 100%;
+}
+
+input[type=checkbox] {
+  margin-right: .5em;
+}
+
+textarea {
+}
+ol {
+  padding: 0;
+  margin-left: 1em;
+}
+
+li {
+  padding-left: 1em;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  border-bottom: 1px solid #000;
+  text-align: left;
+}
+
+tr {
+  border-bottom: 1px solid #ccc;
+}
+
+td, th {
+  padding: .5em;
+  vertical-align: top;
+}
+
+textarea {
+  width: 100%;
+  height: 7em;
+  padding: .5em .83333em;
+  margin: 0 -1em;
+  border: 3px solid #ccc;
+  border-radius: 3px;
+}
+
 #wrapper {
   margin: 0 auto;
   width: 100%;
-  max-width: 40em; /* 640px */
+  max-width: 35em; /* 630px */
 }
 
 #masthead,
@@ -27,12 +138,49 @@ code {
   text-align: center;
 }
 
-#page-footer {
-  font-size: 0.8em;
+#main-nav ul {
+  padding-left: 0;
+}
+
+#main-nav li {
+  display: inline-block;
+  padding-top: 1em;
+  padding-left: 0;
+  list-style: none;
+}
+
+#main-nav li::after {
+  cursor: default;
+  content: '\b7';
+  padding: 0 .75em;
+}
+
+#main-nav li a {
+  color: #00e;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid transparent;
+  transition: border .5s;
+}
+
+#main-nav li.active a,
+#main-nav li a:hover {
+  border-bottom: 1px solid #ccc;
+  transition: border .25s;
+}
+
+#main-nav li.active a {
+  color: #003;
+}
+
+#main-nav li:last-child::after {
+  content: none;
+  padding-right: 0;
 }
 
 .page-title {
-  font-size: 4em;
+  font-family: PlainBlack, 'Gentium Plus', 'Gentium Basic', Georgia, serif;
+  font-size: 6em;
+  margin-bottom: 0.5em;
 }
 
 .tagline {
@@ -44,12 +192,17 @@ code {
 .example,
 .highlight {
   background: #f0f0f0;
-  margin: 0 -1em;
-  padding: .25em 1em;
+  border-radius: .5em;
+}
+
+.example {
+  margin: 1em -1em;
+  padding: .1px 1em;
 }
 
 .highlight {
   font-family: monospace;
   line-height: 1.75;
+  margin: 1.3333em -1.3333em;
+  padding: 0.1px 1.3333em;
 }
-

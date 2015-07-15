@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leipzig.js: Documentation</title>
+  <link rel="stylesheet" href="/leipzig.js/theme/css/normalize.min.css">
+  <link rel="stylesheet" href="/leipzig.js/theme/css/pygments.css">
+  <link rel="stylesheet" href="/leipzig.js/theme/css/leipzig.css">
+  <link rel="stylesheet" href="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.css">
+</head>
+<body>
+  <div id="wrapper">
+    <header id="masthead">
+      <h1 class="page-title">Leipzig.js</h1>
+      <h2 class="tagline">Interlinear glossing for the browser</h2>
+      <nav id="main-nav">
+        <ul><li><a href="/leipzig.js/">Home</a></li><li><a href="/leipzig.js/examples">Examples</a></li><li><a href="/leipzig.js/demo">Demo</a></li><li class="active"><a href="/leipzig.js/documentation">Documentation</a></li><li><a href="https://github.com/bdchauvette/leipzig.js/">Code</a></li>
+        </ul>
+      </nav>
+    </header>
+
+
+  <h1>Marking Up Examples</h1>
+<p>Leipzig.js is flexible when it comes to what underlying tags you use to mark up
+your glosses. For semantic reasons, I like to use <code>&lt;p&gt;</code> tags in a <code>&lt;div&gt;</code>, e.g.</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">data-gloss</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;p&gt;</span>ein Beispiel<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>DET.NOM.N.SG example<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>‘an example’<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<div class="gloss--markup example" data-gloss>
+  <p>ein Beispiel</p>
+  <p>DET.NOM.N.SG example</p>
+  <p>‘an example’</p>
+</div>
+
+<p>You can also mark it up as a list, and Leipzig.js will add the aligned words as
+an <code>&lt;li&gt;</code> item:</p>
+<div class="highlight"><pre><span class="nt">&lt;ul</span> <span class="na">data-gloss</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;</span>ein Beispiel<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>DET.NOM.N.SG example<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>‘an example’<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+
+
+<ul class="gloss--markup example" data-gloss>
+  <li>ein Beispiel</li>
+  <li>DET.NOM.N.SG example</li>
+  <li>‘an example’</li>
+</ul>
+
+<p>To make the parser treat multiple words as a single unit, surround the words
+with curly braces, e.g.:</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">data-gloss</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;p&gt;</span>El perrito está comiendo.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>the {little dog} is eating.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<div id="gloss--grouping" class="example">
+  <p>El perrito está comiendo.</p>
+  <p>the {little dog} is eating.</p>
+</div>
+
+<hr />
+<h1>Leipzig()</h1>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">([</span><span class="nx">elements</span> <span class="o">:</span> <span class="nb">String</span><span class="o">|</span><span class="nx">NodeList</span><span class="o">|</span><span class="nx">Element</span><span class="p">],</span> <span class="p">[</span><span class="nx">config</span> <span class="o">:</span> <span class="nb">Object</span><span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">Function</span>
+</pre></div>
+
+
+<p>Leipzig.js takes two optional arguments during construction:</p>
+<ol>
+<li><code>elements</code>, which tells Leipzig.js which elements to gloss</li>
+<li><code>options</code>, a plain JavaScript object for configuration</li>
+</ol>
+<p>Neither argument is required when calling Leipzig.js, and if no arguments are
+provided, then Leipzig.js will use the default configuration, listed below.</p>
+<h2>elements</h2>
+<p>If the <code>elements</code> argument is a <code>String</code>, Leipzig.js will internally run
+<code>document.querySelectorAll()</code> using the specified string, and the glosser will
+operate on the list of <abbr>DOM</abbr> elements it returns.</p>
+<p>Likewise, if <code>elements</code> is an <code>Element</code> or a <code>NodeList</code>, the glosser will
+operate on the provided <abbr>DOM</abbr> element(s).</p>
+<h2>options</h2>
+<h3>Defaults</h3>
+<p>Leipzig.js defaults to a three-line glossing pattern, where the first two lines
+are word-aligned, and the last line is a non-aligned free translation.</p>
+<p>The default configuraiton is the following:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span>
+  <span class="nx">lastLineFree</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nx">spacing</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+
+  <span class="nx">elements</span><span class="o">:</span> <span class="s1">&#39;[data-gloss]&#39;</span><span class="p">,</span>
+
+  <span class="kr">class</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">glossed</span><span class="o">:</span> <span class="s1">&#39;gloss--glossed&#39;</span>
+    <span class="nx">words</span><span class="o">:</span> <span class="s1">&#39;gloss__words&#39;</span>
+    <span class="nx">word</span><span class="o">:</span> <span class="s1">&#39;gloss__word&#39;</span>
+    <span class="nx">noSpace</span><span class="o">:</span> <span class="s1">&#39;gloss__word--no-space&#39;</span>
+    <span class="nx">line</span><span class="o">:</span> <span class="s1">&#39;gloss__line--&#39;</span><span class="p">,</span>
+    <span class="nx">original</span><span class="o">:</span> <span class="s1">&#39;gloss__line--original&#39;</span><span class="p">,</span>
+    <span class="nx">freeTranslation</span><span class="o">:</span> <span class="s1">&#39;gloss__line--free&#39;</span><span class="p">,</span>
+    <span class="nx">skip</span><span class="o">:</span> <span class="s1">&#39;gloss__line--skip&#39;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>When configuring Leipzig.js, you only need to specify the options that you want
+to change. All other options will retain their default values.</p>
+<h3>Free Translation Line</h3>
+<div class="highlight"><pre><span class="nx">lastLineFree</span> <span class="o">:</span> <span class="nb">Boolean</span> <span class="c1">// default: true</span>
+</pre></div>
+
+
+<p>Leipzig.js can automatically mark the last line in a gloss as a free
+translation, which will add a special class to it (<code>.gloss__line--free</code> by
+default) and make it not be parsed for alignment.</p>
+<div id="gloss--first-line" class="example">
+  <p>El perr-ito está comiendo.</p>
+  <p>DET.M.SG dog-DIM be.3SG.PRS eat.PTCP</p>
+  <p>‘The little dog is eating.’</p>
+</div>
+
+<p>This behavior is controlled by the <code>lastLineFree</code> configuration option, and is
+<em>enabled</em> by default.</p>
+<p>To disable automatically parsing the last line as a free translation, set
+<code>lastLineFree</code> to <code>false</code> when initializing Leipzig.js:</p>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">lastLineFree</span><span class="o">:</span> <span class="kc">false</span> <span class="p">});</span>
+</pre></div>
+
+
+<p>If you turn this option off, you can still mark a line as a free translation by
+adding the free translation <abbr>CSS</abbr> class (<code>gloss__line--free</code> by
+default) to the underlying <abbr>HTML</abbr>:</p>
+<div class="highlight"><pre><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--free&quot;</span><span class="nt">&gt;</span>‘The little dog is eating.’<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+
+<h3>Original Language Line</h3>
+<div class="highlight"><pre><span class="nx">firstLineOrig</span> <span class="o">:</span> <span class="nb">Boolean</span> <span class="c1">// default: false</span>
+</pre></div>
+
+
+<p>Leipzig.js can also automatically mark the first line in the gloss
+as the <em>original language line</em>, which will add a special class to it
+(<code>.gloss__line--original</code> by default) and make it not be parsed for alignment.</p>
+<p>This behavior is useful in cases where the line being glossed is long, or if
+the original language is not usually written with spaces, e.g. Japanese:</p>
+<div id="gloss--orig-line" class="example">
+  <p>太陽が昇る。</p>
+  <p>太陽 が 昇る。</p>
+  <p>taiyō ga noboru</p>
+  <p>sun N-TOP rise</p>
+</div>
+
+<p>This behavior is controlled by the <code>firstLineOrig</code> configuration option, and is
+<em>disabled</em> by default.</p>
+<p>To enable automatically parsing the first line as original text, set
+<code>firstLineOrig</code> to <code>true</code> when initializing Leipzig.js:</p>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+</pre></div>
+
+
+<p>If <code>firstLineOrig</code> is disabled, you can still mark a line as a original text
+by adding the original text <abbr>CSS</abbr> class (<code>gloss__line--original</code> by
+default) to the underlying <abbr>HTML</abbr>:</p>
+<div class="highlight"><pre><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--original&quot;</span><span class="nt">&gt;</span>太陽が昇る。<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+
+<h3>Spacing Between Glossed Words</h3>
+<div class="highlight"><pre><span class="nx">spacing</span><span class="o">:</span> <span class="nb">Boolean</span> <span class="c1">// default: true</span>
+</pre></div>
+
+
+<p>The default Leipzig.js styling includes small horizontal spacing at glossed
+word boundaries. For highly agglutinative languages, this behavior may not be
+ideal, because glossed phrases are likely to contain many morphemes in one
+word:</p>
+<p>To remove this automatic spacing, you can set the <code>spacing</code> option to <code>false</code>
+when initializing Leipzig.js:</p>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">spacing</span><span class="o">:</span> <span class="kc">false</span> <span class="p">});</span>
+</pre></div>
+
+
+<p>This will add an additional class to each word (<code>.gloss__word--no-space</code> by
+default), which removes the horizontal space:</p>
+<div id="gloss--spacing" class="example">
+  <p>Nimitztētlamaquiltīz</p>
+  <p>ni- mits- teː- tla- maki -ltiː -s'</p>
+  <p>1SG- 2SG- someone- something- give -CAUS -FUT</p>
+  <p>‘I shall make somebody give something to you’</p>
+</div>
+
+<h3>Elements to Gloss</h3>
+<div class="highlight"><pre><span class="nx">elements</span><span class="o">:</span> <span class="nb">String</span> <span class="o">|</span> <span class="nx">NodeList</span> <span class="o">|</span> <span class="nx">Element</span> <span class="c1">// default: &#39;[data-gloss]&#39;</span>
+</pre></div>
+
+
+<p>This option configures which elements that the Leipzig.js glosser will operate
+on. You can set this option by either passing it as the first argument when
+initializing Leipzig.js, or by setting the <code>elements</code> argument in the
+configuration object:</p>
+<div class="highlight"><pre><span class="c1">// Two ways of saying the same thing</span>
+<span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;[data-gloss]&#39;</span><span class="p">);</span>
+<span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">elements</span><span class="o">:</span> <span class="s1">&#39;[data-gloss]&#39;</span> <span class="p">});</span>
+</pre></div>
+
+
+<p>The elements option can be a <code>String</code>, a <code>NodeList</code> or <code>Element</code>.</p>
+<p>If the <code>elements</code> argument is a <code>String</code>, Leipzig.js will internally run
+<code>document.querySelectorAll()</code> using the specified string, and the glosser will
+operate on the list of <abbr>DOM</abbr> elements it returns.</p>
+<p>Likewise, if <code>elements</code> is an <code>Element</code> or a <code>NodeList</code>, the glosser will
+operate on the provided <abbr>DOM</abbr> element(s).</p>
+<h3>Styling</h3>
+<p>Leipzig.js adds a number of <abbr>CSS</abbr> classes to the final gloss, which
+you can use to style your glosses. The names of these classes can be configured
+by changing the the settings on the <code>class</code> object within the <code>options</code>
+configuration object.</p>
+<p>The names, meaning, and default values of the classes are as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>glossed</code></td>
+<td><code>gloss--glossed</code></td>
+<td>Added to each element in <code>elements</code> after the glosser has finished</td>
+</tr>
+<tr>
+<td><code>words</code></td>
+<td><code>gloss__words</code></td>
+<td>Added to the group of words that are aligned</td>
+</tr>
+<tr>
+<td><code>word</code></td>
+<td><code>gloss__word</code></td>
+<td>Added to each word in the group of aligned words</td>
+</tr>
+<tr>
+<td><code>noSpace</code></td>
+<td><code>gloss__word--no-space</code></td>
+<td>Added to each word in the group of aligned words when the <code>spacing</code> option is set to false</td>
+</tr>
+<tr>
+<td><code>line</code></td>
+<td><code>gloss__line--</code></td>
+<td>Added to each line in each aligned word. The class also contains an automatically inserted number at the end corresponding to the 0-indexed number of the line, e.g. the first aligned line will be <code>gloss__line--0</code>.</td>
+</tr>
+<tr>
+<td><code>freeTranslation</code></td>
+<td><code>gloss__line--free</code></td>
+<td>The free translation line</td>
+</tr>
+<tr>
+<td><code>original</code></td>
+<td><code>gloss__line--original</code></td>
+<td>The original language line</td>
+</tr>
+<tr>
+<td><code>skip</code></td>
+<td><code>gloss__line--skip</code></td>
+<td>Can be manually added to tell the parser to skip a line when aligning words</td>
+</tr>
+</tbody>
+</table>
+<p>The following example shows the class structure of what a gloss looks like after
+being fully parsed and formatted:</p>
+<div id="gloss--style" class="example gloss--glossed">
+  <p>Nikukonda</p>
+  <p>Ni- ku- kond -a</p>
+  <p>1SG.SBJ- 2SG.OBJ- love -IND</p>
+  <p class="gloss__line--free">‘I love you’</p>
+  <p class="gloss__line--skip">Town Nyanja (Lusaka, Zambia)</p>
+</div>
+
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;gloss--style&quot;</span> <span class="na">class=</span><span class="s">&quot;example gloss--glossed&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--original&quot;</span><span class="nt">&gt;</span>Nikukonda<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;gloss__words&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;gloss__word gloss__word--no-space&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--0&quot;</span><span class="nt">&gt;</span>Ni-<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--1&quot;</span><span class="nt">&gt;</span>1SG.SBJ-<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;gloss__word gloss__word--no-space&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--0&quot;</span><span class="nt">&gt;</span>ku-<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--1&quot;</span><span class="nt">&gt;</span>2SG.OBJ-<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;gloss__word gloss__word--no-space&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--0&quot;</span><span class="nt">&gt;</span>kond<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--1&quot;</span><span class="nt">&gt;</span>love<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;gloss__word gloss__word--no-space&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--0&quot;</span><span class="nt">&gt;</span>-a<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--1&quot;</span><span class="nt">&gt;</span>-IND<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--free&quot;</span><span class="nt">&gt;</span>‘I love you’<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;gloss__line--skip&quot;</span><span class="nt">&gt;</span>Town Nyanja (Lusaka, Zambia)<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<p>If the class names of the last three options &ndash; <code>class.freeTranslation</code>,
+<code>class.original</code>, and <code>class.skip</code> &ndash; are manually added to the html
+markup, they will be skipped by the Leipzig.js glosser during parsing, and will
+not be word-aligned with the other text.</p>
+<p><strong><abbr>NB:</abbr></strong> If a line is manually skipped by adding the
+<code>class.skip</code> class, it might interfere with the automated Free Translation and
+Original Language line detection. If this happens, you will have to manually
+add the relevant classes to the underlying markup.</p>
+<hr />
+<h1>Leipzig#gloss()</h1>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nx">Void</span>
+</pre></div>
+
+
+<p>This method runs the glosser over the elements that were specified when
+initializing the Leipzig object.</p>
+<p>It accepts no arguments, and has no return value.</p>
+
+    <footer id="page-footer">
+      <p>&copy; 2015 Benjamin Chauvette</p>
+      <p>Leipzig.js is licensed under the <a href="https://raw.githubusercontent.com/bdchauvette/leipzig.js/master/LICENSE">ISC License</a>.
+      <p>Leipzig.js is not affiliated with the <a href="http://www.zv.uni-leipzig.de/">University of Leipzig</a>, nor with the authors of the <a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php">Leipzig Glossing Rules</a>.</p>
+      <p><a href="#">Back to Top &uarr;</a></p>
+    </footer>
+  </div>
+
+    <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.js"></script>
+
+  <script src="/leipzig.js/theme/js/documentation.js"></script>
+</body>
+</html>
