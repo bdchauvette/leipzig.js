@@ -1,38 +1,57 @@
 /* Self-clear the gloss divs */
-[data-gloss]::after {
+.gloss--glossed::after {
   display: block;
   clear: left;
   content: '';
 }
 
-ul[data-gloss],
-ol[data-gloss] {
+ul.gloss--glossed,
+ol.gloss--glossed {
   padding-left: 0;
 }
 
-[data-gloss] li {
+.gloss--glossed li {
   list-style-type: none;
 }
 
-.gloss__free {
-  clear: left;
+.gloss--glossed li:first-child {
+  margin-top: 1em;
 }
 
-.gloss__aligned {
+.gloss--glossed li:last-child {
+  margin-bottom: 1em;
+}
+
+.gloss--glossed li:first-child,
+.gloss--glossed > .gloss__words:first-child {
+  margin-top: 1em;
+}
+
+.gloss__word {
   float: left;
   margin-right: 1em;
-  margin-bottom: .5em;
+  margin-bottom: 1em;
 }
 
-.gloss__aligned p {
+.gloss__word p {
   margin: 0;
+}
+
+.gloss__word.gloss__word--no-space {
+  margin-right: 0;
+}
+
+.gloss__line--original {
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+.gloss__line--free,
+.gloss__line--skip {
+  clear: left;
 }
 
 .gloss__line--0 {
   font-style: italic;
 }
 
-.gloss__orig {
-  font-weight: bold;
-  margin-bottom: .5em;
-}
