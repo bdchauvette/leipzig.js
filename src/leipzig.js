@@ -34,6 +34,11 @@ var Leipzig = function(elements, opts) {
     skip: opts.class.skip || 'gloss__line--skip'
   };
 
+  // remove horizontal spacing between gloss words
+  this.spacing = (typeof opts.spacing !== 'undefined')
+    ? opts.spacing
+    : true;
+
   // automatically mark the first line as 'original'
   this.firstLineOrig = (typeof opts.firstLineOrig !== 'undefined')
     ? opts.firstLineOrig
@@ -101,6 +106,10 @@ Leipzig.prototype.format = function(groups, wrapper) {
 
   groups.forEach(function(group) {
     var glossWordClasses = [_this.class.word];
+
+    if (!_this.spacing) {
+      glossWordClasses.push(_this.class.noSpace);
+    }
 
     glossWordClasses = glossWordClasses.join(' ');
 
