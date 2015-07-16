@@ -5,6 +5,13 @@ var Leipzig = function(elements, opts) {
     return new Leipzig(elements, opts);
   }
 
+  /** Helper function for setting boolean attributes */
+  function setBool(opts, opt, defaultValue) {
+    return (typeof opts[opt] === 'undefined')
+      ? defaultValue
+      : opts[opt];
+  }
+
   var opts = opts || {};
 
   if (typeof elements === 'string' ||
@@ -34,20 +41,9 @@ var Leipzig = function(elements, opts) {
     skip: opts.class.skip || 'gloss__line--skip'
   };
 
-  // remove horizontal spacing between gloss words
-  this.spacing = (typeof opts.spacing !== 'undefined')
-    ? opts.spacing
-    : true;
-
-  // automatically mark the first line as 'original'
-  this.firstLineOrig = (typeof opts.firstLineOrig !== 'undefined')
-    ? opts.firstLineOrig
-    : false;
-
-  // automatically mark the last line as 'free translation'
-  this.lastLineFree = (typeof opts.lastLineFree !== 'undefined')
-    ? opts.lastLineFree
-    : true;
+  this.spacing = setBool(opts, 'spacing', true);
+  this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
+  this.lastLineFree = setBool(opts, 'lastLineFree', true);
 };
 
 /**
