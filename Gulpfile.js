@@ -1,7 +1,7 @@
 var gulp = require('gulp');
-var umd = require('gulp-umd');
-var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var uglify = require('gulp-uglify');
+var umd = require('gulp-umd');
 
 gulp.task('build', function() {
   return gulp.src('src/leipzig.js')

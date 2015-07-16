@@ -1,11 +1,20 @@
 'use strict';
 
+/**
+ * Creates a Leipzig.js glossing object
+ * @constructor
+ * @param {String|NodeList|Element} elements - elements to be glossed
+ * @param {Object} opts - configuration object
+ */
 var Leipzig = function(elements, opts) {
   if (!(this instanceof Leipzig)) {
     return new Leipzig(elements, opts);
   }
 
-  /** Helper function for setting boolean attributes */
+  /**
+   * Helper function for setting boolean attributes
+   * @private
+   */
   function setBool(opts, opt, defaultValue) {
     return (typeof opts[opt] === 'undefined')
       ? defaultValue
@@ -49,6 +58,7 @@ var Leipzig = function(elements, opts) {
 
 /**
  * Tokenizes a line of input
+ * @private
  * @param {String} phrase - the phrase to be tokenized
  * @returns {Array} The tokens
  */
@@ -72,6 +82,7 @@ Leipzig.prototype.tokenize = function tokenize(phrase) {
 
 /**
  * Aligns morphemes on different lines
+ * @private
  * @returns {Array} Array of arrays containing aligned words
  */
 Leipzig.prototype.align = function align(lines) {
@@ -92,11 +103,11 @@ Leipzig.prototype.align = function align(lines) {
 
 /**
  * Outputs HTML containing formatted glosses
- *
+ * @private
  * @param {Array} lines - lines to be formatted
- * @returns {DOMElement} html element containing the glosses
+ * @returns {Element} html element containing the glosses
  */
-Leipzig.prototype.format = function(groups, wrapper) {
+Leipzig.prototype.format = function format(groups, wrapper) {
   var _this = this;
   var el = document.createElement(wrapper);
   var output = [];
@@ -124,7 +135,7 @@ Leipzig.prototype.format = function(groups, wrapper) {
 
   // create a new element with the html
   el.innerHTML = output.join('');
-  el.classList.add(this.class.words);
+  el.classList.add(_this.class.words);
 
   return el;
 };
@@ -132,8 +143,13 @@ Leipzig.prototype.format = function(groups, wrapper) {
 /**
  * Runs the glosser
  */
-Leipzig.prototype.gloss = function() {
-  /** Adds a class to an element */
+Leipzig.prototype.gloss = function gloss() {
+  /**
+   * Adds a class to an element
+   * @private
+   * @param {Element} el - element to add the class to
+   * @param {String} className - class name to add
+   */
   function addClass(el, className) {
     if (el.classList) {
       el.classList.add(className);
@@ -142,7 +158,12 @@ Leipzig.prototype.gloss = function() {
     }
   }
 
-  /** Checks if an element has a given class */
+  /**
+   * Checks if an element has a given class
+   * @private
+   * @param {Element} el - element to search for the class
+   * @param {String} className - class name to search for
+   */
   function hasClass(el, className) {
     var test;
 
