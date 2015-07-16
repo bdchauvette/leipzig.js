@@ -51,7 +51,8 @@ var Leipzig = function(elements, opts) {
     line: opts.class.line || 'gloss__line--',
     original: opts.class.original || 'gloss__line--original',
     freeTranslation: opts.class.freeTranslation || 'gloss__line--free',
-    skip: opts.class.skip || 'gloss__line--skip'
+    skip: opts.class.skip || 'gloss__line--skip',
+    hidden: opts.class.hidden || 'gloss__line--hidden'
   };
 };
 
@@ -182,7 +183,7 @@ Leipzig.prototype.gloss = function() {
 
       if (shouldAlign) {
         linesToAlign.push(this.tokenize(line.innerHTML));
-        line.style.display = 'none';
+        line.classList.add(this.class.hidden);
 
         if (!insertBefore) {
           insertBefore = line;

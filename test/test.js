@@ -86,7 +86,8 @@ describe('configuration', function() {
       line: 'gloss__line--',
       original: 'gloss__line--original',
       freeTranslation: 'gloss__line--free',
-      skip: 'gloss__line--skip'
+      skip: 'gloss__line--skip',
+      hidden: 'gloss__line--hidden'
     }
   };
 
@@ -104,7 +105,8 @@ describe('configuration', function() {
       line: 'test__line--',
       original: 'test__line--original',
       freeTranslation: 'test__line--free',
-      skip: 'test__line--skip'
+      skip: 'test__line--skip',
+      hidden: 'test__line--hidden'
     }
   };
 

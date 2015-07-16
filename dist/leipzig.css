@@ -51,6 +51,10 @@ ol.gloss--glossed {
   clear: left;
 }
 
+.gloss__line--hidden {
+  display: none;
+}
+
 .gloss__line--0 {
   font-style: italic;
 }
