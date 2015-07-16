@@ -142,6 +142,30 @@ Leipzig.prototype.format = function(groups, wrapper) {
  * Runs the glosser
  */
 Leipzig.prototype.gloss = function() {
+  /** Adds a class to an element */
+  function addClass(el, className) {
+    if (el.classList) {
+      el.classList.add(className);
+    } else {
+      el.className += ' ' + className;
+    }
+  }
+
+  /** Checks if an element has a given class */
+  function hasClass(el, className) {
+    var test;
+
+    if (el.classList) {
+      test = el.classList.contains(className);
+    } else {
+      var className = new RegExp('(^| )' + className + '( |$)', 'gi');
+      test = new RegExp(className).test(el.className);
+    }
+
+    return test;
+  }
+
+  // select the elements to gloss
   var glossElements;
 
   if (typeof this.elements === 'string') {
@@ -163,12 +187,12 @@ Leipzig.prototype.gloss = function() {
 
     if (this.firstLineOrig) {
       var firstLine = gloss.firstElementChild;
-      firstLine.classList.add(this.class.original);
+      addClass(firstLine, this.class.original);
     }
 
     if (this.lastLineFree) {
       var lastLine = gloss.lastElementChild;
-      lastLine.classList.add(this.class.freeTranslation);
+      addClass(lastLine, this.class.freeTranslation);
     }
 
     for (var j = 0; j < lines.length; j++) {
@@ -176,15 +200,18 @@ Leipzig.prototype.gloss = function() {
 
       // don't align lines that are free translations or original,
       // unformatted lines
-      var isOrig = line.classList.contains(this.class.original);
-      var isFree = line.classList.contains(this.class.freeTranslation);
-      var shouldSkip = line.classList.contains(this.class.skip);
+      var isOrig = hasClass(line, this.class.original);
+      var isFree = hasClass(line, this.class.freeTranslation);
+      var shouldSkip = hasClass(line, this.class.skip);
+
       var shouldAlign = !isOrig && !isFree && !shouldSkip;
 
       if (shouldAlign) {
         linesToAlign.push(this.tokenize(line.innerHTML));
-        line.classList.add(this.class.hidden);
+        addClass(line, this.class.hidden);
 
+        // if this is the first aligned line, mark the location
+        // so that the final aligned glosses can be inserted here
         if (!insertBefore) {
           insertBefore = line;
         }
@@ -202,7 +229,7 @@ Leipzig.prototype.gloss = function() {
     }
 
     var glossElement = this.format(alignedLines, alignedWrapper);
-    gloss.classList.add(this.class.glossed);
+    addClass(gloss, this.class.glossed);
     gloss.insertBefore(glossElement, insertBefore);
   }
 };
