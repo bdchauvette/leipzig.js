@@ -28,11 +28,15 @@ var Leipzig = function(elements, opts) {
       elements instanceof Element) {
     opts.elements = elements;
   } else if (typeof elements === 'object') {
+    // if the first argument is an object, let's assume it's actually a
+    // configuration object, and not the selector
     opts = elements;
   }
 
-  // elements to run the glosser on
   this.elements = opts.elements || '[data-gloss]';
+  this.spacing = setBool(opts, 'spacing', true);
+  this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
+  this.lastLineFree = setBool(opts, 'lastLineFree', true);
 
   // css settings
   if (!opts.hasOwnProperty('class')) {
@@ -49,10 +53,6 @@ var Leipzig = function(elements, opts) {
     freeTranslation: opts.class.freeTranslation || 'gloss__line--free',
     skip: opts.class.skip || 'gloss__line--skip'
   };
-
-  this.spacing = setBool(opts, 'spacing', true);
-  this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
-  this.lastLineFree = setBool(opts, 'lastLineFree', true);
 };
 
 /**
