@@ -44,6 +44,16 @@ function setBool(opts, opt, defaultValue) {
 }
 
 /**
+ * Helper function for testing whether an array contains only strings
+ * @private
+ */
+function hasOnlyStrings(arr) {
+  return arr.every(function(e) {
+    return typeof e === 'string';
+  });
+}
+
+/**
  * Creates a Leipzig.js glossing object
  * @constructor
  * @param {String|NodeList|Element} elements - elements to be glossed
@@ -71,6 +81,20 @@ var Leipzig = function(elements, opts) {
   this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
   this.lastLineFree = setBool(opts, 'lastLineFree', true);
 
+  console.log(opts.tokenizers instanceof String);
+  if (opts.tokenizers === undefined) {
+    this.tokenizers = [
+      '{(.*?)}',
+      '([^\\s]+)'
+    ];
+  } else if (opts.tokenizers instanceof Array && hasOnlyStrings(opts.tokenizers)) {
+    this.tokenizers = opts.tokenizers;
+  } else if (typeof opts.tokenizers === 'string') {
+    this.tokenizers = [opts.tokenizers];
+  } else {
+    throw new Error('Unknown format for tokenizers');
+  }
+
   // css settings
   if (!opts.hasOwnProperty('class')) {
     opts.class = {};
@@ -95,15 +119,16 @@ var Leipzig = function(elements, opts) {
  * @returns {Array} The tokens
  */
 Leipzig.prototype.tokenize = function tokenize(phrase) {
-  var tokenizer = /({.*?})|([^\s]+)/g;
-  var tokens = phrase.match(tokenizer).map(function(token) {
+  var tokenizers = this.tokenizers.join('|');
+  var tokenizer = new RegExp(tokenizers, 'g');
 
-    // remove curly braces from groups
+  var tokens = phrase.match(tokenizer).map(function(token) {
     var firstChar = token[0];
     var lastChar = token[token.length - 1];
 
     if (firstChar === '{' && lastChar === '}') {
-      token = token.slice(1, token.length - 1);
+      var contents = /(?:{)(.*)(?:})/;
+      token = contents.exec(token)[1];
     }
 
     return token;

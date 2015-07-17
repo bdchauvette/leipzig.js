@@ -1,4 +1,4 @@
-var test = require('tape');
+var test = require('tape-catch');
 var Leipzig = require('../dist/leipzig');
 
 var body = document.querySelector('body');

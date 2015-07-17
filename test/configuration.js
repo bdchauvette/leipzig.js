@@ -1,24 +1,15 @@
-var test = require('tape');
+var test = require('tape-catch');
 var Leipzig = require('../dist/leipzig');
-
-// helper function for testing selector
-function testSelector(t, elements) {
-  var leipzig = Leipzig(elements);
-
-  Object.keys(leipzig).forEach(function(opt) {
-    if (opt === 'elements') {
-      t.deepEqual(leipzig[opt], elements);
-    } else {
-      t.deepEqual(leipzig[opt], defaults[opt]);
-    }
-  });
-}
 
 // default configuration values
 var defaults = {
   lastLineFree: true,
   firstLineOrig: false,
   spacing: true,
+  tokenizers: [
+    '{(.*?)}',
+    '([^\\s]+)'
+  ],
   elements: '[data-gloss]',
   class: {
     glossed: 'gloss--glossed',
@@ -33,12 +24,16 @@ var defaults = {
   }
 };
 
-// all settings changed from default values
+// used for testing configuration objects
+// all values changed from defaults
 var testConfig = {
   lastLineFree: false,
   firstLineOrig: true,
   spacing: false,
-  elements: '.gloss',
+  tokenizers: [
+    'test regex'
+  ],
+  elements: '.test',
   class: {
     glossed: 'test--glossed',
     words: 'test__words',
@@ -51,6 +46,19 @@ var testConfig = {
     hidden: 'test__line--hidden'
   }
 };
+
+// helper function for testing selector
+function testSelector(t, elements) {
+  var leipzig = Leipzig(elements);
+
+  Object.keys(leipzig).forEach(function(opt) {
+    if (opt === 'elements') {
+      t.deepEqual(leipzig[opt], elements);
+    } else {
+      t.deepEqual(leipzig[opt], defaults[opt]);
+    }
+  });
+}
 
 test('use all defaults when called with no args', function(t) {
   var leipzig = Leipzig();
@@ -86,6 +94,35 @@ test('set options correctly when called with single config object', function(t) 
   Object.keys(leipzig).forEach(function(opt) {
     t.deepEqual(leipzig[opt], testConfig[opt]);
   });
+
+  t.end();
+});
+
+test('should accept a string as a tokenizer', function(t) {
+  var leipzig = Leipzig({ tokenizers: 'test' });
+
+  t.deepEqual(leipzig.tokenizers, ['test']);
+  t.end();
+});
+
+test('should reject tokenizers that are not arrays of strings', function(t) {
+  var expectedErrorMessage = 'Unknown format for tokenizers';
+
+  try {
+    var leipzig = Leipzig({ tokenizers: {} });
+  } catch (e) {
+    if (e.message === expectedErrorMessage) {
+      t.pass();
+    }
+  }
+
+  try {
+    var leipzig = Leipzig({ tokenizers: [123] });
+  } catch (e) {
+    if (e.message === expectedErrorMessage) {
+      t.pass();
+    }
+  }
 
   t.end();
 });
