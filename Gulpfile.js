@@ -1,11 +1,11 @@
 var gulp = require('gulp');
+var babel = require('gulp-babel');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
-var umd = require('gulp-umd');
 
 gulp.task('build', function() {
   return gulp.src('src/leipzig.js')
-    .pipe(umd())
+    .pipe(babel({ modules: 'umd', moduleId: 'Leipzig' }))
     .pipe(gulp.dest('./dist'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())

@@ -91,7 +91,6 @@ var Leipzig = function(elements, opts) {
 
 /**
  * Tokenizes a line of input
- * @private
  * @param {String} phrase - the phrase to be tokenized
  * @returns {Array} The tokens
  */
@@ -115,7 +114,7 @@ Leipzig.prototype.tokenize = function tokenize(phrase) {
 
 /**
  * Aligns morphemes on different lines
- * @private
+ * @param {Array} lines - Array of strings to be aligned
  * @returns {Array} Array of arrays containing aligned words
  */
 Leipzig.prototype.align = function align(lines) {
@@ -135,8 +134,7 @@ Leipzig.prototype.align = function align(lines) {
 };
 
 /**
- * Outputs HTML containing formatted glosses
- * @private
+ * Creates an Element containing the aligned glosses
  * @param {Array} lines - lines to be formatted
  * @returns {Element} html element containing the glosses
  */
@@ -206,6 +204,7 @@ Leipzig.prototype.gloss = function gloss() {
       addClass(lastLine, this.class.freeTranslation);
     }
 
+    // process each line in the gloss
     for (var j = 0; j < lines.length; j++) {
       var line = lines[j];
 
@@ -244,3 +243,5 @@ Leipzig.prototype.gloss = function gloss() {
     addClass(gloss, this.class.glossed);
   }
 };
+
+export default Leipzig;
