@@ -6,34 +6,106 @@ var body = document.querySelector('body');
 function makeElement() {
   var html = [].slice.call(arguments).join('');
   body.insertAdjacentHTML('beforeend', html);
+  return document.querySelector('[data-gloss]');
+}
+
+function testHtml(t, leipzig, gloss, html) {
+  leipzig.gloss();
+  t.equals(gloss.outerHTML, html, 'html is as expected');
+  body.removeChild(gloss);
+  t.end();
 }
 
 test('basic gloss', function(t) {
   var leipzig = Leipzig();
-  var basicGloss = makeElement(
-    '<div id="gloss--basic" data-gloss>',
-    '<p>One</p>',
-    '<p>Two</p>',
-    '<p>Free Translation</p>',
+  var expectedHtml = '' +
+    '<div data-gloss="" class="gloss--glossed">' +
+      '<div class="gloss__words">' +
+        '<div class="gloss__word">' +
+          '<p class="gloss__line--0">one</p>' +
+          '<p class="gloss__line--1">foo</p>' +
+        '</div>' +
+        '<div class="gloss__word">' +
+          '<p class="gloss__line--0">two</p>' +
+          '<p class="gloss__line--1">bar</p>' +
+        '</div>' +
+      '</div>' +
+      '<p class="gloss__line--hidden">one two</p>' +
+      '<p class="gloss__line--hidden">foo bar</p>' +
+      '<p class="gloss__line--free">free translation</p>' +
+    '</div>';
+  var gloss = makeElement(
+    '<div data-gloss>',
+    '<p>one two</p>',
+    '<p>foo bar</p>',
+    '<p>free translation</p>',
     '</div>'
   );
 
-  leipzig.gloss();
-
-  var gloss = document.querySelector('#gloss--basic');
-  var words = gloss.querySelectorAll('.gloss__word');
-  var lineOne = gloss.querySelector('.gloss__line--0');
-  var lineTwo = gloss.querySelector('.gloss__line--1');
-  var lineFree = gloss.querySelector('.gloss__line--free');
-
-  t.ok(gloss, 'element exists');
-  t.ok(gloss.classList.contains('gloss--glossed'), 'has glossed class');
-  t.equals(words.length, 1, 'splits words correctly');
-  t.equals(lineFree.innerHTML, 'Free Translation', 'free translation line is correct');
-
-  // TODO: better tests for content of aligned lines
-  t.equals(lineOne.innerHTML, 'One', 'line one inner text is set correctly');
-  t.equals(lineTwo.innerHTML, 'Two', 'line two inner text is set correctly');
-
-  t.end();
+  testHtml(t, leipzig, gloss, expectedHtml);
 });
+
+test('first line is original text', function(t) {
+  var leipzig = Leipzig({ firstLineOrig: true });
+
+  var gloss = makeElement(
+    '<div data-gloss>',
+    '<p>original line</p>',
+    '<p>one two</p>',
+    '<p>foo bar</p>',
+    '<p>free translation</p>',
+    '</div>'
+  );
+
+  var expectedHtml = '' +
+    '<div data-gloss="" class="gloss--glossed">' +
+      '<p class="gloss__line--original">original line</p>' +
+      '<div class="gloss__words">' +
+        '<div class="gloss__word">' +
+          '<p class="gloss__line--0">one</p>' +
+          '<p class="gloss__line--1">foo</p>' +
+        '</div>' +
+        '<div class="gloss__word">' +
+          '<p class="gloss__line--0">two</p>' +
+          '<p class="gloss__line--1">bar</p>' +
+        '</div>' +
+      '</div>' +
+      '<p class="gloss__line--hidden">one two</p>' +
+      '<p class="gloss__line--hidden">foo bar</p>' +
+      '<p class="gloss__line--free">free translation</p>' +
+    '</div>';
+
+  testHtml(t, leipzig, gloss, expectedHtml);
+});
+
+test('remove spacing', function(t) {
+  var leipzig = Leipzig({ spacing: false });
+
+  var gloss = makeElement(
+    '<div data-gloss>',
+    '<p>one two</p>',
+    '<p>foo bar</p>',
+    '<p>free translation</p>',
+    '</div>'
+  );
+
+  var expectedHtml = '' +
+    '<div data-gloss="" class="gloss--no-space gloss--glossed">' +
+      '<div class="gloss__words">' +
+        '<div class="gloss__word">' +
+          '<p class="gloss__line--0">one</p>' +
+          '<p class="gloss__line--1">foo</p>' +
+        '</div>' +
+        '<div class="gloss__word">' +
+          '<p class="gloss__line--0">two</p>' +
+          '<p class="gloss__line--1">bar</p>' +
+        '</div>' +
+      '</div>' +
+      '<p class="gloss__line--hidden">one two</p>' +
+      '<p class="gloss__line--hidden">foo bar</p>' +
+      '<p class="gloss__line--free">free translation</p>' +
+    '</div>';
+
+  testHtml(t, leipzig, gloss, expectedHtml);
+});
+
