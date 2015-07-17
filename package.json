@@ -1,21 +1,23 @@
 {
-  "name": "leipzig.js",
-  "version": "0.0.1",
+  "name": "leipzig",
+  "version": "0.3.1",
   "description": "Interlinear glossing for your browser",
   "main": "dist/leipzig.js",
   "directories": {
     "test": "test"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
+    "browserify": "^10.2.6",
+    "faucet": "0.0.1",
     "gulp": "^3.9.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
     "gulp-umd": "^0.2.0",
-    "mocha": "^2.2.5"
+    "tape": "^4.0.0",
+    "tape-run": "^1.0.0"
   },
   "scripts": {
-    "test": "mocha test/test.js"
+    "test": "browserify test/*.js | tape-run | faucet"
   },
   "repository": {
     "type": "git",
