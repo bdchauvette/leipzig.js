@@ -13,13 +13,13 @@ var defaults = {
   elements: '[data-gloss]',
   class: {
     glossed: 'gloss--glossed',
+    noSpace: 'gloss--no-space',
     words: 'gloss__words',
     word: 'gloss__word',
-    noSpace: 'gloss__word--no-space',
     line: 'gloss__line--',
     original: 'gloss__line--original',
     freeTranslation: 'gloss__line--free',
-    skip: 'gloss__line--skip',
+    noAlign: 'gloss__line--no-align',
     hidden: 'gloss__line--hidden'
   }
 };
@@ -36,13 +36,13 @@ var testConfig = {
   elements: '.test',
   class: {
     glossed: 'test--glossed',
+    noSpace: 'test--no-space',
     words: 'test__words',
     word: 'test__word',
-    noSpace: 'test__word--no-space',
     line: 'test__line--',
     original: 'test__line--original',
     freeTranslation: 'test__line--free',
-    skip: 'test__line--skip',
+    noAlign: 'test__line--no-align',
     hidden: 'test__line--hidden'
   }
 };
@@ -85,6 +85,18 @@ test('only set the selector when called with a NodeList', function(t) {
 test('only set the selector when called with an element', function(t) {
   var elements = document.querySelector('html');
   testSelector(t, elements);
+  t.end();
+});
+
+test('throws an error when called with an invalid selector', function(t) {
+  try {
+    var leipzig = Leipzig({});
+  } catch (e) {
+    if (e.message === 'Invalid selector') {
+      t.pass();
+    }
+  }
+
   t.end();
 });
 

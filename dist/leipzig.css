@@ -37,7 +37,7 @@ ol.gloss--glossed {
   margin: 0;
 }
 
-.gloss__word.gloss__word--no-space {
+.gloss--no-space .gloss__word {
   margin-right: 0;
 }
 
@@ -47,7 +47,7 @@ ol.gloss--glossed {
 }
 
 .gloss__line--free,
-.gloss__line--skip {
+.gloss__line--no-align {
   clear: left;
 }
 

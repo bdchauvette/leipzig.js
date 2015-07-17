@@ -81,7 +81,6 @@ var Leipzig = function(elements, opts) {
   this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
   this.lastLineFree = setBool(opts, 'lastLineFree', true);
 
-  console.log(opts.tokenizers instanceof String);
   if (opts.tokenizers === undefined) {
     this.tokenizers = [
       '{(.*?)}',
@@ -102,13 +101,13 @@ var Leipzig = function(elements, opts) {
 
   this.class = {
     glossed: opts.class.glossed || 'gloss--glossed',
+    noSpace: opts.class.noSpace || 'gloss--no-space',
     words: opts.class.words || 'gloss__words',
     word: opts.class.word || 'gloss__word',
-    noSpace: opts.class.noSpace || 'gloss__word--no-space',
     line: opts.class.line || 'gloss__line--',
     original: opts.class.original || 'gloss__line--original',
     freeTranslation: opts.class.freeTranslation || 'gloss__line--free',
-    skip: opts.class.skip || 'gloss__line--skip',
+    noAlign: opts.class.noAlign || 'gloss__line--no-align',
     hidden: opts.class.hidden || 'gloss__line--hidden'
   };
 };
@@ -172,19 +171,15 @@ Leipzig.prototype.format = function format(groups, wrapper) {
   groups.forEach(function(group) {
     var glossWordClasses = [_this.class.word];
 
-    if (!_this.spacing) {
-      glossWordClasses.push(_this.class.noSpace);
-    }
-
     glossWordClasses = glossWordClasses.join(' ');
 
-    innerHtml.push('<div class="' + glossWordClasses + '">');
+    innerHtml.push(`<div class="${glossWordClasses}">`);
 
     group.forEach(function(line, i) {
       // to preserve appearance, add non-breaking space for empty gloss slots
       line = line ? line : '&nbsp;';
 
-      innerHtml.push('<p class="' + _this.class.line + '' + i + '">' + line + '</p>');
+      innerHtml.push(`<p class="${_this.class.line}${i}">${line}</p>`);
     });
 
     innerHtml.push('</div>');
@@ -209,7 +204,7 @@ Leipzig.prototype.gloss = function gloss() {
   } else if (this.elements instanceof Element) {
     glossElements = [this.elements];
   } else {
-    throw new Error('Unknown selector');
+    throw new Error('Invalid selector');
   }
 
   // process each gloss
@@ -237,7 +232,7 @@ Leipzig.prototype.gloss = function gloss() {
       // unformatted lines
       var isOrig = hasClass(line, this.class.original);
       var isFree = hasClass(line, this.class.freeTranslation);
-      var shouldSkip = hasClass(line, this.class.skip);
+      var shouldSkip = hasClass(line, this.class.noAlign);
 
       var shouldAlign = !isOrig && !isFree && !shouldSkip;
 
@@ -265,6 +260,12 @@ Leipzig.prototype.gloss = function gloss() {
 
     var alignedLines = this.format(alignedLines, alignedWrapper);
     gloss.insertBefore(alignedLines, firstRawLine);
+
+    // finish up by adding relevant classes to the main container
+    if (!this.spacing) {
+      addClass(gloss, this.class.noSpace);
+    }
+
     addClass(gloss, this.class.glossed);
   }
 };
