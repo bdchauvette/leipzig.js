@@ -10,6 +10,49 @@
 'use strict';
 
 /**
+ * Adds a class to an element
+ * @private
+ * @param {Element} el - element to add the class to
+ * @param {String} className - class name to add
+ */
+function addClass(el, className) {
+  if (el.classList) {
+    el.classList.add(className);
+  } else {
+    el.className += ' ' + className;
+  }
+}
+
+/**
+ * Checks if an element has a given class
+ * @private
+ * @param {Element} el - element to search for the class
+ * @param {String} className - class name to search for
+ */
+function hasClass(el, className) {
+  var test;
+
+  if (el.classList) {
+    test = el.classList.contains(className);
+  } else {
+    var className = new RegExp('(^| )' + className + '( |$)', 'gi');
+    test = new RegExp(className).test(el.className);
+  }
+
+  return test;
+}
+
+/**
+ * Helper function for setting boolean attributes in the config object
+ * @private
+ */
+function setBool(opts, opt, defaultValue) {
+  return (typeof opts[opt] === 'undefined')
+    ? defaultValue
+    : opts[opt];
+}
+
+/**
  * Creates a Leipzig.js glossing object
  * @constructor
  * @param {String|NodeList|Element} elements - elements to be glossed
@@ -18,16 +61,6 @@
 var Leipzig = function(elements, opts) {
   if (!(this instanceof Leipzig)) {
     return new Leipzig(elements, opts);
-  }
-
-  /**
-   * Helper function for setting boolean attributes
-   * @private
-   */
-  function setBool(opts, opt, defaultValue) {
-    return (typeof opts[opt] === 'undefined')
-      ? defaultValue
-      : opts[opt];
   }
 
   var opts = opts || {};
@@ -118,8 +151,9 @@ Leipzig.prototype.align = function align(lines) {
  */
 Leipzig.prototype.format = function format(groups, wrapper) {
   var _this = this;
-  var el = document.createElement(wrapper);
-  var output = [];
+  var innerHtml = [];
+  var wrapper = document.createElement(wrapper);
+  addClass(wrapper, _this.class.words);
 
   groups.forEach(function(group) {
     var glossWordClasses = [_this.class.word];
@@ -130,62 +164,27 @@ Leipzig.prototype.format = function format(groups, wrapper) {
 
     glossWordClasses = glossWordClasses.join(' ');
 
-    output.push('<div class="' + glossWordClasses + '">');
+    innerHtml.push('<div class="' + glossWordClasses + '">');
 
     group.forEach(function(line, i) {
       // to preserve appearance, add non-breaking space for empty gloss slots
       line = line ? line : '&nbsp;';
 
-      output.push('<p class="' + _this.class.line + '' + i + '">' + line + '</p>');
+      innerHtml.push('<p class="' + _this.class.line + '' + i + '">' + line + '</p>');
     });
 
-    output.push('</div>');
+    innerHtml.push('</div>');
   });
 
-  // create a new element with the html
-  el.innerHTML = output.join('');
-  el.classList.add(_this.class.words);
+  wrapper.innerHTML = innerHtml.join('');
 
-  return el;
+  return wrapper;
 };
 
 /**
  * Runs the glosser
  */
 Leipzig.prototype.gloss = function gloss() {
-  /**
-   * Adds a class to an element
-   * @private
-   * @param {Element} el - element to add the class to
-   * @param {String} className - class name to add
-   */
-  function addClass(el, className) {
-    if (el.classList) {
-      el.classList.add(className);
-    } else {
-      el.className += ' ' + className;
-    }
-  }
-
-  /**
-   * Checks if an element has a given class
-   * @private
-   * @param {Element} el - element to search for the class
-   * @param {String} className - class name to search for
-   */
-  function hasClass(el, className) {
-    var test;
-
-    if (el.classList) {
-      test = el.classList.contains(className);
-    } else {
-      var className = new RegExp('(^| )' + className + '( |$)', 'gi');
-      test = new RegExp(className).test(el.className);
-    }
-
-    return test;
-  }
-
   // select the elements to gloss
   var glossElements;
 
@@ -204,7 +203,7 @@ Leipzig.prototype.gloss = function gloss() {
     var gloss = glossElements[i];
     var lines = gloss.children;
     var linesToAlign = [];
-    var insertBefore = null;
+    var firstRawLine;
 
     if (this.firstLineOrig) {
       var firstLine = gloss.firstElementChild;
@@ -233,8 +232,8 @@ Leipzig.prototype.gloss = function gloss() {
 
         // if this is the first aligned line, mark the location
         // so that the final aligned glosses can be inserted here
-        if (!insertBefore) {
-          insertBefore = line;
+        if (!firstRawLine) {
+          firstRawLine = line;
         }
       }
     }
@@ -249,9 +248,9 @@ Leipzig.prototype.gloss = function gloss() {
       alignedWrapper = 'div';
     }
 
-    var glossElement = this.format(alignedLines, alignedWrapper);
+    var alignedLines = this.format(alignedLines, alignedWrapper);
+    gloss.insertBefore(alignedLines, firstRawLine);
     addClass(gloss, this.class.glossed);
-    gloss.insertBefore(glossElement, insertBefore);
   }
 };
 
