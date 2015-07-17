@@ -5,7 +5,7 @@
   "authors": [
     "Ben Chauvette <bdchauvette@gmail.com>"
   ],
-  "description": "Interlinear glossing for the web",
+  "description": "Interlinear glossing for the browser",
   "main": "dist/leipzig.js",
   "moduleType": [
     "amd",
@@ -23,7 +23,6 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "test"
   ]
 }
