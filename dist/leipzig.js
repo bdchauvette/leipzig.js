@@ -214,7 +214,7 @@
       var gloss = glossElements[i];
       var lines = gloss.children;
       var linesToAlign = [];
-      var firstRawLine;
+      var firstRawLine = null;
 
       if (this.firstLineOrig) {
         var firstLine = gloss.firstElementChild;
@@ -260,8 +260,8 @@
         alignedWrapper = 'div';
       }
 
-      var alignedLines = this.format(alignedLines, alignedWrapper);
-      gloss.insertBefore(alignedLines, firstRawLine);
+      var formattedLines = this.format(alignedLines, alignedWrapper);
+      gloss.insertBefore(formattedLines, firstRawLine);
 
       // finish up by adding relevant classes to the main container
       if (!this.spacing) {
