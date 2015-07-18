@@ -6,6 +6,7 @@ var defaults = {
   lastLineFree: true,
   firstLineOrig: false,
   spacing: true,
+  autoTag: true,
   tokenizers: [
     '{(.*?)}',
     '([^\\s]+)'
@@ -21,7 +22,8 @@ var defaults = {
     original: 'gloss__line--original',
     freeTranslation: 'gloss__line--free',
     noAlign: 'gloss__line--no-align',
-    hidden: 'gloss__line--hidden'
+    hidden: 'gloss__line--hidden',
+    abbr: 'gloss__abbr'
   }
 };
 
@@ -31,6 +33,7 @@ var testConfig = {
   lastLineFree: false,
   firstLineOrig: true,
   spacing: false,
+  autoTag: false,
   tokenizers: [
     'test regex'
   ],
@@ -45,7 +48,8 @@ var testConfig = {
     original: 'test__line--original',
     freeTranslation: 'test__line--free',
     noAlign: 'test__line--no-align',
-    hidden: 'test__line--hidden'
+    hidden: 'test__line--hidden',
+    abbr: 'test__abbr'
   }
 };
 

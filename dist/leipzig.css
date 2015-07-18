@@ -59,3 +59,7 @@ ol.gloss--glossed {
   font-style: italic;
 }
 
+.gloss__abbr {
+  text-transform: lowercase;
+  font-variant: small-caps;
+}

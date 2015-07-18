@@ -18,29 +18,33 @@ function testHtml(t, leipzig, gloss, html) {
 
 test('basic gloss', function(t) {
   var leipzig = Leipzig();
+  var gloss = makeElement(
+    '<div data-gloss>',
+    '<p>me you</p>',
+    '<p>1 2</p>',
+    '<p>free translation</p>',
+    '</div>'
+  );
   var expectedHtml = '' +
     '<div data-gloss="" class="gloss--glossed">' +
       '<div class="gloss__words">' +
         '<div class="gloss__word">' +
-          '<p class="gloss__line gloss__line--0">one</p>' +
-          '<p class="gloss__line gloss__line--1">foo</p>' +
+          '<p class="gloss__line gloss__line--0">me</p>' +
+          '<p class="gloss__line gloss__line--1">' +
+            '<abbr class="gloss__abbr" title="first person">1</abbr>' +
+          '</p>' +
         '</div>' +
         '<div class="gloss__word">' +
-          '<p class="gloss__line gloss__line--0">two</p>' +
-          '<p class="gloss__line gloss__line--1">bar</p>' +
+          '<p class="gloss__line gloss__line--0">you</p>' +
+          '<p class="gloss__line gloss__line--1">' +
+            '<abbr class="gloss__abbr" title="second person">2</abbr>' +
+          '</p>' +
         '</div>' +
       '</div>' +
-      '<p class="gloss__line--hidden">one two</p>' +
-      '<p class="gloss__line--hidden">foo bar</p>' +
+      '<p class="gloss__line--hidden">me you</p>' +
+      '<p class="gloss__line--hidden">1 2</p>' +
       '<p class="gloss__line--free gloss__line gloss__line--2">free translation</p>' +
     '</div>';
-  var gloss = makeElement(
-    '<div data-gloss>',
-    '<p>one two</p>',
-    '<p>foo bar</p>',
-    '<p>free translation</p>',
-    '</div>'
-  );
 
   testHtml(t, leipzig, gloss, expectedHtml);
 });

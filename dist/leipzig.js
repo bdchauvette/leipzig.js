@@ -89,6 +89,7 @@
     this.spacing = setBool(opts, 'spacing', true);
     this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
     this.lastLineFree = setBool(opts, 'lastLineFree', true);
+    this.autoTag = setBool(opts, 'autoTag', true);
 
     if (opts.tokenizers === undefined) {
       this.tokenizers = ['{(.*?)}', '([^\\s]+)'];
@@ -117,7 +118,8 @@
       original: opts['class'].original || 'gloss__line--original',
       freeTranslation: opts['class'].freeTranslation || 'gloss__line--free',
       noAlign: opts['class'].noAlign || 'gloss__line--no-align',
-      hidden: opts['class'].hidden || 'gloss__line--hidden'
+      hidden: opts['class'].hidden || 'gloss__line--hidden',
+      abbr: opts['class'].abbr || 'gloss__abbr'
     };
   };
 
@@ -154,6 +156,42 @@
   };
 
   /**
+   * Add HTML abbreviation markup to a word
+   * @param {String} word - the word to be tagged
+   * @returns {String} html-tagged word
+   */
+  Leipzig.prototype.tag = function tag(word) {
+    var _this = this;
+    var abbreviations = _this.abbreviations;
+
+    var tagRules = ['(\\b[0-4])(?=[A-Z]|\\b)', '(N?[A-Z]+\\b)'].join('|');
+
+    var tagger = new RegExp(tagRules, 'g');
+    var tags = word.replace(tagger, function (tag) {
+      var fullTag = tag;
+
+      var maybeNegative = fullTag[0] === 'N' && fullTag.length > 1;
+      var tag = maybeNegative ? fullTag.slice(1) : fullTag;
+
+      var tagged;
+
+      if (abbreviations[fullTag]) {
+        var definition = abbreviations[fullTag];
+        tagged = '<abbr class="' + _this['class'].abbr + '" title="' + definition + '">' + fullTag + '</abbr>';
+      } else if (maybeNegative && abbreviations[tag]) {
+        var definition = abbreviations[tag];
+        tagged = '<abbr class="' + _this['class'].abbr + '" title="non-' + definition + '">' + fullTag + '</abbr>';
+      } else {
+        tagged = '<abbr class="' + _this['class'].abbr + '">' + fullTag + '</abbr>';
+      }
+
+      return tagged;
+    });
+
+    return tags;
+  };
+
+  /**
    * Aligns morphemes on different lines
    * @param {Array} lines - Array of strings to be aligned
    * @returns {Array} Array of arrays containing aligned words
@@ -177,6 +215,7 @@
    */
   Leipzig.prototype.format = function format(groups, wrapper, lineNumStart) {
     var _this = this;
+
     var innerHtml = [];
     var wrapper = document.createElement(wrapper);
     addClass(wrapper, _this['class'].words);
@@ -193,6 +232,11 @@
 
         // add non-breaking space for empty gloss slots
         line = line ? line : '&nbsp;';
+
+        // auto tag morphemes
+        if (lineNumOffset > 0 && _this.autoTag) {
+          line = _this.tag(line);
+        }
 
         innerHtml.push('<p class="' + _this['class'].line + ' ' + _this['class'].lineNum + lineNum + '">' + line + '</p>');
       });
@@ -288,6 +332,95 @@
 
       addClass(gloss, this['class'].glossed);
     }
+  };
+
+  /**
+   * Abbreviations used by the auto tagger
+   */
+  Leipzig.prototype.abbreviations = {
+    1: 'first person',
+    2: 'second person',
+    3: 'third person',
+    A: 'agent-like argument of canonical transitive verb',
+    ABL: 'ablative',
+    ABS: 'absolutive',
+    ACC: 'accusative',
+    ADJ: 'adjective',
+    ADV: 'adverb(ial)',
+    AGR: 'agreement',
+    ALL: 'allative',
+    ANTIP: 'antipassive',
+    APPL: 'applicative',
+    ART: 'article',
+    AUX: 'auxiliary',
+    BEN: 'benefactive',
+    CAUS: 'causative',
+    CLF: 'classifier',
+    COM: 'comitative',
+    COMP: 'complementizer',
+    COMPL: 'completive',
+    COND: 'conditional',
+    COP: 'copula',
+    CVB: 'converb',
+    DAT: 'dative',
+    DECL: 'declarative',
+    DEF: 'definite',
+    DEM: 'demonstrative',
+    DET: 'determiner',
+    DIST: 'distal',
+    DISTR: 'distributive',
+    DU: 'dual',
+    DUR: 'durative',
+    ERG: 'ergative',
+    EXCL: 'exclusive',
+    F: 'feminine',
+    FOC: 'focus',
+    FUT: 'future',
+    GEN: 'genitive',
+    IMP: 'imperative',
+    INCL: 'inclusive',
+    IND: 'indicative',
+    INDF: 'indefinite',
+    INF: 'infinitive',
+    INS: 'instrumental',
+    INTR: 'intransitive',
+    IPFV: 'imperfective',
+    IRR: 'irrealis',
+    LOC: 'locative',
+    M: 'masculine',
+    N: 'neuter',
+    NEG: 'negation / negative',
+    NMLZ: 'nominalizer / nominalization',
+    NOM: 'nominative',
+    OBJ: 'object',
+    OBL: 'oblique',
+    P: 'patient-like argument of canonical transitive verb',
+    PASS: 'passive',
+    PFV: 'perfective',
+    PL: 'plural',
+    POSS: 'possessive',
+    PRED: 'predicative',
+    PRF: 'perfect',
+    PRS: 'present',
+    PROG: 'progressive',
+    PROH: 'prohibitive',
+    PROX: 'proximal / proximate',
+    PST: 'past',
+    PTCP: 'participle',
+    PURP: 'purposive',
+    Q: 'question particle / marker',
+    QUOT: 'quotative',
+    RECP: 'reciprocal',
+    REFL: 'reflexive',
+    REL: 'relative',
+    RES: 'resultative',
+    S: 'single argument of canonical intransitive verb',
+    SBJ: 'subject',
+    SBJV: 'subjunctive',
+    SG: 'singular',
+    TOP: 'topic',
+    TR: 'transitive',
+    VOC: 'vocative'
   };
 
   module.exports = Leipzig;
