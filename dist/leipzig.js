@@ -94,10 +94,12 @@
       this.tokenizers = ['{(.*?)}', '([^\\s]+)'];
     } else if (opts.tokenizers instanceof Array && hasOnlyStrings(opts.tokenizers)) {
       this.tokenizers = opts.tokenizers;
+    } else if (opts.tokenizers instanceof RegExp) {
+      this.tokenizers = opts.tokenizers;
     } else if (typeof opts.tokenizers === 'string') {
       this.tokenizers = [opts.tokenizers];
     } else {
-      throw new Error('Unknown format for tokenizers');
+      throw new Error('Invalid tokenizer');
     }
 
     // css settings
@@ -110,7 +112,8 @@
       noSpace: opts['class'].noSpace || 'gloss--no-space',
       words: opts['class'].words || 'gloss__words',
       word: opts['class'].word || 'gloss__word',
-      line: opts['class'].line || 'gloss__line--',
+      line: opts['class'].line || 'gloss__line',
+      lineNum: opts['class'].lineNum || 'gloss__line--',
       original: opts['class'].original || 'gloss__line--original',
       freeTranslation: opts['class'].freeTranslation || 'gloss__line--free',
       noAlign: opts['class'].noAlign || 'gloss__line--no-align',
@@ -124,8 +127,16 @@
    * @returns {Array} The tokens
    */
   Leipzig.prototype.tokenize = function tokenize(phrase) {
-    var tokenizers = this.tokenizers.join('|');
-    var tokenizer = new RegExp(tokenizers, 'g');
+    var tokenizer;
+
+    if (this.tokenizers instanceof RegExp) {
+      tokenizer = this.tokenizers;
+    } else if (this.tokenizers instanceof Array) {
+      var tokenizers = this.tokenizers.join('|');
+      tokenizer = new RegExp(tokenizers, 'g');
+    } else {
+      throw new Error('Invalid tokenizer');
+    }
 
     var tokens = phrase.match(tokenizer).map(function (token) {
       var firstChar = token[0];
@@ -164,7 +175,7 @@
    * @param {Array} lines - lines to be formatted
    * @returns {Element} html element containing the glosses
    */
-  Leipzig.prototype.format = function format(groups, wrapper) {
+  Leipzig.prototype.format = function format(groups, wrapper, lineNumStart) {
     var _this = this;
     var innerHtml = [];
     var wrapper = document.createElement(wrapper);
@@ -177,11 +188,13 @@
 
       innerHtml.push('<div class="' + glossWordClasses + '">');
 
-      group.forEach(function (line, i) {
-        // to preserve appearance, add non-breaking space for empty gloss slots
+      group.forEach(function (line, lineNumOffset) {
+        var lineNum = lineNumStart + lineNumOffset;
+
+        // add non-breaking space for empty gloss slots
         line = line ? line : '&nbsp;';
 
-        innerHtml.push('<p class="' + _this['class'].line + i + '">' + line + '</p>');
+        innerHtml.push('<p class="' + _this['class'].line + ' ' + _this['class'].lineNum + lineNum + '">' + line + '</p>');
       });
 
       innerHtml.push('</div>');
@@ -215,6 +228,7 @@
       var lines = gloss.children;
       var linesToAlign = [];
       var firstRawLine = null;
+      var firstRawLineNum = 0;
 
       if (this.firstLineOrig) {
         var firstLine = gloss.firstElementChild;
@@ -227,8 +241,8 @@
       }
 
       // process each line in the gloss
-      for (var j = 0; j < lines.length; j++) {
-        var line = lines[j];
+      for (var lineNum = 0; lineNum < lines.length; lineNum++) {
+        var line = lines[lineNum];
 
         // don't align lines that are free translations or original,
         // unformatted lines
@@ -246,7 +260,11 @@
           // so that the final aligned glosses can be inserted here
           if (!firstRawLine) {
             firstRawLine = line;
+            firstRawLineNum = lineNum;
           }
+        } else {
+          addClass(line, '' + this['class'].line);
+          addClass(line, '' + this['class'].lineNum + lineNum);
         }
       }
 
@@ -260,7 +278,7 @@
         alignedWrapper = 'div';
       }
 
-      var formattedLines = this.format(alignedLines, alignedWrapper);
+      var formattedLines = this.format(alignedLines, alignedWrapper, firstRawLineNum);
       gloss.insertBefore(formattedLines, firstRawLine);
 
       // finish up by adding relevant classes to the main container

@@ -22,17 +22,17 @@ test('basic gloss', function(t) {
     '<div data-gloss="" class="gloss--glossed">' +
       '<div class="gloss__words">' +
         '<div class="gloss__word">' +
-          '<p class="gloss__line--0">one</p>' +
-          '<p class="gloss__line--1">foo</p>' +
+          '<p class="gloss__line gloss__line--0">one</p>' +
+          '<p class="gloss__line gloss__line--1">foo</p>' +
         '</div>' +
         '<div class="gloss__word">' +
-          '<p class="gloss__line--0">two</p>' +
-          '<p class="gloss__line--1">bar</p>' +
+          '<p class="gloss__line gloss__line--0">two</p>' +
+          '<p class="gloss__line gloss__line--1">bar</p>' +
         '</div>' +
       '</div>' +
       '<p class="gloss__line--hidden">one two</p>' +
       '<p class="gloss__line--hidden">foo bar</p>' +
-      '<p class="gloss__line--free">free translation</p>' +
+      '<p class="gloss__line--free gloss__line gloss__line--2">free translation</p>' +
     '</div>';
   var gloss = makeElement(
     '<div data-gloss>',
@@ -57,25 +57,13 @@ test('first line is original text', function(t) {
     '</div>'
   );
 
-  var expectedHtml = '' +
-    '<div data-gloss="" class="gloss--glossed">' +
-      '<p class="gloss__line--original">original line</p>' +
-      '<div class="gloss__words">' +
-        '<div class="gloss__word">' +
-          '<p class="gloss__line--0">one</p>' +
-          '<p class="gloss__line--1">foo</p>' +
-        '</div>' +
-        '<div class="gloss__word">' +
-          '<p class="gloss__line--0">two</p>' +
-          '<p class="gloss__line--1">bar</p>' +
-        '</div>' +
-      '</div>' +
-      '<p class="gloss__line--hidden">one two</p>' +
-      '<p class="gloss__line--hidden">foo bar</p>' +
-      '<p class="gloss__line--free">free translation</p>' +
-    '</div>';
+  leipzig.gloss();
 
-  testHtml(t, leipzig, gloss, expectedHtml);
+  t.ok(gloss.firstChild.classList.contains('gloss__line--original'));
+
+  body.removeChild(gloss);
+
+  t.end();
 });
 
 test('remove spacing', function(t) {
@@ -89,23 +77,12 @@ test('remove spacing', function(t) {
     '</div>'
   );
 
-  var expectedHtml = '' +
-    '<div data-gloss="" class="gloss--no-space gloss--glossed">' +
-      '<div class="gloss__words">' +
-        '<div class="gloss__word">' +
-          '<p class="gloss__line--0">one</p>' +
-          '<p class="gloss__line--1">foo</p>' +
-        '</div>' +
-        '<div class="gloss__word">' +
-          '<p class="gloss__line--0">two</p>' +
-          '<p class="gloss__line--1">bar</p>' +
-        '</div>' +
-      '</div>' +
-      '<p class="gloss__line--hidden">one two</p>' +
-      '<p class="gloss__line--hidden">foo bar</p>' +
-      '<p class="gloss__line--free">free translation</p>' +
-    '</div>';
+  leipzig.gloss();
 
-  testHtml(t, leipzig, gloss, expectedHtml);
+  t.ok(gloss.classList.contains('gloss--no-space'));
+
+  body.removeChild(gloss);
+
+  t.end();
 });
 

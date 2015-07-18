@@ -55,7 +55,7 @@ ol.gloss--glossed {
   display: none;
 }
 
-.gloss__line--0 {
+.gloss__word .gloss__line:first-child {
   font-style: italic;
 }
 

@@ -16,7 +16,8 @@ var defaults = {
     noSpace: 'gloss--no-space',
     words: 'gloss__words',
     word: 'gloss__word',
-    line: 'gloss__line--',
+    line: 'gloss__line',
+    lineNum: 'gloss__line--',
     original: 'gloss__line--original',
     freeTranslation: 'gloss__line--free',
     noAlign: 'gloss__line--no-align',
@@ -39,7 +40,8 @@ var testConfig = {
     noSpace: 'test--no-space',
     words: 'test__words',
     word: 'test__word',
-    line: 'test__line--',
+    line: 'test__line',
+    lineNum: 'test__line--',
     original: 'test__line--original',
     freeTranslation: 'test__line--free',
     noAlign: 'test__line--no-align',
@@ -110,10 +112,17 @@ test('set options correctly when called with single config object', function(t) 
   t.end();
 });
 
-test('should accept a string as a tokenizer', function(t) {
+test('should accept a String as a tokenizer', function(t) {
   var leipzig = Leipzig({ tokenizers: 'test' });
 
   t.deepEqual(leipzig.tokenizers, ['test']);
+  t.end();
+});
+
+test('should accept a RegExp as a tokenizer', function(t) {
+  var leipzig = Leipzig({ tokenizers: /test/ });
+
+  t.deepEqual(leipzig.tokenizers, /test/);
   t.end();
 });
 
