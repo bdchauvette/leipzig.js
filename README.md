@@ -30,6 +30,27 @@ Interlinear glosses help linguists present language data to audiences that
 might not be familiar with the language being analyzed, and are an integral
 part of documenting and discussing languages.
 
+## Existing Solutions
+
+There have been some efforts to improve interlinear glossing on the web.
+
+Both [Kevin McGowan][] and [James Tauber][] describe methods for styling
+interlinear glosses using pure <abbr>CSS</abbr>. However, marking up glosses by
+hand is cumbersome, and neither solution degrades gracefully if
+<abbr>CSS</abbr> is disabled. (McGowan does hint at a JavaScript solution that
+seems similar to what Leipzig.js is doing, but no code is provided.)
+
+[Kevin McGowan]: http://kbmcgowan.github.io/blog/2009/02/28/css-interlinear-glosses.html
+[James Tauber]: http://jtauber.com/blog/2006/01/28/dynamic_interlinears_with_javascript_and_css/
+
+[`interlinear`](https://github.com/parryc/interlinear), like Leipzig.js, is a
+JavaScript + <abbr>css</abbr> utility that automatically formats selected
+<abbr>HTML</abbr> elements. While `interlinear` is a very functional library
+and currently contains more features than Leipzig.js, I personally dislike the
+glossing syntax, and would prefer a solution that relies more on
+<abbr>HTML</abbr> tags. I would also prefer a solution that degrades more
+gracefully when JavaScript is disabled.
+
 ## Enter Leipzig.js
 
 Leipzig.js aims to be a simple, lightweight solution for interlinear glossing
@@ -204,25 +225,14 @@ Leipzig([elements : String|NodeList|Element], [config : Object] ) -> Function
 
 Leipzig.js takes two optional arguments during construction:
 
-1. `elements`, which tells Leipzig.js which elements to gloss
-2. `options`, a plain JavaScript object for configuration
+1. `elements`, which tells Leipzig.js which elements to gloss; equivalent to setting `config.elements`
+2. `config`, a plain JavaScript object for configuration
 
 Neither argument is required when creating a new Leipzig.js object, and if no
 arguments are provided, then Leipzig.js will use the default configuration,
 listed below.
 
-### `elements : String`
-
-If the `elements` argument is a `String`, Leipzig.js will internally run
-`document.querySelectorAll()` using the specified string, and the glosser will
-operate on the list of <abbr>DOM</abbr> elements it returns.
-
-Likewise, if `elements` is an `Element` or a `NodeList`, the glosser will
-operate on the provided <abbr>DOM</abbr> element(s).
-
-### `config : Object`
-
-#### Defaults
+### Defaults
 
 Leipzig.js defaults to a three-line glossing pattern, where the first two lines
 are word-aligned, and the last line is a non-aligned free translation.
