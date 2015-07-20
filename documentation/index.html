@@ -79,19 +79,12 @@ with curly braces, e.g.:</p>
 <p>Leipzig.js takes two optional arguments during construction:</p>
 <ol>
 <li><code>elements</code>, which tells Leipzig.js which elements to gloss</li>
-<li><code>options</code>, a plain JavaScript object for configuration</li>
+<li><code>config</code>, a plain JavaScript object for configuration</li>
 </ol>
 <p>Neither argument is required when creating a new Leipzig.js object, and if no
 arguments are provided, then Leipzig.js will use the default configuration,
 listed below.</p>
-<h2><code>elements : String</code></h2>
-<p>If the <code>elements</code> argument is a <code>String</code>, Leipzig.js will internally run
-<code>document.querySelectorAll()</code> using the specified string, and the glosser will
-operate on the list of <abbr>DOM</abbr> elements it returns.</p>
-<p>Likewise, if <code>elements</code> is an <code>Element</code> or a <code>NodeList</code>, the glosser will
-operate on the provided <abbr>DOM</abbr> element(s).</p>
-<h2><code>options : Object</code></h2>
-<h3>Defaults</h3>
+<h2>Defaults</h2>
 <p>Leipzig.js defaults to a three-line glossing pattern, where the first two lines
 are word-aligned, and the last line is a non-aligned free translation.</p>
 <p>The default configuraiton is the following:</p>
@@ -122,7 +115,7 @@ are word-aligned, and the last line is a non-aligned free translation.</p>
 
 <p>When configuring Leipzig.js, you only need to specify the options that you want
 to change. All other options will retain their default values.</p>
-<h3><code>elements : String | NodeList | Element</code></h3>
+<h2><code>elements : String | NodeList | Element</code></h2>
 <div class="highlight"><pre><span class="c1">// default: &#39;[data-gloss]&#39;</span>
 </pre></div>
 
@@ -143,7 +136,7 @@ configuration object:</p>
 operate on the list of <abbr>DOM</abbr> elements it returns.</p>
 <p>Likewise, if <code>elements</code> is an <code>Element</code> or a <code>NodeList</code>, the glosser will
 operate on the provided <abbr>DOM</abbr> element(s).</p>
-<h3><code>lastLineFree : Boolean</code></h3>
+<h2><code>lastLineFree : Boolean</code></h2>
 <div class="highlight"><pre><span class="c1">// default: true</span>
 </pre></div>
 
@@ -172,7 +165,7 @@ default) to the underlying <abbr>HTML</abbr>:</p>
 </pre></div>
 
 
-<h3><code>firstLineOrig : Boolean</code></h3>
+<h2><code>firstLineOrig : Boolean</code></h2>
 <div class="highlight"><pre><span class="c1">// default: false</span>
 </pre></div>
 
@@ -204,7 +197,7 @@ default) to the underlying <abbr>HTML</abbr>:</p>
 </pre></div>
 
 
-<h3><code>spacing : Boolean</code></h3>
+<h2><code>spacing : Boolean</code></h2>
 <div class="highlight"><pre><span class="c1">// default: true</span>
 </pre></div>
 
@@ -221,7 +214,7 @@ when initializing Leipzig.js:</p>
 
 <p>This will add an additional class to the gloss container (<code>.gloss--no-space</code> by
 default), which removes the horizontal space.</p>
-<h3><code>autoTag : Boolean</code></h3>
+<h2><code>autoTag : Boolean</code></h2>
 <div class="highlight"><pre><span class="c1">// default: true</span>
 </pre></div>
 
@@ -245,7 +238,7 @@ the definition of <code>COMP</code> from <code>complementizer</code> to <code>co
 </pre></div>
 
 
-<h3><code>tokenizers : Array&lt;String&gt; | String | RegExp</code></h3>
+<h2><code>tokenizers : Array&lt;String&gt; | String | RegExp</code></h2>
 <div class="highlight"><pre><span class="c1">// default: [&#39;{(.*?)}&#39;, &#39;([^\\s]+)&#39;]</span>
 </pre></div>
 
@@ -265,7 +258,7 @@ produce the same tokenizer:</p>
 </pre></div>
 
 
-<h3><code>class : Object</code></h3>
+<h2><code>class : Object</code></h2>
 <p>Leipzig.js adds a number of <abbr>CSS</abbr> classes to the final gloss, which
 you can use to style your glosses. The names of these classes can be configured
 by changing the the settings on the <code>class</code> object within the <code>options</code>
