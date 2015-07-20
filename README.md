@@ -1,6 +1,11 @@
 # Leipzig.js
 **Interlinear glossing for your browser**
 
+Leipzig.js is a small JavaScript utility that makes it easy to add
+[interlinear glosses][] to webpages.
+
+[interlinear glosses]: https://en.wikipedia.org/wiki/Interlinear_gloss
+
 [![npm version
 0.4.0](https://img.shields.io/npm/v/leipzig.svg)](https://www.npmjs.com/package/leipzig)
 ![bower version 0.4.0](https://img.shields.io/bower/v/leipzig.svg)
