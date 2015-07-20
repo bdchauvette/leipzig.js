@@ -29,11 +29,17 @@
 up its sleeves and get its hands dirty glossing your text.</p>
 
 <p>This live demo automatically adds the surrounding <abbr>HTML</abbr> for you,
-so you can concentrate on playing around with the Leipzig.js parser, rather
-than on wrangling errant <code>&lt;p&gt;</code> tags!
+so you can concentrate on having fun with the Leipzig.js glossing engine,
+rather than on wrangling errant <code>&lt;p&gt;</code> tags.
 
-<p>You can adjust the settings by clicking on the checkboxes below the text
-area.</p>
+<h2>Share Your Gloss</h2>
+<p>You can share your gloss by copying and pasting the <abbr>URL</abbr> below:</p>
+
+<input id="demo-share">
+
+<p><em>The <abbr>URL</abbr>s get very long very fast, so you might want to
+shorten them by using a service like <a href="https://bit.ly">bit.ly</a> or <a
+href="https://goo.gl">goo.gl</a>.</em></p>
 
 <hr>
 
@@ -42,8 +48,8 @@ area.</p>
 <textarea id="demo-input"></textarea>
 
 <div id="settings">
-  <label for="first-line-original">
-    <input type="checkbox" id="first-line-original" checked>
+  <label for="first-line-orig">
+    <input type="checkbox" id="first-line-orig" checked>
     First Line is Original Language Text
   </label>
 
@@ -63,6 +69,12 @@ area.</p>
   </label>
 </div>
 
+<h3>Abbreviations</h3>
+<p>The following abbreviations will be automatically detected by the Leipzig.js
+autotagging engine:</p>
+
+<dl id="demo-abbreviations"></dl>
+
 
     <footer id="page-footer">
       <p>&copy; 2015 Benjamin Chauvette</p>
@@ -72,8 +84,10 @@ area.</p>
     </footer>
   </div>
 
-    <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.min.js"></script>
+  <script src="/theme/vendor/uri.js/src/URI.min.js"></script>
+      <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.min.js"></script>
 
   <script src="/leipzig.js/theme/js/demo.js"></script>
+
 </body>
 </html>

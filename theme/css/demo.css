@@ -18,6 +18,29 @@
   content: '';
 }
 
+#demo-share {
+  width: 100%;
+  margin: 0 -1em;
+  padding: .25em 1em;
+}
+
+#demo-abbreviations {
+  -moz-column-count: 2;
+  column-count: 2;
+}
+
+#demo-abbreviations dt {
+  float: left;
+  min-width: 4em;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+
+#demo-abbreviations dd {
+  margin-left: 4em;
+  margin-bottom: 0.5em;
+}
+
 .placeholder {
   font-size: 1.5em;
   font-style: italic;
