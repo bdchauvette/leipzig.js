@@ -21,14 +21,16 @@
     </header>
 
 
-  <p>Leipzig.js is a small JavaScript utility that makes it easy to add
+  <p><img alt="npm version 0.4.0" src="https://img.shields.io/npm/v/leipzig.svg" />
+<img alt="bower version 0.4.0" src="https://img.shields.io/bower/v/leipzig.svg" /></p>
+<p>Leipzig.js is a small JavaScript utility that makes it easy to add
 <a href="https://en.wikipedia.org/wiki/Interlinear_gloss">interlinear glosses</a> to webpages.</p>
 <p>By including a bit of JavaScript and adding some <abbr>css</abbr>, you can
 automatically go from this:</p>
 <div class="example">
   <p>Die Umgangssprache ist ein Teil des menschlichen Organismus und nicht weniger kompliziert als dieser.</p>
   <p>die umgangssprache ist ein teil des mensch-lich-en organismus und nich wenig-er komplizeiert als dies-er</p>
-  <p>DET.NOM.F.SG {colloquial language} be.3SG.PRES DET.NOM.M.SG part DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-COMP complicated COMP DET-AGR.M.SG</p>
+  <p>DET.NOM.F.SG {colloquial language} be.3SG.PRS DET.NOM.M.SG part DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-CMPR complicated CMPR DET-AGR.M.SG</p>
   <p>the {colloquial language} is a part {of the} human organism and not less complicated than it</p>
   <p>‘Colloquial language is a part of the human organism and is not less complicated than it.’ &mdash; Wittgenstein, <i>Tractatus Logico-Philosophicus</i>, 4.002</p>
 </div>
@@ -37,7 +39,7 @@ automatically go from this:</p>
 <div id="gloss-wittgenstein" class="example">
   <p>Die Umgangssprache ist ein Teil des menschlichen Organismus und nicht weniger kompliziert als dieser.</p>
   <p>die umgangssprache ist ein teil des mensch-lich-en organismus und nich wenig-er komplizeiert als dies-er</p>
-  <p>DET.NOM.F.SG {colloquial language} be.3SG.PRES DET.NOM.M.SG part DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-COMP complicated COMP DET-AGR.M.SG</p>
+  <p>DET.NOM.F.SG {colloquial language} be.3SG.PRS DET.NOM.M.SG part DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-CMPR complicated CMPR DET-AGR.M.SG</p>
   <p>the {colloquial language} is a part {of the} human organism and not less complicated than it</p>
   <p>‘Colloquial language is a part of the human organism and is not less complicated than it.’ &mdash; Wittgenstein, <i>Tractatus Logico-Philosophicus</i>, 4.002</p>
 </div>
@@ -80,18 +82,18 @@ Using monospaced fonts on the web has the same problems of using monospaced
 fonts in <abbr>WYSIWYG</abbr> editors.</p>
 <h2>Existing Solutions</h2>
 <p>There have been some efforts to improve interlinear glossing on the web.</p>
-<p>Kevin McGowan <a href="http://kbmcgowan.github.io/blog/2009/02/28/css-interlinear-glosses.html">offers a
-solution</a>
-using pure <abbr>CSS</abbr>, but the markup is cumbersome and does not degrade
-gracefully if <abbr>CSS</abbr> is disabled. (He also hints at a JavaScript
-solution that seems similar to what Leipzig.js is doing.)</p>
+<p>Both <a href="http://kbmcgowan.github.io/blog/2009/02/28/css-interlinear-glosses.html">Kevin McGowan</a> and <a href="http://jtauber.com/blog/2006/01/28/dynamic_interlinears_with_javascript_and_css/">James Tauber</a> describe methods for styling
+interlinear glosses using pure <abbr>CSS</abbr>. However, marking up glosses by
+hand is cumbersome, and neither solution degrades gracefully if
+<abbr>CSS</abbr> is disabled. (McGowan does hint at a JavaScript solution that
+seems similar to what Leipzig.js is doing, but no code is provided.)</p>
 <p><a href="https://github.com/parryc/interlinear"><code>interlinear</code></a>, like Leipzig.js, is a
 JavaScript + <abbr>css</abbr> utility that automatically formats glosses
 selected <abbr>HTML</abbr>. While <code>interlinear</code> is a very functional library
 and currently contains more features than Leipzig.js, I personally dislike the
 glossing syntax, and would prefer a solution that relies more on
 <abbr>HTML</abbr> tags. I would also prefer a solution that degrades more
-gracefully when JavaScript is turned off.</p>
+gracefully when JavaScript is disabled.</p>
 <h2>Enter Leipzig.js</h2>
 <p>Leipzig.js aims to be a simple, lightweight solution for interlinear glossing
 on the web. By relying on existing <abbr>HTML</abbr> tags, it degrades
@@ -99,8 +101,7 @@ gracefully when JavaScript is not present.</p>
 <p>While basic usage of Leipzig.js is dead simple (see the Usage section below),
 more customizable glossing can be achieved by using the library's flexible
 <abbr>API</abbr>.</p>
-<p>Glosses formatted with Leipzig.js are
-<a href="https://en.wikipedia.org/wiki/Responsive_web_design">responsive</a>, and contain
+<p>Glosses formatted with Leipzig.js are <a href="https://en.wikipedia.org/wiki/Responsive_web_design">responsive</a>, and contain numerous
 <abbr>CSS</abbr> classes that can be used to style individual lines in the
 gloss.</p>
 <p>My hope is that Leipzig.js strikes the right balance between ease of creation
@@ -208,7 +209,7 @@ on GitHub</a>.</p>
     </footer>
   </div>
 
-    <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.js"></script>
+    <script src="https://rawgit.com/bdchauvette/leipzig.js/master/dist/leipzig.min.js"></script>
 
   <script src="/leipzig.js/theme/js/index.js"></script>
 </body>

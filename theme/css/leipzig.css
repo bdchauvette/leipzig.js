@@ -1,3 +1,6 @@
+/**
+ * WEBFONTS
+ * ==========================================================================*/
 @font-face {
   font-family: 'PlainBlack';
   src: url('../fonts/plainblack.woff') format('woff');
@@ -47,6 +50,10 @@
   font-style: italic;
 }
 
+/**
+ * BASE STYLES
+ * ==========================================================================*/
+
 body {
   font-family: 'Linux Biolinum', sans-serif;
   font-size: 1.125em;
@@ -57,25 +64,29 @@ a {
   text-decoration: none;
 }
 
-h1, h2, h3, h4, h5, h6,
-.example {
-  font-family: 'Linux Libertine', 'Times New Roman', 'Georgia', serif;
-}
-
 abbr {
   text-transform: lowercase;
   font-variant: small-caps;
   text-decoration: none;
   border-bottom: none;
+}
+
+abbr[title] {
+  border-bottom-color: #999;
   cursor: help;
 }
 
 code {
-  font-size: 14px;
+  font-size: 0.77778em;
+}
+
+h1, h2, h3, h4, h5, h6,
+.example {
+  font-family: 'Linux Libertine', 'Times New Roman', 'Georgia', serif;
 }
 
 hr {
-  background: url('../img/ornament.svg') center no-repeat;
+  background: transparent url("../img/ornament.svg") no-repeat scroll center center / contain;
   background-size: contain;
   border: 0;
   display: block;
@@ -88,19 +99,22 @@ input[type=checkbox] {
   margin-right: .5em;
 }
 
-textarea {
-}
-ol {
-  padding: 0;
-  margin-left: 1em;
-}
-
 li {
   padding-left: 1em;
 }
 
+ol, ul {
+  padding: 0;
+  margin-left: 1em;
+}
+
 table {
   width: 100%;
+}
+
+td, th {
+  padding: .5em;
+  vertical-align: top;
 }
 
 th {
@@ -112,11 +126,6 @@ tr {
   border-bottom: 1px solid #ccc;
 }
 
-td, th {
-  padding: .5em;
-  vertical-align: top;
-}
-
 textarea {
   width: 100%;
   height: 7em;
@@ -126,6 +135,9 @@ textarea {
   border-radius: 3px;
 }
 
+/**
+ * BLOCKS & MODULES
+ * ==========================================================================*/
 #wrapper {
   margin: 0 auto;
   width: 100%;
@@ -178,9 +190,12 @@ textarea {
 }
 
 .page-title {
-  font-family: PlainBlack, 'Gentium Plus', 'Gentium Basic', Georgia, serif;
-  font-size: 6em;
-  margin-bottom: 0.5em;
+  text-indent: 101%;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 4em;
+  width: 100%;
+  background: transparent url("../img/logo.svg") no-repeat scroll center center / contain;
 }
 
 .tagline {

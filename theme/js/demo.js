@@ -20,6 +20,7 @@
 
     if (lines) {
       output.innerHTML = lines.join('');
+      output.className = 'example';
       leipzig.gloss();
     } else {
       output.innerHTML = '<p class="placeholder">Enter text in the box below, and the glossed output will appear here.</p>';
@@ -36,11 +37,13 @@
     var firstLineOrig = document.getElementById('first-line-original');
     var lastLineFree = document.getElementById('last-line-free');
     var spacing = document.getElementById('spacing');
+    var autoTag = document.getElementById('auto-tag');
 
     var settings = {
       lastLineFree: lastLineFree.checked,
       firstLineOrig: firstLineOrig.checked,
-      spacing: spacing.checked
+      spacing: spacing.checked,
+      autoTag: autoTag.checked
     };
 
     // initial values
@@ -68,6 +71,11 @@
 
     spacing.addEventListener('click', function(e) {
       settings.spacing = e.target.checked;
+      updateGloss();
+    });
+
+    autoTag.addEventListener('click', function(e) {
+      settings.autoTag = e.target.checked;
       updateGloss();
     });
   });
