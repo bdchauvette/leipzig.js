@@ -48,23 +48,21 @@ function setBool(opts, opt, defaultValue) {
  * @private
  */
 function hasOnlyStrings(arr) {
-  return arr.every(function(e) {
-    return typeof e === 'string';
-  });
+  return arr.every(e => typeof e === 'string');
 }
 
 /**
  * Creates a Leipzig.js glossing object
  * @constructor
  * @param {String|NodeList|Element} elements - elements to be glossed
- * @param {Object} opts - configuration object
+ * @param {Object} config - configuration object
  */
-var Leipzig = function(elements, opts) {
+var Leipzig = function(elements, config) {
   if (!(this instanceof Leipzig)) {
-    return new Leipzig(elements, opts);
+    return new Leipzig(elements, config);
   }
 
-  var opts = opts || {};
+  let opts = config || {};
 
   if (typeof elements === 'string' ||
       elements instanceof NodeList ||
@@ -123,28 +121,31 @@ var Leipzig = function(elements, opts) {
  * @returns {Array} The tokens
  */
 Leipzig.prototype.tokenize = function tokenize(phrase) {
-  var tokenizer;
+  let tokenizer;
 
   if (this.tokenizers instanceof RegExp) {
     tokenizer = this.tokenizers;
   } else if (this.tokenizers instanceof Array) {
-    var tokenizers = this.tokenizers.join('|');
+    const tokenizers = this.tokenizers.join('|');
     tokenizer = new RegExp(tokenizers, 'g');
   } else {
     throw new Error('Invalid tokenizer');
   }
 
-  var tokens = phrase.match(tokenizer).map(function(token) {
-    var firstChar = token[0];
-    var lastChar = token[token.length - 1];
+  const tokens = phrase
+    .match(tokenizer)
+    .map(token => {
+      // remove braces from groups
+      const firstChar = token[0];
+      const lastChar = token[token.length - 1];
 
-    if (firstChar === '{' && lastChar === '}') {
-      var contents = /(?:{)(.*)(?:})/;
-      token = contents.exec(token)[1];
-    }
+      if (firstChar === '{' && lastChar === '}') {
+        const contents = /(?:{)(.*)(?:})/;
+        token = contents.exec(token)[1];
+      }
 
-    return token;
-  });
+      return token;
+    });
 
   return tokens;
 };
@@ -155,33 +156,31 @@ Leipzig.prototype.tokenize = function tokenize(phrase) {
  * @returns {String} html-tagged word
  */
 Leipzig.prototype.tag = function tag(word) {
-  var _this = this;
-  var abbreviations = _this.abbreviations;
+  const abbreviations = this.abbreviations;
 
-  var tagRules = [
+  const tagRules = [
     '(\\b[0-4])(?=[A-Z]|\\b)',
     '(N?[A-Z]+\\b)'
   ].join('|');
 
-  var tagger = new RegExp(tagRules, 'g');
-  var tags = word.replace(tagger, function(tag) {
-    var fullTag = tag;
+  const tagger = new RegExp(tagRules, 'g');
+  const tags = word.replace(tagger, tag => {
+    const maybeNegative = (tag[0] === 'N' && tag.length > 1);
+    const negStem = (maybeNegative)
+      ? tag.slice(1)
+      : tag;
 
-    var maybeNegative = (fullTag[0] === 'N' && fullTag.length > 1);
-    var tag = (maybeNegative)
-      ? fullTag.slice(1)
-      : fullTag;
+    let tagged;
+    let definition;
 
-    var tagged;
-
-    if (abbreviations[fullTag]) {
-      var definition = abbreviations[fullTag];
-      tagged = `<abbr class="${_this.class.abbr}" title="${definition}">${fullTag}</abbr>`;
-    } else if (maybeNegative && abbreviations[tag]) {
-      var definition = abbreviations[tag];
-      tagged = `<abbr class="${_this.class.abbr}" title="non-${definition}">${fullTag}</abbr>`;
+    if (abbreviations[tag]) {
+      definition = abbreviations[tag];
+      tagged = `<abbr class="${this.class.abbr}" title="${definition}">${tag}</abbr>`;
+    } else if (maybeNegative && abbreviations[negStem]) {
+      definition = abbreviations[negStem];
+      tagged = `<abbr class="${this.class.abbr}" title="non-${definition}">${tag}</abbr>`;
     } else {
-      tagged = `<abbr class="${_this.class.abbr}">${fullTag}</abbr>`;
+      tagged = `<abbr class="${this.class.abbr}">${tag}</abbr>`;
     }
 
     return tagged;
@@ -196,14 +195,14 @@ Leipzig.prototype.tag = function tag(word) {
  * @returns {Array} Array of arrays containing aligned words
  */
 Leipzig.prototype.align = function align(lines) {
-  var longestLine = lines.reduce(function(a, b) {
+  let longestLine = lines.reduce((a, b) => {
     return (a.length > b.length)
       ? a
       : b;
   }, []);
 
-  return longestLine.map(function(_, i) {
-    return lines.map(function(line) {
+  return longestLine.map((_, i) => {
+    return lines.map(line => {
       return (typeof line[i] === 'undefined')
         ? ''
         : line[i];
@@ -216,32 +215,27 @@ Leipzig.prototype.align = function align(lines) {
  * @param {Array} lines - lines to be formatted
  * @returns {Element} html element containing the glosses
  */
-Leipzig.prototype.format = function format(groups, wrapper, lineNumStart) {
-  var _this = this;
+Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
+  let wrapper = document.createElement(wrapperType);
+  let innerHtml = [];
 
-  var innerHtml = [];
-  var wrapper = document.createElement(wrapper);
-  addClass(wrapper, _this.class.words);
+  addClass(wrapper, this.class.words);
 
-  groups.forEach(function(group) {
-    var glossWordClasses = [_this.class.word];
+  groups.forEach(group => {
+    innerHtml.push(`<div class="${this.class.word}">`);
 
-    glossWordClasses = glossWordClasses.join(' ');
-
-    innerHtml.push(`<div class="${glossWordClasses}">`);
-
-    group.forEach(function(line, lineNumOffset) {
-      var lineNum = lineNumStart + lineNumOffset;
+    group.forEach((line, lineNumOffset) => {
+      let lineNum = lineNumStart + lineNumOffset;
 
       // add non-breaking space for empty gloss slots
       line = line ? line : '&nbsp;';
 
       // auto tag morphemes
-      if (lineNumOffset > 0 && _this.autoTag) {
-        line = _this.tag(line);
+      if (lineNumOffset > 0 && this.autoTag) {
+        line = this.tag(line);
       }
 
-      innerHtml.push(`<p class="${_this.class.line} ${_this.class.lineNum}${lineNum}">${line}</p>`);
+      innerHtml.push(`<p class="${this.class.line} ${this.class.lineNum}${lineNum}">${line}</p>`);
     });
 
     innerHtml.push('</div>');
@@ -257,7 +251,7 @@ Leipzig.prototype.format = function format(groups, wrapper, lineNumStart) {
  */
 Leipzig.prototype.gloss = function gloss() {
   // select the elements to gloss
-  var glossElements;
+  let glossElements;
 
   if (typeof this.elements === 'string') {
     glossElements = document.querySelectorAll(this.elements);
@@ -270,34 +264,34 @@ Leipzig.prototype.gloss = function gloss() {
   }
 
   // process each gloss
-  for (var i = 0; i < glossElements.length; i++) {
-    var gloss = glossElements[i];
-    var lines = gloss.children;
-    var linesToAlign = [];
-    var firstRawLine = null;
-    var firstRawLineNum = 0;
+  for (let i = 0; i < glossElements.length; i++) {
+    const gloss = glossElements[i];
+    const lines = gloss.children;
+    const linesToAlign = [];
+    let firstRawLine = null;
+    let firstRawLineNum = 0;
 
     if (this.firstLineOrig) {
-      var firstLine = gloss.firstElementChild;
+      const firstLine = gloss.firstElementChild;
       addClass(firstLine, this.class.original);
     }
 
     if (this.lastLineFree) {
-      var lastLine = gloss.lastElementChild;
+      const lastLine = gloss.lastElementChild;
       addClass(lastLine, this.class.freeTranslation);
     }
 
     // process each line in the gloss
-    for (var lineNum = 0; lineNum < lines.length; lineNum++) {
-      var line = lines[lineNum];
+    for (let lineNum = 0; lineNum < lines.length; lineNum++) {
+      const line = lines[lineNum];
 
       // don't align lines that are free translations or original,
       // unformatted lines
-      var isOrig = hasClass(line, this.class.original);
-      var isFree = hasClass(line, this.class.freeTranslation);
-      var shouldSkip = hasClass(line, this.class.noAlign);
+      const isOrig = hasClass(line, this.class.original);
+      const isFree = hasClass(line, this.class.freeTranslation);
+      const shouldSkip = hasClass(line, this.class.noAlign);
 
-      var shouldAlign = !isOrig && !isFree && !shouldSkip;
+      const shouldAlign = !isOrig && !isFree && !shouldSkip;
 
       if (shouldAlign) {
         linesToAlign.push(this.tokenize(line.innerHTML));
@@ -310,22 +304,22 @@ Leipzig.prototype.gloss = function gloss() {
           firstRawLineNum = lineNum;
         }
       } else {
-        addClass(line, `${this.class.line}`);
-        addClass(line, `${this.class.lineNum}${lineNum}`);
+        addClass(line, this.class.line);
+        addClass(line, this.class.lineNum + lineNum);
       }
     }
 
-    var alignedLines = this.align(linesToAlign);
+    const alignedLines = this.align(linesToAlign);
 
     // determine which type of element the aligned glosses should be wrapped in
-    var alignedWrapper;
+    let alignedWrapper;
     if (gloss.tagName === 'UL' || gloss.tagName === 'OL') {
       alignedWrapper = 'li';
     } else {
       alignedWrapper = 'div';
     }
 
-    var formattedLines = this.format(alignedLines, alignedWrapper, firstRawLineNum);
+    const formattedLines = this.format(alignedLines, alignedWrapper, firstRawLineNum);
     gloss.insertBefore(formattedLines, firstRawLine);
 
     // finish up by adding relevant classes to the main container
