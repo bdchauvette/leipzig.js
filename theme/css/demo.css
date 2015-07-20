@@ -24,11 +24,6 @@
   padding: .25em 1em;
 }
 
-#demo-abbreviations {
-  -moz-column-count: 2;
-  column-count: 2;
-}
-
 #demo-abbreviations dt {
   float: left;
   min-width: 4em;
@@ -46,3 +41,12 @@
   font-style: italic;
   color: #333;
 }
+
+@media only screen and (min-width: 30em) {
+  #demo-abbreviations {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+
