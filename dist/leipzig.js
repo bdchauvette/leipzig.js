@@ -85,11 +85,20 @@
       opts = elements;
     }
 
+    this.config(opts);
+  };
+
+  /**
+   * Configures the Leipzig instance
+   * @param {Object} config - the options
+   */
+  Leipzig.prototype.config = function config(opts) {
     this.elements = opts.elements || '[data-gloss]';
     this.spacing = setBool(opts, 'spacing', true);
     this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
     this.lastLineFree = setBool(opts, 'lastLineFree', true);
     this.autoTag = setBool(opts, 'autoTag', true);
+    this.async = setBool(opts, 'async', false);
 
     if (opts.tokenizers === undefined) {
       this.tokenizers = ['{(.*?)}', '([^\\s]+)'];
@@ -162,7 +171,7 @@
    * @returns {String} html-tagged word
    */
   Leipzig.prototype.tag = function tag(word) {
-    var _this = this;
+    var _this2 = this;
 
     var abbreviations = this.abbreviations;
 
@@ -178,12 +187,12 @@
 
       if (abbreviations[tag]) {
         definition = abbreviations[tag];
-        tagged = '<abbr class="' + _this['class'].abbr + '" title="' + definition + '">' + tag + '</abbr>';
+        tagged = '<abbr class="' + _this2['class'].abbr + '" title="' + definition + '">' + tag + '</abbr>';
       } else if (maybeNegative && abbreviations[negStem]) {
         definition = abbreviations[negStem];
-        tagged = '<abbr class="' + _this['class'].abbr + '" title="non-' + definition + '">' + tag + '</abbr>';
+        tagged = '<abbr class="' + _this2['class'].abbr + '" title="non-' + definition + '">' + tag + '</abbr>';
       } else {
-        tagged = '<abbr class="' + _this['class'].abbr + '">' + tag + '</abbr>';
+        tagged = '<abbr class="' + _this2['class'].abbr + '">' + tag + '</abbr>';
       }
 
       return tagged;
@@ -215,7 +224,7 @@
    * @returns {Element} html element containing the glosses
    */
   Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
-    var _this2 = this;
+    var _this3 = this;
 
     var wrapper = document.createElement(wrapperType);
     var innerHtml = [];
@@ -223,7 +232,7 @@
     addClass(wrapper, this['class'].words);
 
     groups.forEach(function (group) {
-      innerHtml.push('<div class="' + _this2['class'].word + '">');
+      innerHtml.push('<div class="' + _this3['class'].word + '">');
 
       group.forEach(function (line, lineNumOffset) {
         var lineNum = lineNumStart + lineNumOffset;
@@ -232,11 +241,11 @@
         line = line ? line : '&nbsp;';
 
         // auto tag morphemes
-        if (lineNumOffset > 0 && _this2.autoTag) {
-          line = _this2.tag(line);
+        if (lineNumOffset > 0 && _this3.autoTag) {
+          line = _this3.tag(line);
         }
 
-        innerHtml.push('<p class="' + _this2['class'].line + ' ' + _this2['class'].lineNum + lineNum + '">' + line + '</p>');
+        innerHtml.push('<p class="' + _this3['class'].line + ' ' + _this3['class'].lineNum + lineNum + '">' + line + '</p>');
       });
 
       innerHtml.push('</div>');
@@ -250,7 +259,9 @@
   /**
    * Runs the glosser
    */
-  Leipzig.prototype.gloss = function gloss() {
+  Leipzig.prototype.gloss = function gloss(callback) {
+    var _this4 = this;
+
     // select the elements to gloss
     var glossElements = undefined;
 
@@ -264,71 +275,90 @@
       throw new Error('Invalid selector');
     }
 
-    // process each gloss
-    for (var i = 0; i < glossElements.length; i++) {
-      var _gloss = glossElements[i];
-      var lines = _gloss.children;
+    /** Processes a gloss element */
+    function processGloss(_this, gloss, callback) {
+      if (!(gloss instanceof Element)) {
+        callback(new Error('Invalid gloss element'));
+      }
+
+      var lines = Array.prototype.slice.call(gloss.children);
       var linesToAlign = [];
       var firstRawLine = null;
       var firstRawLineNum = 0;
 
-      if (this.firstLineOrig) {
-        var firstLine = _gloss.firstElementChild;
-        addClass(firstLine, this['class'].original);
+      if (_this.firstLineOrig) {
+        var firstLine = lines[0];
+        addClass(firstLine, _this['class'].original);
       }
 
-      if (this.lastLineFree) {
-        var lastLine = _gloss.lastElementChild;
-        addClass(lastLine, this['class'].freeTranslation);
+      if (_this.lastLineFree) {
+        var lastLine = lines[lines.length - 1];
+        addClass(lastLine, _this['class'].freeTranslation);
       }
 
       // process each line in the gloss
-      for (var lineNum = 0; lineNum < lines.length; lineNum++) {
-        var line = lines[lineNum];
-
+      lines.forEach(function (line, lineNum) {
         // don't align lines that are free translations or original,
         // unformatted lines
-        var isOrig = hasClass(line, this['class'].original);
-        var isFree = hasClass(line, this['class'].freeTranslation);
-        var shouldSkip = hasClass(line, this['class'].noAlign);
+        var isOrig = hasClass(line, _this['class'].original);
+        var isFree = hasClass(line, _this['class'].freeTranslation);
+        var shouldSkip = hasClass(line, _this['class'].noAlign);
 
         var shouldAlign = !isOrig && !isFree && !shouldSkip;
 
         if (shouldAlign) {
-          linesToAlign.push(this.tokenize(line.innerHTML));
-          addClass(line, this['class'].hidden);
+          linesToAlign.push(_this.tokenize(line.innerHTML));
+          addClass(line, _this['class'].hidden);
 
-          // if this is the first aligned line, mark the location
+          // if _this is the first aligned line, mark the location
           // so that the final aligned glosses can be inserted here
           if (!firstRawLine) {
             firstRawLine = line;
             firstRawLineNum = lineNum;
           }
         } else {
-          addClass(line, this['class'].line);
-          addClass(line, this['class'].lineNum + lineNum);
+          addClass(line, _this['class'].line);
+          addClass(line, _this['class'].lineNum + lineNum);
         }
-      }
+      });
 
-      var alignedLines = this.align(linesToAlign);
+      var alignedLines = _this.align(linesToAlign);
 
       // determine which type of element the aligned glosses should be wrapped in
       var alignedWrapper = undefined;
-      if (_gloss.tagName === 'UL' || _gloss.tagName === 'OL') {
+      if (gloss.tagName === 'UL' || gloss.tagName === 'OL') {
         alignedWrapper = 'li';
       } else {
         alignedWrapper = 'div';
       }
 
-      var formattedLines = this.format(alignedLines, alignedWrapper, firstRawLineNum);
-      _gloss.insertBefore(formattedLines, firstRawLine);
+      var formattedLines = _this.format(alignedLines, alignedWrapper, firstRawLineNum);
+      gloss.insertBefore(formattedLines, firstRawLine);
 
       // finish up by adding relevant classes to the main container
-      if (!this.spacing) {
-        addClass(_gloss, this['class'].noSpace);
+      if (!_this.spacing) {
+        addClass(gloss, _this['class'].noSpace);
       }
 
-      addClass(_gloss, this['class'].glossed);
+      addClass(gloss, _this['class'].glossed);
+    }
+
+    // process each gloss
+    var glosses = Array.prototype.slice.call(glossElements);
+    glosses.forEach(function (gloss) {
+      if (_this4.async) {
+        window.setTimeout(function () {
+          return processGloss(_this4, gloss, callback);
+        });
+      } else {
+        processGloss(_this4, gloss, callback);
+      }
+    });
+
+    if (typeof callback === 'function') {
+      window.setTimeout(function () {
+        return callback(null, glossElements);
+      });
     }
   };
 

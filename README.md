@@ -6,13 +6,33 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
 
 [interlinear glosses]: https://en.wikipedia.org/wiki/Interlinear_gloss
 
-[![npm version
-0.4.0](https://img.shields.io/npm/v/leipzig.svg)](https://www.npmjs.com/package/leipzig)
-![bower version 0.4.0](https://img.shields.io/bower/v/leipzig.svg)
+[![npm badge](https://img.shields.io/npm/v/leipzig.svg)](https://www.npmjs.com/package/leipzig)
+![bower badge](https://img.shields.io/bower/v/leipzig.svg)
+
+# Table of Contents
+
+- [Overview](#overview)
+- [Usage](#usage)
+- [Documentation](#documentation)
+  - [Marking Up Examples](#marking-up-examples)
+  - [`Leipzig()`](#leipzig)
+    - [`elements`](#elements--string--nodelist--element)
+    - [`lastLineFree`](#lastlinefree--boolean)
+    - [`firstLineOrig`](#firstlineorig--boolean)
+    - [`spacing`](#spacing--boolean)
+    - [`autoTag`](#autotag--boolean)
+    - [`async`](#async--boolean)
+    - [`tokenizers`](#tokenizers--arraystring--string--regexp)
+    - [`class`](#class--object)
+  - [`Leipzig#gloss()`](#leipziggloss)
+- [Tests](#tests)
+- [License](#license)
+
+---
 
 # Overview
 
-An <i>interlinear gloss</i> is a way of presenting linguistic data that helps
+An *interlinear gloss* is a way of presenting linguistic data that helps
 makes it clear what the different words and morphemes of a phrase mean. They
 consist of multiple lines of data, aligned horizontally at the word boundaries
 of the original language.
@@ -35,34 +55,34 @@ part of documenting and discussing languages.
 There have been some efforts to improve interlinear glossing on the web.
 
 Both [Kevin McGowan][] and [James Tauber][] describe methods for styling
-interlinear glosses using pure <abbr>CSS</abbr>. However, marking up glosses by
+interlinear glosses using pure CSS. However, marking up glosses by
 hand is cumbersome, and neither solution degrades gracefully if
-<abbr>CSS</abbr> is disabled. (McGowan does hint at a JavaScript solution that
+CSS is disabled. (McGowan does hint at a JavaScript solution that
 seems similar to what Leipzig.js is doing, but no code is provided.)
 
 [Kevin McGowan]: http://kbmcgowan.github.io/blog/2009/02/28/css-interlinear-glosses.html
 [James Tauber]: http://jtauber.com/blog/2006/01/28/dynamic_interlinears_with_javascript_and_css/
 
 [`interlinear`](https://github.com/parryc/interlinear), like Leipzig.js, is a
-JavaScript + <abbr>css</abbr> utility that automatically formats selected
-<abbr>HTML</abbr> elements. While `interlinear` is a very functional library
+JavaScript + CSS utility that automatically formats selected
+HTML elements. While `interlinear` is a very functional library
 and currently contains more features than Leipzig.js, I personally dislike the
 glossing syntax, and would prefer a solution that relies more on
-<abbr>HTML</abbr> tags. I would also prefer a solution that degrades more
+HTML tags. I would also prefer a solution that degrades more
 gracefully when JavaScript is disabled.
 
 ## Enter Leipzig.js
 
 Leipzig.js aims to be a simple, lightweight solution for interlinear glossing
-on the web. By relying on existing <abbr>HTML</abbr> tags, it degrades
+on the web. By relying on existing HTML tags, it degrades
 gracefully when JavaScript is not present.
 
 While basic usage of Leipzig.js is dead simple (see the Usage section below),
 more customizable glossing can be achieved by using the library's flexible
-<abbr>API</abbr>.
+API.
 
 Glosses formatted with Leipzig.js are [responsive][], and contain numerous
-<abbr>CSS</abbr> classes that can be used to style individual lines in the
+CSS classes that can be used to style individual lines in the
 gloss.
 
 [responsive]: https://en.wikipedia.org/wiki/Responsive_web_design
@@ -246,6 +266,7 @@ var leipzig = Leipzig({
   firstLineOrig: false,
   spacing: true,
   autoTag: true,
+  async: false,
   tokenizers: [
     '{(.*?)}',
     '([^\\s]+)'
@@ -259,7 +280,8 @@ var leipzig = Leipzig({
     original: 'gloss__line--original',
     freeTranslation: 'gloss__line--free',
     noAlign: 'gloss__line--no-align',
-    hidden: 'gloss__line--hidden'
+    hidden: 'gloss__line--hidden',
+    abbr: 'gloss__abbr'
   }
 });
 ```
@@ -288,10 +310,10 @@ The elements option can be a `String`, a `NodeList` or `Element`.
 
 If the `elements` argument is a `String`, Leipzig.js will internally run
 `document.querySelectorAll()` using the specified string, and the glosser will
-operate on the list of <abbr>DOM</abbr> elements it returns.
+operate on the list of DOM elements it returns.
 
 Likewise, if `elements` is an `Element` or a `NodeList`, the glosser will
-operate on the provided <abbr>DOM</abbr> element(s).
+operate on the provided DOM element(s).
 
 ### `lastLineFree : Boolean`
 
@@ -314,8 +336,8 @@ var leipzig = Leipzig({ lastLineFree: false });
 ```
 
 If you turn this option off, you can still mark a line as a free translation by
-adding the free translation <abbr>CSS</abbr> class (`gloss__line--free` by
-default) to the underlying <abbr>HTML</abbr>:
+adding the free translation CSS class (`gloss__line--free` by
+default) to the underlying HTML:
 
 ```html
 <p class="gloss__line--free">‘The little dog is eating.’</p>
@@ -345,8 +367,8 @@ var leipzig = Leipzig({ firstLineOrig: true });
 ```
 
 If `firstLineOrig` is disabled, you can still mark a line as a original text
-by adding the original text <abbr>CSS</abbr> class (`gloss__line--original` by
-default) to the underlying <abbr>HTML</abbr>:
+by adding the original text CSS class (`gloss__line--original` by
+default) to the underlying HTML:
 
 ```html
 <p class="gloss__line--original">太陽が昇る。</p>
@@ -400,6 +422,21 @@ var leipzig = Leipzig();
 leipzig.abbreviations.COMP = 'comparative';
 ```
 
+### `async` : Boolean
+
+```javascript
+// default: false
+```
+
+Leipzig.js runs synchronously by default. Normally this is fine, Due to the way
+JavaScript is executed, If you have a large number of glosses on a page, this
+will prevent the browser from doing anything else until they finish. To remedy
+this, you can set the `async` option to `true`, which will cause Leipzig.js to
+run (somewhat) asynchronously.
+
+You can use the optional callback to `Leipzig#gloss()` to perform actions when
+the glossing has been completed.
+
 ### `tokenizers : Array<String> | String | RegExp`
 
 ```javascript
@@ -425,7 +462,7 @@ var leipzig = Leipzig({ tokenizers: /{(.*?)}|([^\s]+)/g });
 
 ### `class : Object`
 
-Leipzig.js adds a number of <abbr>CSS</abbr> classes to the final gloss, which
+Leipzig.js adds a number of CSS classes to the final gloss, which
 you can use to style your glosses. The names of these classes can be configured
 by changing the the settings on the `class` object within the `options`
 configuration object.
@@ -489,11 +526,49 @@ add the relevant classes to the underlying markup.
 ## `Leipzig#gloss()`
 
 ```javascript
-Leipzig.gloss() -> Void
+Leipzig.gloss([function(err, elements)]) -> Void
 ```
 
 This method runs the glosser over the elements that were specified when
 initializing the Leipzig object.
+
+It accepts an optional, error-first style callback function that will be called
+once all of the glosses have been completed (or the glosser encounters an
+error):
+
+```javascript
+var leipzig = Leipzig({ async: true });
+
+console.log('Starting gloss...');
+
+leipzig.gloss(function(err, elements) {
+  if (err) {
+    console.log(err);
+  }
+
+  console.log('Glossing complete!' + elements);
+});
+
+console.log('Glosser is running...');
+
+// -> Starting gloss...
+// -> Glosser is running...
+// -> Glossing complete! [object NodeList]
+```
+
+This callback is especially useful if you're using the asynchronous glosser,
+but you can also use it with the synchronous API.
+
+---
+
+# Tests
+
+```sh
+$ git clone https://github.com/bdchauvette/leipzig.js.git
+$ cd leipzig.js
+$ npm install
+$ npm test
+```
 
 ---
 

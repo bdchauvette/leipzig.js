@@ -74,11 +74,21 @@ var Leipzig = function(elements, config) {
     opts = elements;
   }
 
+  this.config(opts);
+
+};
+
+/**
+ * Configures the Leipzig instance
+ * @param {Object} config - the options
+ */
+Leipzig.prototype.config = function config(opts) {
   this.elements = opts.elements || '[data-gloss]';
   this.spacing = setBool(opts, 'spacing', true);
   this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
   this.lastLineFree = setBool(opts, 'lastLineFree', true);
   this.autoTag = setBool(opts, 'autoTag', true);
+  this.async = setBool(opts, 'async', false);
 
   if (opts.tokenizers === undefined) {
     this.tokenizers = [
@@ -249,7 +259,7 @@ Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
 /**
  * Runs the glosser
  */
-Leipzig.prototype.gloss = function gloss() {
+Leipzig.prototype.gloss = function gloss(callback) {
   // select the elements to gloss
   let glossElements;
 
@@ -263,53 +273,54 @@ Leipzig.prototype.gloss = function gloss() {
     throw new Error('Invalid selector');
   }
 
-  // process each gloss
-  for (let i = 0; i < glossElements.length; i++) {
-    const gloss = glossElements[i];
-    const lines = gloss.children;
+  /** Processes a gloss element */
+  function processGloss(_this, gloss, callback) {
+    if (!(gloss instanceof Element)) {
+      callback(new Error('Invalid gloss element'));
+    }
+
+    const lines = Array.prototype.slice.call(gloss.children);
     const linesToAlign = [];
     let firstRawLine = null;
     let firstRawLineNum = 0;
 
-    if (this.firstLineOrig) {
-      const firstLine = gloss.firstElementChild;
-      addClass(firstLine, this.class.original);
+    if (_this.firstLineOrig) {
+      const firstLine = lines[0];
+      addClass(firstLine, _this.class.original);
     }
 
-    if (this.lastLineFree) {
-      const lastLine = gloss.lastElementChild;
-      addClass(lastLine, this.class.freeTranslation);
+    if (_this.lastLineFree) {
+      const lastLine = lines[lines.length - 1];
+      addClass(lastLine, _this.class.freeTranslation);
     }
 
     // process each line in the gloss
-    for (let lineNum = 0; lineNum < lines.length; lineNum++) {
-      const line = lines[lineNum];
-
+    lines.forEach((line, lineNum) => {
       // don't align lines that are free translations or original,
       // unformatted lines
-      const isOrig = hasClass(line, this.class.original);
-      const isFree = hasClass(line, this.class.freeTranslation);
-      const shouldSkip = hasClass(line, this.class.noAlign);
+      const isOrig = hasClass(line, _this.class.original);
+      const isFree = hasClass(line, _this.class.freeTranslation);
+      const shouldSkip = hasClass(line, _this.class.noAlign);
 
       const shouldAlign = !isOrig && !isFree && !shouldSkip;
 
       if (shouldAlign) {
-        linesToAlign.push(this.tokenize(line.innerHTML));
-        addClass(line, this.class.hidden);
+        linesToAlign.push(_this.tokenize(line.innerHTML));
+        addClass(line, _this.class.hidden);
 
-        // if this is the first aligned line, mark the location
+        // if _this is the first aligned line, mark the location
         // so that the final aligned glosses can be inserted here
         if (!firstRawLine) {
           firstRawLine = line;
           firstRawLineNum = lineNum;
         }
       } else {
-        addClass(line, this.class.line);
-        addClass(line, this.class.lineNum + lineNum);
+        addClass(line, _this.class.line);
+        addClass(line, _this.class.lineNum + lineNum);
       }
-    }
+    });
 
-    const alignedLines = this.align(linesToAlign);
+    const alignedLines = _this.align(linesToAlign);
 
     // determine which type of element the aligned glosses should be wrapped in
     let alignedWrapper;
@@ -319,15 +330,29 @@ Leipzig.prototype.gloss = function gloss() {
       alignedWrapper = 'div';
     }
 
-    const formattedLines = this.format(alignedLines, alignedWrapper, firstRawLineNum);
+    const formattedLines = _this.format(alignedLines, alignedWrapper, firstRawLineNum);
     gloss.insertBefore(formattedLines, firstRawLine);
 
     // finish up by adding relevant classes to the main container
-    if (!this.spacing) {
-      addClass(gloss, this.class.noSpace);
+    if (!_this.spacing) {
+      addClass(gloss, _this.class.noSpace);
     }
 
-    addClass(gloss, this.class.glossed);
+    addClass(gloss, _this.class.glossed);
+  }
+
+  // process each gloss
+  const glosses = Array.prototype.slice.call(glossElements);
+  glosses.forEach((gloss) => {
+    if (this.async) {
+      window.setTimeout(() => processGloss(this, gloss, callback));
+    } else {
+      processGloss(this, gloss, callback);
+    }
+  });
+
+  if (typeof callback === 'function') {
+    window.setTimeout(() => callback(null, glossElements));
   }
 };
 

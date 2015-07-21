@@ -1,4 +1,4 @@
-var test = require('tape-catch');
+var test = require('tape');
 var Leipzig = require('../dist/leipzig');
 
 // default configuration values
@@ -7,6 +7,7 @@ var defaults = {
   firstLineOrig: false,
   spacing: true,
   autoTag: true,
+  async: false,
   tokenizers: [
     '{(.*?)}',
     '([^\\s]+)'
@@ -34,6 +35,7 @@ var testConfig = {
   firstLineOrig: true,
   spacing: false,
   autoTag: false,
+  async: true,
   tokenizers: [
     'test regex'
   ],

@@ -1,4 +1,4 @@
-var test = require('tape-catch');
+var test = require('tape');
 var Leipzig = require('../dist/leipzig');
 
 var leipzig = Leipzig();
