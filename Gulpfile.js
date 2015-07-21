@@ -2,17 +2,25 @@ var gulp = require('gulp');
 var babel = require('gulp-babel');
 var csscomb = require('gulp-csscomb');
 var csswring = require('csswring');
+var header = require('gulp-header');
 var postcss = require('gulp-postcss');
 var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 
 gulp.task('js', function() {
+  var headerText = [
+    '/*! leipzig.js v0.5.0',
+    'ISC License',
+    'github.com/bdchauvette/leipzig.js */'
+  ].join(' | ');
+
   return gulp.src('src/*.js')
     .pipe(babel({ modules: 'umd', moduleId: 'Leipzig' }))
+    .pipe(header(headerText + '\n'))
     .pipe(gulp.dest('./dist'))
     .pipe(rename({ suffix: '.min' }))
-    .pipe(uglify())
+    .pipe(uglify({ preserveComments: 'some' }))
     .pipe(gulp.dest('./dist'));
 });
 
