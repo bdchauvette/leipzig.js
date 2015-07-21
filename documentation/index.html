@@ -95,6 +95,7 @@ are word-aligned, and the last line is a non-aligned free translation.</p>
   <span class="nx">spacing</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">autoTag</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">async</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nx">abbreviations</span><span class="o">:</span> <span class="p">{...},</span> <span class="c1">// See Leipzig.abbreviations section</span>
   <span class="nx">tokenizers</span><span class="o">:</span> <span class="p">[</span>
     <span class="s1">&#39;{(.*?)}&#39;</span><span class="p">,</span>
     <span class="s1">&#39;([^\\s]+)&#39;</span>
@@ -252,6 +253,9 @@ this, you can set the <code>async</code> option to <code>true</code>, which will
 run (somewhat) asynchronously.</p>
 <p>You can use the optional callback to <code>Leipzig#gloss()</code> to perform actions when
 the glossing has been completed.</p>
+<h2><code>abbreviations : Object</code></h2>
+<p>If you pass in a plain JS object, it will override <a href="#default-definitions">the default
+auto-tagging definitions</a>.</p>
 <h2><code>tokenizers : Array&lt;String&gt; | String | RegExp</code></h2>
 <div class="highlight"><pre><span class="c1">// default: [&#39;{(.*?)}&#39;, &#39;([^\\s]+)&#39;]</span>
 </pre></div>
