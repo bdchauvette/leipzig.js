@@ -24,7 +24,9 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
     - [`async`](#async--boolean)
     - [`tokenizers`](#tokenizers--arraystring--string--regexp)
     - [`class`](#class--object)
+  - [`Leipzig#config()`](#leipzigconfig)
   - [`Leipzig#gloss()`](#leipziggloss)
+  - [`Leipzig.abbreviations`](#leipzigabbreviations)
 - [Tests](#tests)
 - [License](#license)
 
