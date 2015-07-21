@@ -22,6 +22,7 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
     - [`spacing`](#spacing--boolean)
     - [`autoTag`](#autotag--boolean)
     - [`async`](#async--boolean)
+    - [`abbreviations`](#abbreviations--object)
     - [`tokenizers`](#tokenizers--arraystring--string--regexp)
     - [`class`](#class--object)
   - [`Leipzig#config()`](#leipzigconfig)
@@ -269,6 +270,7 @@ var leipzig = Leipzig({
   spacing: true,
   autoTag: true,
   async: false,
+  abbreviations: {...}, // See Leipzig.abbreviations section
   tokenizers: [
     '{(.*?)}',
     '([^\\s]+)'
@@ -438,6 +440,11 @@ run (somewhat) asynchronously.
 
 You can use the optional callback to `Leipzig#gloss()` to perform actions when
 the glossing has been completed.
+
+### `abbreviations : Object`
+
+If you pass in a plain JS object, it will override [the default
+auto-tagging definitions](#default-definitions).
 
 ### `tokenizers : Array<String> | String | RegExp`
 
