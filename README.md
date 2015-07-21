@@ -432,11 +432,14 @@ leipzig.abbreviations.COMP = 'comparative';
 // default: false
 ```
 
-Leipzig.js runs synchronously by default. Normally this is fine, Due to the way
-JavaScript is executed, If you have a large number of glosses on a page, this
-will prevent the browser from doing anything else until they finish. To remedy
-this, you can set the `async` option to `true`, which will cause Leipzig.js to
-run (somewhat) asynchronously.
+Leipzig.js runs synchronously by default, and normally this is fine. However,
+when running synchronously, the browser will wait for Leipzig.js to finish
+before attending to the needs of other scripts and browser events. This means
+that if you have a large number of glosses on a page, the user experience might
+start to suffer.
+
+To remedy this, you can set the `async` option to `true`, which will cause
+Leipzig.js to run (somewhat) asynchronously.
 
 You can use the optional callback to `Leipzig#gloss()` to perform actions when
 the glossing has been completed.
