@@ -94,6 +94,7 @@ are word-aligned, and the last line is a non-aligned free translation.</p>
   <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
   <span class="nx">spacing</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">autoTag</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">async</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
   <span class="nx">tokenizers</span><span class="o">:</span> <span class="p">[</span>
     <span class="s1">&#39;{(.*?)}&#39;</span><span class="p">,</span>
     <span class="s1">&#39;([^\\s]+)&#39;</span>
@@ -107,7 +108,8 @@ are word-aligned, and the last line is a non-aligned free translation.</p>
     <span class="nx">original</span><span class="o">:</span> <span class="s1">&#39;gloss__line--original&#39;</span><span class="p">,</span>
     <span class="nx">freeTranslation</span><span class="o">:</span> <span class="s1">&#39;gloss__line--free&#39;</span><span class="p">,</span>
     <span class="nx">noAlign</span><span class="o">:</span> <span class="s1">&#39;gloss__line--no-align&#39;</span><span class="p">,</span>
-    <span class="nx">hidden</span><span class="o">:</span> <span class="s1">&#39;gloss__line--hidden&#39;</span>
+    <span class="nx">hidden</span><span class="o">:</span> <span class="s1">&#39;gloss__line--hidden&#39;</span><span class="p">,</span>
+    <span class="nx">abbr</span><span class="o">:</span> <span class="s1">&#39;gloss__abbr&#39;</span>
   <span class="p">}</span>
 <span class="p">});</span>
 </pre></div>
@@ -238,6 +240,18 @@ the definition of <code>COMP</code> from <code>complementizer</code> to <code>co
 </pre></div>
 
 
+<h2><code>async : Boolean</code></h2>
+<div class="highlight"><pre><span class="c1">// default: false</span>
+</pre></div>
+
+
+<p>Leipzig.js runs synchronously by default. Normally this is fine, Due to the way
+JavaScript is executed, If you have a large number of glosses on a page, this
+will prevent the browser from doing anything else until they finish. To remedy
+this, you can set the <code>async</code> option to <code>true</code>, which will cause Leipzig.js to
+run (somewhat) asynchronously.</p>
+<p>You can use the optional callback to <code>Leipzig#gloss()</code> to perform actions when
+the glossing has been completed.</p>
 <h2><code>tokenizers : Array&lt;String&gt; | String | RegExp</code></h2>
 <div class="highlight"><pre><span class="c1">// default: [&#39;{(.*?)}&#39;, &#39;([^\\s]+)&#39;]</span>
 </pre></div>
@@ -373,12 +387,37 @@ Original Language line detection. If this happens, you will have to manually
 add the relevant classes to the underlying markup.</p>
 <hr />
 <h1><code>Leipzig#gloss()</code></h1>
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nx">Void</span>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">([</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">elements</span><span class="p">)])</span> <span class="o">-&gt;</span> <span class="nx">Void</span>
 </pre></div>
 
 
 <p>This method runs the glosser over the elements that were specified when
 initializing the Leipzig object.</p>
+<p>It accepts an optional, error-first style callback function that will be called
+once all of the glosses have been completed (or the glosser encounters an
+error):</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">async</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Starting gloss...&#39;</span><span class="p">);</span>
+
+<span class="nx">leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">elements</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Glossing complete!&#39;</span> <span class="o">+</span> <span class="nx">elements</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Glosser is running...&#39;</span><span class="p">);</span>
+
+<span class="c1">// -&gt; Starting gloss...</span>
+<span class="c1">// -&gt; Glosser is running...</span>
+<span class="c1">// -&gt; Glossing complete! [object NodeList]</span>
+</pre></div>
+
+
+<p>This callback is especially useful if you're using the asynchronous glosser,
+but you can also use it with the synchronous API.</p>
 
     <footer id="page-footer">
       <p>&copy; 2015 Benjamin Chauvette</p>
