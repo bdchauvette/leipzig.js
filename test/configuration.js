@@ -36,6 +36,7 @@ var testConfig = {
   spacing: false,
   autoTag: false,
   async: true,
+  abbreviations: { foo: 'bar' },
   tokenizers: [
     'test regex'
   ],
@@ -114,6 +115,26 @@ test('set options correctly when called with single config object', function(t) 
   Object.keys(leipzig).forEach(function(opt) {
     t.deepEqual(leipzig[opt], testConfig[opt]);
   });
+
+  t.end();
+});
+
+test('overrides settings when called with Leipzig#config', function(t) {
+  var leipzig = Leipzig();
+  leipzig.config(testConfig);
+
+  Object.keys(leipzig).forEach(function(opt) {
+    t.deepEqual(leipzig[opt], testConfig[opt]);
+  });
+
+  t.end();
+});
+
+test('should set abbreviations when called with an object', function(t) {
+  var abbr = { foo: 'bar' };
+  var leipzig = Leipzig({ abbreviations: abbr });
+
+  t.deepEqual(leipzig.abbreviations, abbr);
 
   t.end();
 });
