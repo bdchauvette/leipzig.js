@@ -518,15 +518,40 @@ If the class names of the last three options &ndash; `class.freeTranslation`,
 markup, they will be skipped by the Leipzig.js glosser during parsing, and will
 not be word-aligned with the other text.
 
-**<abbr>NB:</abbr>** If a line is manually skipped by adding the
+**NB:** If a line is manually skipped by adding the
 `class.noAlign` class, it might interfere with the automated Free Translation and
 Original Language line detection. If this happens, you will have to manually
 add the relevant classes to the underlying markup.
 
+---
+
+## `Leipzig#config()`
+
+```javascript
+Leipzig.config(config : Object) -> Void
+```
+
+This option allows you to configure Leipzig.js after initializing it. The
+following code snippets have the same effect:
+
+```javascript
+// Setting config during initialization
+var leipzig = Leipzig({ async: true });
+
+// Setting config via Leipzig#config()
+var leipzig = Leipzig();
+leipzig.config({ async: true });
+```
+
+**NB:** The `config` method will only set the options passed in via the
+configuration object. All other settings will return to their default values.
+
+---
+
 ## `Leipzig#gloss()`
 
 ```javascript
-Leipzig.gloss([function(err, elements)]) -> Void
+Leipzig.gloss([callback : Function(err, elements)]) -> Void
 ```
 
 This method runs the glosser over the elements that were specified when
@@ -558,6 +583,129 @@ console.log('Glosser is running...');
 
 This callback is especially useful if you're using the asynchronous glosser,
 but you can also use it with the synchronous API.
+
+---
+
+## `Leipzig.abbreviations`
+
+Leipzig.js comes with a dictionary of the [Standard Leipzig Glossing Rule
+abbreviations](https://www.eva.mpg.de/lingua/resources/glossing-rules.php)
+baked in. The auto-tagging engine will use these definitions by default when
+attempting to assign `title` attributes to morpheme glosses.
+
+### Modifying the abbreviations
+You can replace this dictionary completely by assigning a new `abbreviations`
+object on your `Leipzig()` instance:
+
+```javascript
+var leipzig = Leipzig();
+leipzig.abbreviations = { ABBREVIATION: 'definition' }
+```
+
+Or by setting the `abbreviations` config option when initializing Leipzig:
+
+```javascript
+var newAbbreviations = { ABBREVATION: 'definition' };
+var leipzig = Leipzig({ abbreviations: newAbbreviations });
+```
+
+You can also modify specific entries in the dictionary by setting the relevant
+abbreviation to a different value. For example, to change `COMP` from
+*complementizer* to *comparative*, you could use the following:
+
+```javascript
+var leipzig = Leipzig();
+leipzig.abbreviations.COMP = 'comparative';
+```
+
+### Default Definitions
+The standard list is as follows:
+
+ Abbreviation | Definition
+--------------|------------
+ 1            | first person
+ 2            | second person
+ 3            | third person
+ A            | agent-like argument of canonical transitive verb
+ ABL          | ablative
+ ABS          | absolutive
+ ACC          | accusative
+ ADJ          | adjective
+ ADV          | adverb(ial)
+ AGR          | agreement
+ ALL          | allative
+ ANTIP        | antipassive
+ APPL         | applicative
+ ART          | article
+ AUX          | auxiliary
+ BEN          | benefactive
+ CAUS         | causative
+ CLF          | classifier
+ COM          | comitative
+ COMP         | complementizer
+ COMPL        | completive
+ COND         | conditional
+ COP          | copula
+ CVB          | converb
+ DAT          | dative
+ DECL         | declarative
+ DEF          | definite
+ DEM          | demonstrative
+ DET          | determiner
+ DIST         | distal
+ DISTR        | distributive
+ DU           | dual
+ DUR          | durative
+ ERG          | ergative
+ EXCL         | exclusive
+ F            | feminine
+ FOC          | focus
+ FUT          | future
+ GEN          | genitive
+ IMP          | imperative
+ INCL         | inclusive
+ IND          | indicative
+ INDF         | indefinite
+ INF          | infinitive
+ INS          | instrumental
+ INTR         | intransitive
+ IPFV         | imperfective
+ IRR          | irrealis
+ LOC          | locative
+ M            | masculine
+ N            | neuter
+ NEG          | negation / negative
+ NMLZ         | nominalizer / nominalization
+ NOM          | nominative
+ OBJ          | object
+ OBL          | oblique
+ P            | patient-like argument of canonical transitive verb
+ PASS         | passive
+ PFV          | perfective
+ PL           | plural
+ POSS         | possessive
+ PRED         | predicative
+ PRF          | perfect
+ PRS          | present
+ PROG         | progressive
+ PROH         | prohibitive
+ PROX         | proximal / proximate
+ PST          | past
+ PTCP         | participle
+ PURP         | purposive
+ Q            | question particle / marker
+ QUOT         | quotative
+ RECP         | reciprocal
+ REFL         | reflexive
+ REL          | relative
+ RES          | resultative
+ S            | single argument of canonical intransitive verb
+ SBJ          | subject
+ SBJV         | subjunctive
+ SG           | singular
+ TOP          | topic
+ TR           | transitive
+ VOC          | vocative
 
 ---
 
