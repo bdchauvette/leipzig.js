@@ -422,7 +422,7 @@ var leipzig = Leipzig();
 leipzig.abbreviations.COMP = 'comparative';
 ```
 
-### `async` : Boolean
+### `async : Boolean`
 
 ```javascript
 // default: false
