@@ -101,6 +101,10 @@
     this.autoTag = setBool(opts, 'autoTag', true);
     this.async = setBool(opts, 'async', false);
 
+    if (typeof opts.abbreviations === 'object') {
+      this.abbreviations = opts.abbreviations;
+    }
+
     if (opts.tokenizers === undefined) {
       this.tokenizers = ['{(.*?)}', '([^\\s]+)'];
     } else if (opts.tokenizers instanceof Array && hasOnlyStrings(opts.tokenizers)) {
