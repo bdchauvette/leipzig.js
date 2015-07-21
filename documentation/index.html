@@ -386,8 +386,28 @@ not be word-aligned with the other text.</p>
 Original Language line detection. If this happens, you will have to manually
 add the relevant classes to the underlying markup.</p>
 <hr />
+<h1><code>Leipzig#config()</code></h1>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">.</span><span class="nx">config</span><span class="p">(</span><span class="nx">config</span> <span class="o">:</span> <span class="nb">Object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nx">Void</span>
+</pre></div>
+
+
+<p>This option allows you to configure Leipzig.js after initializing it. The
+following code snippets have the same effect:</p>
+<div class="highlight"><pre><span class="c1">// Setting config during initialization</span>
+<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">async</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+
+<span class="c1">// Setting config via Leipzig#config()</span>
+<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">();</span>
+<span class="nx">leipzig</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span> <span class="nx">async</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+</pre></div>
+
+
+<p><strong><abbr>NB:</abbr></strong> The <code>config</code> method will only set the options
+passed in via the configuration object. All other settings will return to their
+default values.</p>
+<hr />
 <h1><code>Leipzig#gloss()</code></h1>
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">([</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">elements</span><span class="p">)])</span> <span class="o">-&gt;</span> <span class="nx">Void</span>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">([</span><span class="nx">callback</span> <span class="o">:</span> <span class="nb">Function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">elements</span><span class="p">)])</span> <span class="o">-&gt;</span> <span class="nx">Void</span>
 </pre></div>
 
 
@@ -418,6 +438,378 @@ error):</p>
 
 <p>This callback is especially useful if you're using the asynchronous glosser,
 but you can also use it with the synchronous API.</p>
+<hr />
+<h1><code>Leipzig.abbreviations</code></h1>
+<p>Leipzig.js comes with a dictionary of the <a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php">Standard Leipzig Glossing Rule
+abbreviations</a>
+baked in. The auto-tagging engine will use these definitions by default when
+attempting to assign <code>title</code> attributes to morpheme glosses.</p>
+<h2>Modifying the abbreviations</h2>
+<p>You can replace this dictionary completely by assigning a new <code>abbreviations</code>
+object on your <code>Leipzig()</code> instance:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">();</span>
+<span class="nx">leipzig</span><span class="p">.</span><span class="nx">abbreviations</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ABBREVIATION</span><span class="o">:</span> <span class="s1">&#39;definition&#39;</span> <span class="p">}</span>
+</pre></div>
+
+
+<p>Or by setting the <code>abbreviations</code> config option when initializing Leipzig:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">newAbbreviations</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ABBREVIATION</span><span class="o">:</span> <span class="s1">&#39;definition&#39;</span> <span class="p">};</span>
+<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">abbreviations</span><span class="o">:</span> <span class="nx">newAbbreviations</span> <span class="p">});</span>
+</pre></div>
+
+
+<p>You can also modify specific entries in the dictionary by setting the relevant
+abbreviation to a different value. For example, to change <code>COMP</code> from
+<em>complementizer</em> to <em>comparative</em>, you could use the following:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">();</span>
+<span class="nx">leipzig</span><span class="p">.</span><span class="nx">abbreviations</span><span class="p">.</span><span class="nx">COMP</span> <span class="o">=</span> <span class="s1">&#39;comparative&#39;</span><span class="p">;</span>
+</pre></div>
+
+
+<h2>Default Definitions</h2>
+<p>The standard list is as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Abbreviation</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>first person</td>
+</tr>
+<tr>
+<td>2</td>
+<td>second person</td>
+</tr>
+<tr>
+<td>3</td>
+<td>third person</td>
+</tr>
+<tr>
+<td>A</td>
+<td>agent-like argument of canonical transitive verb</td>
+</tr>
+<tr>
+<td>ABL</td>
+<td>ablative</td>
+</tr>
+<tr>
+<td>ABS</td>
+<td>absolutive</td>
+</tr>
+<tr>
+<td>ACC</td>
+<td>accusative</td>
+</tr>
+<tr>
+<td>ADJ</td>
+<td>adjective</td>
+</tr>
+<tr>
+<td>ADV</td>
+<td>adverb(ial)</td>
+</tr>
+<tr>
+<td>AGR</td>
+<td>agreement</td>
+</tr>
+<tr>
+<td>ALL</td>
+<td>allative</td>
+</tr>
+<tr>
+<td>ANTIP</td>
+<td>antipassive</td>
+</tr>
+<tr>
+<td>APPL</td>
+<td>applicative</td>
+</tr>
+<tr>
+<td>ART</td>
+<td>article</td>
+</tr>
+<tr>
+<td>AUX</td>
+<td>auxiliary</td>
+</tr>
+<tr>
+<td>BEN</td>
+<td>benefactive</td>
+</tr>
+<tr>
+<td>CAUS</td>
+<td>causative</td>
+</tr>
+<tr>
+<td>CLF</td>
+<td>classifier</td>
+</tr>
+<tr>
+<td>COM</td>
+<td>comitative</td>
+</tr>
+<tr>
+<td>COMP</td>
+<td>complementizer</td>
+</tr>
+<tr>
+<td>COMPL</td>
+<td>completive</td>
+</tr>
+<tr>
+<td>COND</td>
+<td>conditional</td>
+</tr>
+<tr>
+<td>COP</td>
+<td>copula</td>
+</tr>
+<tr>
+<td>CVB</td>
+<td>converb</td>
+</tr>
+<tr>
+<td>DAT</td>
+<td>dative</td>
+</tr>
+<tr>
+<td>DECL</td>
+<td>declarative</td>
+</tr>
+<tr>
+<td>DEF</td>
+<td>definite</td>
+</tr>
+<tr>
+<td>DEM</td>
+<td>demonstrative</td>
+</tr>
+<tr>
+<td>DET</td>
+<td>determiner</td>
+</tr>
+<tr>
+<td>DIST</td>
+<td>distal</td>
+</tr>
+<tr>
+<td>DISTR</td>
+<td>distributive</td>
+</tr>
+<tr>
+<td>DU</td>
+<td>dual</td>
+</tr>
+<tr>
+<td>DUR</td>
+<td>durative</td>
+</tr>
+<tr>
+<td>ERG</td>
+<td>ergative</td>
+</tr>
+<tr>
+<td>EXCL</td>
+<td>exclusive</td>
+</tr>
+<tr>
+<td>F</td>
+<td>feminine</td>
+</tr>
+<tr>
+<td>FOC</td>
+<td>focus</td>
+</tr>
+<tr>
+<td>FUT</td>
+<td>future</td>
+</tr>
+<tr>
+<td>GEN</td>
+<td>genitive</td>
+</tr>
+<tr>
+<td>IMP</td>
+<td>imperative</td>
+</tr>
+<tr>
+<td>INCL</td>
+<td>inclusive</td>
+</tr>
+<tr>
+<td>IND</td>
+<td>indicative</td>
+</tr>
+<tr>
+<td>INDF</td>
+<td>indefinite</td>
+</tr>
+<tr>
+<td>INF</td>
+<td>infinitive</td>
+</tr>
+<tr>
+<td>INS</td>
+<td>instrumental</td>
+</tr>
+<tr>
+<td>INTR</td>
+<td>intransitive</td>
+</tr>
+<tr>
+<td>IPFV</td>
+<td>imperfective</td>
+</tr>
+<tr>
+<td>IRR</td>
+<td>irrealis</td>
+</tr>
+<tr>
+<td>LOC</td>
+<td>locative</td>
+</tr>
+<tr>
+<td>M</td>
+<td>masculine</td>
+</tr>
+<tr>
+<td>N</td>
+<td>neuter</td>
+</tr>
+<tr>
+<td>NEG</td>
+<td>negation / negative</td>
+</tr>
+<tr>
+<td>NMLZ</td>
+<td>nominalizer / nominalization</td>
+</tr>
+<tr>
+<td>NOM</td>
+<td>nominative</td>
+</tr>
+<tr>
+<td>OBJ</td>
+<td>object</td>
+</tr>
+<tr>
+<td>OBL</td>
+<td>oblique</td>
+</tr>
+<tr>
+<td>P</td>
+<td>patient-like argument of canonical transitive verb</td>
+</tr>
+<tr>
+<td>PASS</td>
+<td>passive</td>
+</tr>
+<tr>
+<td>PFV</td>
+<td>perfective</td>
+</tr>
+<tr>
+<td>PL</td>
+<td>plural</td>
+</tr>
+<tr>
+<td>POSS</td>
+<td>possessive</td>
+</tr>
+<tr>
+<td>PRED</td>
+<td>predicative</td>
+</tr>
+<tr>
+<td>PRF</td>
+<td>perfect</td>
+</tr>
+<tr>
+<td>PRS</td>
+<td>present</td>
+</tr>
+<tr>
+<td>PROG</td>
+<td>progressive</td>
+</tr>
+<tr>
+<td>PROH</td>
+<td>prohibitive</td>
+</tr>
+<tr>
+<td>PROX</td>
+<td>proximal / proximate</td>
+</tr>
+<tr>
+<td>PST</td>
+<td>past</td>
+</tr>
+<tr>
+<td>PTCP</td>
+<td>participle</td>
+</tr>
+<tr>
+<td>PURP</td>
+<td>purposive</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>question particle / marker</td>
+</tr>
+<tr>
+<td>QUOT</td>
+<td>quotative</td>
+</tr>
+<tr>
+<td>RECP</td>
+<td>reciprocal</td>
+</tr>
+<tr>
+<td>REFL</td>
+<td>reflexive</td>
+</tr>
+<tr>
+<td>REL</td>
+<td>relative</td>
+</tr>
+<tr>
+<td>RES</td>
+<td>resultative</td>
+</tr>
+<tr>
+<td>S</td>
+<td>single argument of canonical intransitive verb</td>
+</tr>
+<tr>
+<td>SBJ</td>
+<td>subject</td>
+</tr>
+<tr>
+<td>SBJV</td>
+<td>subjunctive</td>
+</tr>
+<tr>
+<td>SG</td>
+<td>singular</td>
+</tr>
+<tr>
+<td>TOP</td>
+<td>topic</td>
+</tr>
+<tr>
+<td>TR</td>
+<td>transitive</td>
+</tr>
+<tr>
+<td>VOC</td>
+<td>vocative</td>
+</tr>
+</tbody>
+</table>
 
     <footer id="page-footer">
       <p>&copy; 2015 Benjamin Chauvette</p>
