@@ -1,0 +1,80 @@
+// Class names
+$prefix: '.gloss';
+$container: #{$prefix}--glossed;
+$abbr: #{$prefix}__abbr;
+$no-space:  #{$prefix}--no-space;
+$words: #{$prefix}__words;
+$word: #{$prefix}__word;
+$line: #{$prefix}__line;
+$line--original: #{$line}--original;
+$line--free: #{$line}--free;
+$line--no-align: #{$line}--no-align;
+$line--hidden: #{$line}--hidden;
+
+// self clear final gloss lines
+#{$container}:after {
+  clear: left;
+  content: '';
+  display: block;
+}
+
+// styles for when the container is list
+ul#{$container},
+ol#{$container} {
+  padding-left: 0;
+
+  & li {
+    list-style-type: none;
+  }
+}
+
+// abbreviations
+#{$abbr} {
+  font-variant: small-caps;
+  font-variant-numeric: oldstyle-nums;
+  text-transform: lowercase;
+}
+
+// words
+#{$word} {
+  float: left;
+  margin-bottom: 1em;
+  margin-right: 1em;
+}
+
+#{$word} p {
+  margin: 0;
+}
+
+#{$no-space} #{$word} {
+  margin-right: 0;
+}
+
+// add spacing to first and last line
+#{$words}:first-child,
+#{$container} li:first-child {
+  margin-top: 1em;
+}
+
+#{$container} li:last-child {
+  margin-bottom: 1em;
+}
+
+// other line styling
+#{$word} #{$line}:first-child {
+  font-style: italic;
+}
+
+#{$line--original} {
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+#{$line--free},
+#{$line--no-align} {
+  clear: left;
+}
+
+#{$line--hidden} {
+  display: none;
+}

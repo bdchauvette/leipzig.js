@@ -1,8 +1,7 @@
-/* Self-clear the gloss divs */
-.gloss--glossed::after {
-  display: block;
+.gloss--glossed:after {
   clear: left;
   content: '';
+  display: block;
 }
 
 ul.gloss--glossed,
@@ -10,27 +9,21 @@ ol.gloss--glossed {
   padding-left: 0;
 }
 
-.gloss--glossed li {
+ul.gloss--glossed li,
+ol.gloss--glossed li {
   list-style-type: none;
 }
 
-.gloss--glossed li:first-child {
-  margin-top: 1em;
-}
-
-.gloss--glossed li:last-child {
-  margin-bottom: 1em;
-}
-
-.gloss--glossed li:first-child,
-.gloss--glossed > .gloss__words:first-child {
-  margin-top: 1em;
+.gloss__abbr {
+  font-variant: small-caps;
+  font-variant-numeric: oldstyle-nums;
+  text-transform: lowercase;
 }
 
 .gloss__word {
   float: left;
-  margin-right: 1em;
   margin-bottom: 1em;
+  margin-right: 1em;
 }
 
 .gloss__word p {
@@ -39,6 +32,19 @@ ol.gloss--glossed {
 
 .gloss--no-space .gloss__word {
   margin-right: 0;
+}
+
+.gloss__words:first-child,
+.gloss--glossed li:first-child {
+  margin-top: 1em;
+}
+
+.gloss--glossed li:last-child {
+  margin-bottom: 1em;
+}
+
+.gloss__word .gloss__line:first-child {
+  font-style: italic;
 }
 
 .gloss__line--original {
@@ -53,13 +59,4 @@ ol.gloss--glossed {
 
 .gloss__line--hidden {
   display: none;
-}
-
-.gloss__word .gloss__line:first-child {
-  font-style: italic;
-}
-
-.gloss__abbr {
-  text-transform: lowercase;
-  font-variant: small-caps;
 }
