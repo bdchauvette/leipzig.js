@@ -246,11 +246,13 @@ the definition of <code>COMP</code> from <code>complementizer</code> to <code>co
 </pre></div>
 
 
-<p>Leipzig.js runs synchronously by default. Normally this is fine, Due to the way
-JavaScript is executed, If you have a large number of glosses on a page, this
-will prevent the browser from doing anything else until they finish. To remedy
-this, you can set the <code>async</code> option to <code>true</code>, which will cause Leipzig.js to
-run (somewhat) asynchronously.</p>
+<p>Leipzig.js runs synchronously by default, and normally this is fine. However,
+when running synchronously, the browser will wait for Leipzig.js to finish
+before attending to the needs of other scripts and browser events. This means
+that if you have a large number of glosses on a page, the user experience might
+start to suffer.</p>
+<p>To remedy this, you can set the <code>async</code> option to <code>true</code>, which will cause
+Leipzig.js to run (somewhat) asynchronously.</p>
 <p>You can use the optional callback to <code>Leipzig#gloss()</code> to perform actions when
 the glossing has been completed.</p>
 <h2><code>abbreviations : Object</code></h2>
