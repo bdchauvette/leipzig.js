@@ -1,5 +1,5 @@
 # Leipzig.js
-**Interlinear glossing for your browser**
+**Interlinear glossing for the browser**
 
 Leipzig.js is a small JavaScript utility that makes it easy to add
 [interlinear glosses][] to webpages.
