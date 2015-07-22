@@ -107,7 +107,7 @@ references to other important works on interlinear glossing.
 
 # Usage
 
-## 1. Download It
+## 1. Download It (Optional)
 
 You can install Leipzig.js using `npm` or Bower, or by downloading the latest
 version from the github repository:
@@ -118,13 +118,17 @@ $ bower install --save leipzig
 $ git clone https://github.com/bdchauvette/leipzig.js.git
 ```
 
+Alternatively, you can skip installing Leipzig.js on your own server, and can
+use the [jsDelivr](https://www.jsdelivr.com/) <abbr>CDN</abbr> as described in
+the next step.
+
 ## 2. Include It
 
-Once you have the files, include the main `leipzig.js` file somewhere on your
-page, ideally at the bottom of the `<body>`:
+Include the main `leipzig.js` file somewhere on your page, ideally at the
+bottom of the `<body>`:
 
 ```html
-<script src="path/to/leipzig/dist/leipzig.min.js></script>
+<script src="path/to/leipzig/dist/leipzig.min.js"></script>
 ```
 
 Leipzig.js comes with some basic styling, which you can include by adding the
@@ -134,6 +138,25 @@ Leipzig.js stylesheet in the `<head>` of your page:
 <link rel="stylesheet" href="path/to/leipzig/dist/leipzig.css">
 ```
 
+### jsDelivr
+
+You can also include the latest version of Leipzig.js automatically by linking
+to the project files on the jsDelivr CDN:
+
+```html
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/leipzig/latest/leipzig.min.css">
+
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/leipzig/latest/leipzig.min.js"></script>
+```
+
+For more information about jsDelivr, you can visit the [jsDelivr
+homepage](https://www.jsdelivr.com), or read the following blog posts:
+
+- [jsDelivr - the advanced open source public
+  CDN](https://hacks.mozilla.org/2014/03/jsdelivr-the-advanced-open-source-public-cdn/)
+- [jsDelivr does it better](https://www.maxcdn.com/blog/jsdelivr-better/)
 
 ## 3. Mark Up Your Examples
 
@@ -179,7 +202,7 @@ If you're already using [jQuery][], you can use the following script instead:
 ```html
 <html>
   <head>
-    <link rel="stylesheet" href="path/to/leipzig/dist/leipzig.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/leipzig/latest/leipzig.min.css">
   </head>
   <body>
     <div data-gloss>
@@ -187,7 +210,7 @@ If you're already using [jQuery][], you can use the following script instead:
       <p>DET.NOM.N.SG example</p>
       <p>‘An example’</p>
     </div>
-    <script src="path/to/leipzig/dist/leipzig.js"></script>
+    <script src="//cdn.jsdelivr.net/leipzig/latest/leipzig.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         Leipzig().gloss();
