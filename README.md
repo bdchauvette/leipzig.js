@@ -16,15 +16,16 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
 - [Documentation](#documentation)
   - [Marking Up Examples](#marking-up-examples)
   - [`Leipzig()`](#leipzig)
-    - [`elements`](#elements--string--nodelist--element)
+    - [`selector`](#selector--string--nodelist--element)
     - [`lastLineFree`](#lastlinefree--boolean)
     - [`firstLineOrig`](#firstlineorig--boolean)
     - [`spacing`](#spacing--boolean)
     - [`autoTag`](#autotag--boolean)
     - [`async`](#async--boolean)
-    - [`abbreviations`](#abbreviations--object)
     - [`lexers`](#lexers--arraystring--string--regexp)
+    - [`events`](#events--object)
     - [`classes`](#classes--object)
+    - [`abbreviations`](#abbreviations--object)
   - [`Leipzig#config()`](#leipzigconfig)
   - [`Leipzig#gloss()`](#leipziggloss)
   - [`Leipzig.abbreviations`](#leipzigabbreviations)
@@ -266,12 +267,12 @@ with curly braces, e.g.:
 ## `Leipzig()`
 
 ```javascript
-Leipzig([elements : String|NodeList|Element], [config : Object] ) -> Function
+Leipzig([selector : String|NodeList|Element], [config : Object] ) -> Function
 ```
 
 Leipzig.js takes two optional arguments during construction:
 
-1. `elements`, which tells Leipzig.js which elements to gloss; equivalent to setting `config.elements`
+1. `selector`, which tells Leipzig.js which elements to gloss; equivalent to setting `config.selector`
 2. `config`, a plain JavaScript object for configuration
 
 Neither argument is required when creating a new Leipzig.js object, and if no
@@ -287,17 +288,28 @@ The default configuraiton is the following:
 
 ```javascript
 var leipzig = Leipzig({
-  elements: '[data-gloss]',
+  selector: '[data-gloss]',
   lastLineFree: true,
   firstLineOrig: false,
   spacing: true,
   autoTag: true,
   async: false,
-  abbreviations: {...}, // See Leipzig.abbreviations section
   lexers: [
     '{(.*?)}',
     '([^\\s]+)'
   ],
+  events: {
+    beforeGloss: 'gloss:beforeGloss',
+    afterGloss: 'gloss:afterGloss',
+    beforeLex: 'gloss:beforeLex',
+    afterLex: 'gloss:afterLex',
+    beforeAlign: 'gloss:beforeAlign',
+    afterAlign:'gloss:afterAlign',
+    beforeFormat: 'gloss:beforeFormat',
+    afterFormat:'gloss:afterFormat',
+    start: 'gloss:start',
+    complete: 'gloss:complete'
+  },
   classes: {
     glossed: 'gloss--glossed',
     noSpace: 'gloss--no-space',
@@ -309,14 +321,15 @@ var leipzig = Leipzig({
     noAlign: 'gloss__line--no-align',
     hidden: 'gloss__line--hidden',
     abbr: 'gloss__abbr'
-  }
+  },
+  abbreviations: {...} // See Leipzig.abbreviations section
 });
 ```
 
 When configuring Leipzig.js, you only need to specify the options that you want
 to change. All other options will retain their default values.
 
-### `elements : String | NodeList | Element`
+### `selector : String | NodeList | Element`
 
 ```javascript
 // default: '[data-gloss]'
@@ -324,22 +337,22 @@ to change. All other options will retain their default values.
 
 This option configures which elements that the Leipzig.js glosser will operate
 on. You can set this option by either passing it as the first argument when
-initializing Leipzig.js, or by setting the `elements` argument in the
+initializing Leipzig.js, or by setting the `selector` argument in the
 configuration object:
 
 ```javascript
 // Two ways of saying the same thing
 var leipzig = Leipzig('[data-gloss]');
-var leipzig = Leipzig({ elements: '[data-gloss]' });
+var leipzig = Leipzig({ selector: '[data-gloss]' });
 ```
 
-The elements option can be a `String`, a `NodeList` or `Element`.
+The `selector` option can be a `String`, a `NodeList` or `Element`.
 
-If the `elements` argument is a `String`, Leipzig.js will internally run
+If the `selector` argument is a `String`, Leipzig.js will internally run
 `document.querySelectorAll()` using the specified string, and the glosser will
 operate on the list of DOM elements it returns.
 
-Likewise, if `elements` is an `Element` or a `NodeList`, the glosser will
+Likewise, if `selector` is an `Element` or a `NodeList`, the glosser will
 operate on the provided DOM element(s).
 
 ### `lastLineFree : Boolean`
@@ -495,19 +508,68 @@ var leipzig = Leipzig({ lexers: '{(.*?)}|([^\\s]+)' });
 var leipzig = Leipzig({ lexers: /{(.*?)}|([^\s]+)/g });
 ```
 
+### `events : Object`
+
+Leipzig.js triggers certain events during the glossing process. You can act on
+these events by creating an event listener before calling the glosser:
+
+```javascript
+var leipzig = Leipzig();
+
+document.addEventListener('gloss:onComplete', function(event) {
+  console.log('Glossing complete!');
+});
+
+leipzig.gloss();
+
+// -> Glossing complete!
+```
+
+Following the DOM Custom Event API, some of the events have `detail` objects,
+which contain additional information about the event. For events without detail
+objects, you should be able to access all relevant information from various
+methods on `event.target`.
+
+The default event names are listed in the table below, along with additional
+information about each event.
+
+Name                | Triggers...                         | Details Object
+--------------------|-------------------------------------|-----------------
+gloss:start         | Before glossing any `Element`       | `{ glosses: NodeList }`
+gloss:complete      | After glossing every `Element`      | `{ glosses: NodeList }`
+gloss:beforeGloss   | Before each `Element` is glossed    | --
+gloss:afterGloss    | After each `Element` is glossed     | --
+gloss:beforeLex     | Before lexing each line             | --
+gloss:afterLex      | After lexing each line              | `{ tokens: Array<String> }`
+gloss:beforeAlign   | Before aligning lexed lines         | `{ lines: Array<Array<String>> }`
+gloss:afterAlign    | After aligning lexed line           | `{ lines: Array<Array<String>> }`
+gloss:beforeFormat  | Before formatting aligned lines     | `{ lines: Array<Array<String>> }`
+gloss:afterFormat   | After formatting aligned lines      | --
+
+ You can customize the event names by passing a plain JavaScript object to the
+`events` key on your `config` object, e.g.:
+
+```javascript
+var leipzig = Leipzig({
+  events: {
+    complete: 'newOnComplete'
+  }
+});
+```
+
 ### `classes : Object`
 
 Leipzig.js adds a number of CSS classes to the final gloss, which
 you can use to style your glosses. The names of these classes can be configured
-by changing the the settings on the `classes` object within the `options`
+by changing the the settings on the `classes` object within the `config`
 configuration object.
 
 The names, meaning, and default values of the classes are as follows:
 
 Option            | Default                  | Description
-------------------|--------------------------|------------
-`glossed`         | `gloss--glossed`         | Added to each element in `elements` after the glosser has finished
-`noSpace`         | `gloss--no-space`        | Added to each element in `elements` when the `spacing` option is set to false
+------------------|--------------------------|-------------
+`glossed`         | `gloss--glossed`         | Added to each element in `selector` after the glosser has finished
+`noSpace`         | `gloss--no-space`        | Added to each element in `selector` when the `spacing` option is set to false
 `words`           | `gloss__words`           | Added to the group of words that are aligned
 `word`            | `gloss__word`            | Added to each word in the group of aligned words
 `line`            | `gloss__line`            | Added to each visible line in the gloss
