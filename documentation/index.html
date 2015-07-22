@@ -72,13 +72,13 @@ with curly braces, e.g.:</p>
 
 <hr />
 <h1><code>Leipzig()</code></h1>
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">([</span><span class="nx">elements</span> <span class="o">:</span> <span class="nb">String</span><span class="o">|</span><span class="nx">NodeList</span><span class="o">|</span><span class="nx">Element</span><span class="p">],</span> <span class="p">[</span><span class="nx">config</span> <span class="o">:</span> <span class="nb">Object</span><span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">Function</span>
+<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">([</span><span class="nx">selector</span> <span class="o">:</span> <span class="nb">String</span><span class="o">|</span><span class="nx">NodeList</span><span class="o">|</span><span class="nx">Element</span><span class="p">],</span> <span class="p">[</span><span class="nx">config</span> <span class="o">:</span> <span class="nb">Object</span><span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">Function</span>
 </pre></div>
 
 
 <p>Leipzig.js takes two optional arguments during construction:</p>
 <ol>
-<li><code>elements</code>, which tells Leipzig.js which elements to gloss</li>
+<li><code>selector</code>, which tells Leipzig.js which elements to gloss</li>
 <li><code>config</code>, a plain JavaScript object for configuration</li>
 </ol>
 <p>Neither argument is required when creating a new Leipzig.js object, and if no
@@ -89,18 +89,29 @@ listed below.</p>
 are word-aligned, and the last line is a non-aligned free translation.</p>
 <p>The default configuraiton is the following:</p>
 <div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span>
-  <span class="nx">elements</span><span class="o">:</span> <span class="s1">&#39;[data-gloss]&#39;</span><span class="p">,</span>
+  <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;[data-gloss]&#39;</span><span class="p">,</span>
   <span class="nx">lastLineFree</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
   <span class="nx">spacing</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">autoTag</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">async</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-  <span class="nx">abbreviations</span><span class="o">:</span> <span class="p">{...},</span> <span class="c1">// See Leipzig.abbreviations section</span>
-  <span class="nx">tokenizers</span><span class="o">:</span> <span class="p">[</span>
+  <span class="nx">lexers</span><span class="o">:</span> <span class="p">[</span>
     <span class="s1">&#39;{(.*?)}&#39;</span><span class="p">,</span>
     <span class="s1">&#39;([^\\s]+)&#39;</span>
   <span class="p">],</span>
-  <span class="kr">class</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">beforeGloss</span><span class="o">:</span> <span class="s1">&#39;gloss:beforeGloss&#39;</span><span class="p">,</span>
+    <span class="nx">afterGloss</span><span class="o">:</span> <span class="s1">&#39;gloss:afterGloss&#39;</span><span class="p">,</span>
+    <span class="nx">beforeLex</span><span class="o">:</span> <span class="s1">&#39;gloss:beforeLex&#39;</span><span class="p">,</span>
+    <span class="nx">afterLex</span><span class="o">:</span> <span class="s1">&#39;gloss:afterLex&#39;</span><span class="p">,</span>
+    <span class="nx">beforeAlign</span><span class="o">:</span> <span class="s1">&#39;gloss:beforeAlign&#39;</span><span class="p">,</span>
+    <span class="nx">afterAlign</span><span class="o">:</span><span class="s1">&#39;gloss:afterAlign&#39;</span><span class="p">,</span>
+    <span class="nx">beforeFormat</span><span class="o">:</span> <span class="s1">&#39;gloss:beforeFormat&#39;</span><span class="p">,</span>
+    <span class="nx">afterFormat</span><span class="o">:</span><span class="s1">&#39;gloss:afterFormat&#39;</span><span class="p">,</span>
+    <span class="nx">start</span><span class="o">:</span> <span class="s1">&#39;gloss:start&#39;</span><span class="p">,</span>
+    <span class="nx">complete</span><span class="o">:</span> <span class="s1">&#39;gloss:complete&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">classes</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">glossed</span><span class="o">:</span> <span class="s1">&#39;gloss--glossed&#39;</span><span class="p">,</span>
     <span class="nx">noSpace</span><span class="o">:</span> <span class="s1">&#39;gloss--no-space&#39;</span><span class="p">,</span>
     <span class="nx">words</span><span class="o">:</span> <span class="s1">&#39;gloss__words&#39;</span><span class="p">,</span>
@@ -111,33 +122,34 @@ are word-aligned, and the last line is a non-aligned free translation.</p>
     <span class="nx">noAlign</span><span class="o">:</span> <span class="s1">&#39;gloss__line--no-align&#39;</span><span class="p">,</span>
     <span class="nx">hidden</span><span class="o">:</span> <span class="s1">&#39;gloss__line--hidden&#39;</span><span class="p">,</span>
     <span class="nx">abbr</span><span class="o">:</span> <span class="s1">&#39;gloss__abbr&#39;</span>
-  <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">abbreviations</span><span class="o">:</span> <span class="p">{...}</span> <span class="c1">// See Leipzig.abbreviations section</span>
 <span class="p">});</span>
 </pre></div>
 
 
 <p>When configuring Leipzig.js, you only need to specify the options that you want
 to change. All other options will retain their default values.</p>
-<h2><code>elements : String | NodeList | Element</code></h2>
+<h2><code>selector: String | NodeList | Element</code></h2>
 <div class="highlight"><pre><span class="c1">// default: &#39;[data-gloss]&#39;</span>
 </pre></div>
 
 
 <p>This option configures which elements that the Leipzig.js glosser will operate
 on. You can set this option by either passing it as the first argument when
-initializing Leipzig.js, or by setting the <code>elements</code> argument in the
+initializing Leipzig.js, or by setting the <code>selector</code> argument in the
 configuration object:</p>
 <div class="highlight"><pre><span class="c1">// Two ways of saying the same thing</span>
 <span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;[data-gloss]&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">elements</span><span class="o">:</span> <span class="s1">&#39;[data-gloss]&#39;</span> <span class="p">});</span>
+<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;[data-gloss]&#39;</span> <span class="p">});</span>
 </pre></div>
 
 
 <p>The elements option can be a <code>String</code>, a <code>NodeList</code> or <code>Element</code>.</p>
-<p>If the <code>elements</code> argument is a <code>String</code>, Leipzig.js will internally run
+<p>If the <code>selector</code> argument is a <code>String</code>, Leipzig.js will internally run
 <code>document.querySelectorAll()</code> using the specified string, and the glosser will
 operate on the list of <abbr>DOM</abbr> elements it returns.</p>
-<p>Likewise, if <code>elements</code> is an <code>Element</code> or a <code>NodeList</code>, the glosser will
+<p>Likewise, if <code>selector</code> is an <code>Element</code> or a <code>NodeList</code>, the glosser will
 operate on the provided <abbr>DOM</abbr> element(s).</p>
 <h2><code>lastLineFree : Boolean</code></h2>
 <div class="highlight"><pre><span class="c1">// default: true</span>
@@ -258,27 +270,119 @@ the glossing has been completed.</p>
 <h2><code>abbreviations : Object</code></h2>
 <p>If you pass in a plain JS object, it will override <a href="#default-definitions">the default
 auto-tagging definitions</a>.</p>
-<h2><code>tokenizers : Array&lt;String&gt; | String | RegExp</code></h2>
+<h2><code>lexers : Array&lt;String&gt; | String | RegExp</code></h2>
 <div class="highlight"><pre><span class="c1">// default: [&#39;{(.*?)}&#39;, &#39;([^\\s]+)&#39;]</span>
 </pre></div>
 
 
 <p>This option controls how Leipzig breaks lines into aligned words.</p>
 <p>If passed a <code>String</code> or an <code>Array</code> of <code>String</code>s, Leipzig will convert them into
-a <code>RegExp</code> object used for tokenizing the lines. The following configurations
-produce the same tokenizer:</p>
+a <code>RegExp</code> object used for lexing the lines. The following configurations
+produce the same lexer:</p>
 <div class="highlight"><pre><span class="c1">// Array&lt;String&gt;</span>
-<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">tokenizers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;{(.*?)}&#39;</span><span class="p">,</span> <span class="s1">&#39;([^\\s]+)&#39;</span><span class="p">]</span> <span class="p">});</span>
+<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">lexers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;{(.*?)}&#39;</span><span class="p">,</span> <span class="s1">&#39;([^\\s]+)&#39;</span><span class="p">]</span> <span class="p">});</span>
 
 <span class="c1">// String</span>
-<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">tokenizers</span><span class="o">:</span> <span class="s1">&#39;{(.*?)}|([^\\s]+)&#39;</span> <span class="p">});</span>
+<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">lexers</span><span class="o">:</span> <span class="s1">&#39;{(.*?)}|([^\\s]+)&#39;</span> <span class="p">});</span>
 
 <span class="c1">// RegExp</span>
-<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">tokenizers</span><span class="o">:</span> <span class="sr">/{(.*?)}|([^\s]+)/g</span> <span class="p">});</span>
+<span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">lexers</span><span class="o">:</span> <span class="sr">/{(.*?)}|([^\s]+)/g</span> <span class="p">});</span>
 </pre></div>
 
 
-<h2><code>class : Object</code></h2>
+<h2><code>events : Object</code></h2>
+<p>Leipzig.js triggers certain events during the glossing process. You can act on
+these events by creating an event listener before calling the glosser:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">();</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;gloss:onComplete&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Glossing complete!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">leipzig</span><span class="p">.</span><span class="nx">gloss</span><span class="p">();</span>
+
+<span class="c1">// -&gt; Glossing complete!</span>
+</pre></div>
+
+
+<p>Following the DOM Custom Event API, some of the events have <code>detail</code> objects,
+which contain additional information about the event. For events without detail
+objects, you should be able to access all relevant information from various
+methods on <code>event.target</code>.</p>
+<p>The default event names are listed in the table below, along with additional
+information about each event.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Triggers...</th>
+<th>Details Object</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gloss:start</td>
+<td>Before glossing any <code>Element</code></td>
+<td><code>{ glosses: NodeList }</code></td>
+</tr>
+<tr>
+<td>gloss:complete</td>
+<td>After glossing every <code>Element</code></td>
+<td><code>{ glosses: NodeList }</code></td>
+</tr>
+<tr>
+<td>gloss:beforeGloss</td>
+<td>Before each <code>Element</code> is glossed</td>
+<td>--</td>
+</tr>
+<tr>
+<td>gloss:afterGloss</td>
+<td>After each <code>Element</code> is glossed</td>
+<td>--</td>
+</tr>
+<tr>
+<td>gloss:beforeLex</td>
+<td>Before lexing each line</td>
+<td>--</td>
+</tr>
+<tr>
+<td>gloss:afterLex</td>
+<td>After lexing each line</td>
+<td><code>{ tokens: Array&lt;String&gt; }</code></td>
+</tr>
+<tr>
+<td>gloss:beforeAlign</td>
+<td>Before aligning lexed lines</td>
+<td><code>{ lines: Array&lt;Array&lt;String&gt;&gt; }</code></td>
+</tr>
+<tr>
+<td>gloss:afterAlign</td>
+<td>After aligning lexed line</td>
+<td><code>{ lines: Array&lt;Array&lt;String&gt;&gt; }</code></td>
+</tr>
+<tr>
+<td>gloss:beforeFormat</td>
+<td>Before formatting aligned lines</td>
+<td><code>{ lines: Array&lt;Array&lt;String&gt;&gt; }</code></td>
+</tr>
+<tr>
+<td>gloss:afterFormat</td>
+<td>After formatting aligned lines</td>
+<td>--</td>
+</tr>
+</tbody>
+</table>
+<p>You can customize the event names by passing a plain JavaScript object to the
+<code>events</code> key on your <code>config</code> object, e.g.:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">leipzig</span> <span class="o">=</span> <span class="nx">Leipzig</span><span class="p">({</span>
+  <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">complete</span><span class="o">:</span> <span class="s1">&#39;newOnComplete&#39;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<h2><code>classes : Object</code></h2>
 <p>Leipzig.js adds a number of <abbr>CSS</abbr> classes to the final gloss, which
 you can use to style your glosses. The names of these classes can be configured
 by changing the the settings on the <code>class</code> object within the <code>options</code>
@@ -296,12 +400,12 @@ configuration object.</p>
 <tr>
 <td><code>glossed</code></td>
 <td><code>gloss--glossed</code></td>
-<td>Added to each element in <code>elements</code> after the glosser has finished</td>
+<td>Added to each element in <code>selector</code> after the glosser has finished</td>
 </tr>
 <tr>
 <td><code>noSpace</code></td>
 <td><code>gloss--no-space</code></td>
-<td>Added to each element in <code>elements</code> when the <code>spacing</code> option is set to false</td>
+<td>Added to each element in <code>selector</code> when the <code>spacing</code> option is set to false</td>
 </tr>
 <tr>
 <td><code>words</code></td>
@@ -383,12 +487,12 @@ being fully parsed and formatted:</p>
 </pre></div>
 
 
-<p>If the class names of the last three options &ndash; <code>class.freeTranslation</code>,
-<code>class.original</code>, and <code>class.noAlign</code> &ndash; are manually added to the html
+<p>If the class names of the last three options &ndash; <code>classes.freeTranslation</code>,
+<code>classes.original</code>, and <code>classes.noAlign</code> &ndash; are manually added to the html
 markup, they will be skipped by the Leipzig.js glosser during parsing, and will
 not be word-aligned with the other text.</p>
 <p><strong><abbr>NB:</abbr></strong> If a line is manually skipped by adding the
-<code>class.noAlign</code> class, it might interfere with the automated Free Translation and
+<code>classes.noAlign</code> class, it might interfere with the automated Free Translation and
 Original Language line detection. If this happens, you will have to manually
 add the relevant classes to the underlying markup.</p>
 <hr />
