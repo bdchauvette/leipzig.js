@@ -24,7 +24,7 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
     - [`async`](#async--boolean)
     - [`abbreviations`](#abbreviations--object)
     - [`lexers`](#lexers--arraystring--string--regexp)
-    - [`class`](#class--object)
+    - [`classes`](#classes--object)
   - [`Leipzig#config()`](#leipzigconfig)
   - [`Leipzig#gloss()`](#leipziggloss)
   - [`Leipzig.abbreviations`](#leipzigabbreviations)
@@ -298,7 +298,7 @@ var leipzig = Leipzig({
     '{(.*?)}',
     '([^\\s]+)'
   ],
-  class: {
+  classes: {
     glossed: 'gloss--glossed',
     noSpace: 'gloss--no-space',
     words: 'gloss__words',
@@ -495,11 +495,11 @@ var leipzig = Leipzig({ lexers: '{(.*?)}|([^\\s]+)' });
 var leipzig = Leipzig({ lexers: /{(.*?)}|([^\s]+)/g });
 ```
 
-### `class : Object`
+### `classes : Object`
 
 Leipzig.js adds a number of CSS classes to the final gloss, which
 you can use to style your glosses. The names of these classes can be configured
-by changing the the settings on the `class` object within the `options`
+by changing the the settings on the `classes` object within the `options`
 configuration object.
 
 The names, meaning, and default values of the classes are as follows:
@@ -548,13 +548,13 @@ being fully parsed and formatted:
 </div>
 ```
 
-If the class names of the last three options &ndash; `class.freeTranslation`,
-`class.original`, and `class.noAlign` &ndash; are manually added to the html
+If the class names of the last three options &ndash; `classes.freeTranslation`,
+`classes.original`, and `classes.noAlign` &ndash; are manually added to the html
 markup, they will be skipped by the Leipzig.js glosser during parsing, and will
 not be word-aligned with the other text.
 
 **NB:** If a line is manually skipped by adding the
-`class.noAlign` class, it might interfere with the automated Free Translation and
+`classes.noAlign` class, it might interfere with the automated Free Translation and
 Original Language line detection. If this happens, you will have to manually
 add the relevant classes to the underlying markup.
 

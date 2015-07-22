@@ -13,7 +13,7 @@ var defaults = {
     '([^\\s]+)'
   ],
   elements: '[data-gloss]',
-  class: {
+  classes: {
     glossed: 'gloss--glossed',
     noSpace: 'gloss--no-space',
     words: 'gloss__words',
@@ -41,7 +41,7 @@ var testConfig = {
     'test regex'
   ],
   elements: '.test',
-  class: {
+  classes: {
     glossed: 'test--glossed',
     noSpace: 'test--no-space',
     words: 'test__words',

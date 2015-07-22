@@ -118,22 +118,22 @@
     }
 
     // css settings
-    if (!opts.hasOwnProperty('class')) {
-      opts['class'] = {};
+    if (!opts.hasOwnProperty('classes')) {
+      opts.classes = {};
     }
 
-    this['class'] = {
-      glossed: opts['class'].glossed || 'gloss--glossed',
-      noSpace: opts['class'].noSpace || 'gloss--no-space',
-      words: opts['class'].words || 'gloss__words',
-      word: opts['class'].word || 'gloss__word',
-      line: opts['class'].line || 'gloss__line',
-      lineNum: opts['class'].lineNum || 'gloss__line--',
-      original: opts['class'].original || 'gloss__line--original',
-      freeTranslation: opts['class'].freeTranslation || 'gloss__line--free',
-      noAlign: opts['class'].noAlign || 'gloss__line--no-align',
-      hidden: opts['class'].hidden || 'gloss__line--hidden',
-      abbr: opts['class'].abbr || 'gloss__abbr'
+    this.classes = {
+      glossed: opts.classes.glossed || 'gloss--glossed',
+      noSpace: opts.classes.noSpace || 'gloss--no-space',
+      words: opts.classes.words || 'gloss__words',
+      word: opts.classes.word || 'gloss__word',
+      line: opts.classes.line || 'gloss__line',
+      lineNum: opts.classes.lineNum || 'gloss__line--',
+      original: opts.classes.original || 'gloss__line--original',
+      freeTranslation: opts.classes.freeTranslation || 'gloss__line--free',
+      noAlign: opts.classes.noAlign || 'gloss__line--no-align',
+      hidden: opts.classes.hidden || 'gloss__line--hidden',
+      abbr: opts.classes.abbr || 'gloss__abbr'
     };
   };
 
@@ -192,12 +192,12 @@
 
       if (abbreviations[tag]) {
         definition = abbreviations[tag];
-        tagged = '<abbr class="' + _this2['class'].abbr + '" title="' + definition + '">' + tag + '</abbr>';
+        tagged = '<abbr class="' + _this2.classes.abbr + '" title="' + definition + '">' + tag + '</abbr>';
       } else if (maybeNegative && abbreviations[negStem]) {
         definition = abbreviations[negStem];
-        tagged = '<abbr class="' + _this2['class'].abbr + '" title="non-' + definition + '">' + tag + '</abbr>';
+        tagged = '<abbr class="' + _this2.classes.abbr + '" title="non-' + definition + '">' + tag + '</abbr>';
       } else {
-        tagged = '<abbr class="' + _this2['class'].abbr + '">' + tag + '</abbr>';
+        tagged = '<abbr class="' + _this2.classes.abbr + '">' + tag + '</abbr>';
       }
 
       return tagged;
@@ -234,10 +234,10 @@
     var wrapper = document.createElement(wrapperType);
     var innerHtml = [];
 
-    addClass(wrapper, this['class'].words);
+    addClass(wrapper, this.classes.words);
 
     groups.forEach(function (group) {
-      innerHtml.push('<div class="' + _this3['class'].word + '">');
+      innerHtml.push('<div class="' + _this3.classes.word + '">');
 
       group.forEach(function (line, lineNumOffset) {
         var lineNum = lineNumStart + lineNumOffset;
@@ -250,7 +250,7 @@
           line = _this3.tag(line);
         }
 
-        innerHtml.push('<p class="' + _this3['class'].line + ' ' + _this3['class'].lineNum + lineNum + '">' + line + '</p>');
+        innerHtml.push('<p class="' + _this3.classes.line + ' ' + _this3.classes.lineNum + lineNum + '">' + line + '</p>');
       });
 
       innerHtml.push('</div>');
@@ -293,27 +293,27 @@
 
       if (_this.firstLineOrig) {
         var firstLine = lines[0];
-        addClass(firstLine, _this['class'].original);
+        addClass(firstLine, _this.classes.original);
       }
 
       if (_this.lastLineFree) {
         var lastLine = lines[lines.length - 1];
-        addClass(lastLine, _this['class'].freeTranslation);
+        addClass(lastLine, _this.classes.freeTranslation);
       }
 
       // process each line in the gloss
       lines.forEach(function (line, lineNum) {
         // don't align lines that are free translations or original,
         // unformatted lines
-        var isOrig = hasClass(line, _this['class'].original);
-        var isFree = hasClass(line, _this['class'].freeTranslation);
-        var shouldSkip = hasClass(line, _this['class'].noAlign);
+        var isOrig = hasClass(line, _this.classes.original);
+        var isFree = hasClass(line, _this.classes.freeTranslation);
+        var shouldSkip = hasClass(line, _this.classes.noAlign);
 
         var shouldAlign = !isOrig && !isFree && !shouldSkip;
 
         if (shouldAlign) {
           linesToAlign.push(_this.lex(line.innerHTML));
-          addClass(line, _this['class'].hidden);
+          addClass(line, _this.classes.hidden);
 
           // if _this is the first aligned line, mark the location
           // so that the final aligned glosses can be inserted here
@@ -322,8 +322,8 @@
             firstRawLineNum = lineNum;
           }
         } else {
-          addClass(line, _this['class'].line);
-          addClass(line, _this['class'].lineNum + lineNum);
+          addClass(line, _this.classes.line);
+          addClass(line, _this.classes.lineNum + lineNum);
         }
       });
 
@@ -342,10 +342,10 @@
 
       // finish up by adding relevant classes to the main container
       if (!_this.spacing) {
-        addClass(gloss, _this['class'].noSpace);
+        addClass(gloss, _this.classes.noSpace);
       }
 
-      addClass(gloss, _this['class'].glossed);
+      addClass(gloss, _this.classes.glossed);
     }
 
     // process each gloss
