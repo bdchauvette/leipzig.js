@@ -16,16 +16,16 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
 - [Documentation](#documentation)
   - [Marking Up Examples](#marking-up-examples)
   - [`Leipzig()`](#leipzig)
-    - [`selector`](#selector--string--nodelist--element)
-    - [`lastLineFree`](#lastlinefree--boolean)
-    - [`firstLineOrig`](#firstlineorig--boolean)
-    - [`spacing`](#spacing--boolean)
-    - [`autoTag`](#autotag--boolean)
-    - [`async`](#async--boolean)
-    - [`lexers`](#lexers--arraystring--string--regexp)
-    - [`events`](#events--object)
-    - [`classes`](#classes--object)
-    - [`abbreviations`](#abbreviations--object)
+    - [`selector`](#configselector)
+    - [`lastLineFree`](#configlastlinefree)
+    - [`firstLineOrig`](#configfirstlineorig)
+    - [`spacing`](#configspacing)
+    - [`autoTag`](#configautotag)
+    - [`async`](#configasync)
+    - [`lexers`](#configlexers)
+    - [`events`](#configevents)
+    - [`classes`](#configclasses)
+    - [`abbreviations`](#configabbreviations)
   - [`Leipzig#config()`](#leipzigconfig)
   - [`Leipzig#gloss()`](#leipziggloss)
   - [`Leipzig.abbreviations`](#leipzigabbreviations)
@@ -104,6 +104,8 @@ Rules](https://www.eva.mpg.de/lingua/resources/glossing-rules.php) (from which
 Leipzig.js gets its name). The Leipzig Glossing rules homepage also contains
 references to other important works on interlinear glossing.
 
+[Back to Top ↑](#leipzigjs)
+
 ---
 
 # Usage
@@ -120,7 +122,7 @@ $ git clone https://github.com/bdchauvette/leipzig.js.git
 ```
 
 Alternatively, you can skip installing Leipzig.js on your own server, and can
-use the [jsDelivr](https://www.jsdelivr.com/) <abbr>CDN</abbr> as described in
+use the [jsDelivr](http://www.jsdelivr.com/) <abbr>CDN</abbr> as described in
 the next step.
 
 ## 2. Include It
@@ -153,7 +155,7 @@ to the project files on the jsDelivr CDN:
 ```
 
 For more information about jsDelivr, you can visit the [jsDelivr
-homepage](https://www.jsdelivr.com), or read the following blog posts:
+homepage](http://www.jsdelivr.com), or read the following blog posts:
 
 - [jsDelivr - the advanced open source public
   CDN](https://hacks.mozilla.org/2014/03/jsdelivr-the-advanced-open-source-public-cdn/)
@@ -221,6 +223,8 @@ If you're already using [jQuery][], you can use the following script instead:
 </html>
 ```
 
+[Back to Top ↑](#leipzigjs)
+
 ---
 
 # Documentation
@@ -234,7 +238,6 @@ your glosses. For semantic reasons, I like to use `<p>` tags in a `<div>`, e.g.
 <div data-gloss>
   <p>ein Beispiel</p>
   <p>DET.NOM.N.SG example</p>
-  <p></p>
   <p>‘an example’</p>
 </div>
 ```
@@ -262,6 +265,8 @@ with curly braces, e.g.:
 </div>
 ```
 
+[Back to Top ↑](#leipzigjs)
+
 ---
 
 ## `Leipzig()`
@@ -272,7 +277,7 @@ Leipzig([selector : String|NodeList|Element], [config : Object] ) -> Function
 
 Leipzig.js takes two optional arguments during construction:
 
-1. `selector`, which tells Leipzig.js which elements to gloss; equivalent to setting `config.selector`
+1. `selector`, which tells Leipzig.js which elements to gloss
 2. `config`, a plain JavaScript object for configuration
 
 Neither argument is required when creating a new Leipzig.js object, and if no
@@ -284,7 +289,7 @@ listed below.
 Leipzig.js defaults to a three-line glossing pattern, where the first two lines
 are word-aligned, and the last line is a non-aligned free translation.
 
-The default configuraiton is the following:
+The default configuration is the following:
 
 ```javascript
 var leipzig = Leipzig({
@@ -304,9 +309,9 @@ var leipzig = Leipzig({
     beforeLex: 'gloss:beforeLex',
     afterLex: 'gloss:afterLex',
     beforeAlign: 'gloss:beforeAlign',
-    afterAlign:'gloss:afterAlign',
+    afterAlign: 'gloss:afterAlign',
     beforeFormat: 'gloss:beforeFormat',
-    afterFormat:'gloss:afterFormat',
+    afterFormat: 'gloss:afterFormat',
     start: 'gloss:start',
     complete: 'gloss:complete'
   },
@@ -315,12 +320,13 @@ var leipzig = Leipzig({
     noSpace: 'gloss--no-space',
     words: 'gloss__words',
     word: 'gloss__word',
-    line: 'gloss__line--',
+    abbr: 'gloss__abbr',
+    line: 'gloss__line',
+    lineNum: 'gloss__line--',
     original: 'gloss__line--original',
     freeTranslation: 'gloss__line--free',
     noAlign: 'gloss__line--no-align',
-    hidden: 'gloss__line--hidden',
-    abbr: 'gloss__abbr'
+    hidden: 'gloss__line--hidden'
   },
   abbreviations: {...} // See Leipzig.abbreviations section
 });
@@ -329,10 +335,13 @@ var leipzig = Leipzig({
 When configuring Leipzig.js, you only need to specify the options that you want
 to change. All other options will retain their default values.
 
-### `selector : String | NodeList | Element`
+[Back to Top ↑](#leipzigjs)
+
+### `config.selector`
 
 ```javascript
-// default: '[data-gloss]'
+   Type : String | NodeList | Element
+Default : '[data-gloss]'
 ```
 
 This option configures which elements that the Leipzig.js glosser will operate
@@ -346,29 +355,33 @@ var leipzig = Leipzig('[data-gloss]');
 var leipzig = Leipzig({ selector: '[data-gloss]' });
 ```
 
-The `selector` option can be a `String`, a `NodeList` or `Element`.
+The elements option can be a `String`, a `NodeList` or `Element`.
 
 If the `selector` argument is a `String`, Leipzig.js will internally run
 `document.querySelectorAll()` using the specified string, and the glosser will
-operate on the list of DOM elements it returns.
+operate on the list of <abbr>DOM</abbr> elements it returns.
 
 Likewise, if `selector` is an `Element` or a `NodeList`, the glosser will
-operate on the provided DOM element(s).
+operate on the provided <abbr>DOM</abbr> element(s).
 
-### `lastLineFree : Boolean`
+[Back to Top ↑](#leipzigjs)
+
+### `config.lastLineFree`
 
 ```javascript
-// default: true
+   Type : Boolean
+Default : true
 ```
 
-Leipzig.js can automatically mark the last line in a gloss as a free
-translation, which will add a special class to it (`.gloss__line--free` by
-default) and make it not be parsed for alignment.
+Leipzig.js can automatically mark the last line in a gloss as a non-aligned
+free translation. Doing so will add a special class to the last line
+(`.gloss__line--free` by default), and cause the line to be excluded from word
+alignment.
 
 This behavior is controlled by the `lastLineFree` configuration option, and is
 _enabled_ by default.
 
-To disable automatically parsing the last line as a free translation, set
+To disable automatically marking the last line as a free translation, set
 `lastLineFree` to `false` when initializing Leipzig.js:
 
 ```javascript
@@ -376,22 +389,26 @@ var leipzig = Leipzig({ lastLineFree: false });
 ```
 
 If you turn this option off, you can still mark a line as a free translation by
-adding the free translation CSS class (`gloss__line--free` by
-default) to the underlying HTML:
+adding the free translation <abbr>CSS</abbr> class (`gloss__line--free` by
+default) to the underlying <abbr>HTML</abbr>:
 
 ```html
 <p class="gloss__line--free">‘The little dog is eating.’</p>
 ```
 
-### `firstLineOrig : Boolean`
+[Back to Top ↑](#leipzigjs)
+
+### `config.firstLineOrig`
 
 ```javascript
-// default: false
+   Type : Boolean
+Default : false
 ```
 
-Leipzig.js can also automatically mark the first line in the gloss
-as the _original language line_, which will add a special class to it
-(`.gloss__line--original` by default) and make it not be parsed for alignment.
+Leipzig.js can also automatically mark the first line in a gloss as a
+non-aligned free translation. Doing so will add a special class to the last
+line (`.gloss__line--original` by default), and cause the line to be excluded
+from word alignment.
 
 This behavior is useful in cases where the line being glossed is long, or if
 the original language is not usually written with spaces, e.g. Japanese.
@@ -399,7 +416,7 @@ the original language is not usually written with spaces, e.g. Japanese.
 This behavior is controlled by the `firstLineOrig` configuration option, and is
 _disabled_ by default.
 
-To enable automatically parsing the first line as original text, set
+To enable automatically marking the first line as original text, set
 `firstLineOrig` to `true` when initializing Leipzig.js:
 
 ```javascript
@@ -407,17 +424,20 @@ var leipzig = Leipzig({ firstLineOrig: true });
 ```
 
 If `firstLineOrig` is disabled, you can still mark a line as a original text
-by adding the original text CSS class (`gloss__line--original` by
-default) to the underlying HTML:
+by adding the original text <abbr>CSS</abbr> class (`gloss__line--original` by
+default) to the underlying <abbr>HTML</abbr>:
 
 ```html
 <p class="gloss__line--original">太陽が昇る。</p>
 ```
 
-### `spacing : Boolean`
+[Back to Top ↑](#leipzigjs)
+
+### `config.spacing`
 
 ```javascript
-// default: true
+   Type : Boolean
+Default : true
 ```
 
 The default Leipzig.js styling includes small horizontal spacing at glossed
@@ -435,10 +455,13 @@ var leipzig = Leipzig({ spacing: false });
 This will add an additional class to the gloss container (`.gloss--no-space` by
 default), which removes the horizontal space.
 
-### `autoTag : Boolean`
+[Back to Top ↑](#leipzigjs)
+
+### `config.autoTag`
 
 ```javascript
-// default: true
+   Type : Boolean
+Default : true
 ```
 
 By default, Leipzig.js will try to wrap morphemic glosses in `<abbr>` tags.
@@ -446,7 +469,7 @@ Beginning with the <em>second</em> line of the aligned lines, the parser looks
 for the following types of morphemes to tag:
 
 1. Numbers 1 through 4, corresponding to possible person morphemes;
-2. Sequences of &geq;1 uppercase letters, e.g. N, SG, or PST.
+2. Sequences of &geq;1 uppercase letter(s), e.g. N, SG, or PST.
 
 The parser attempts to assign a `title` attribute to any matches by looking for
 a matching key in the `Leipzig.abbreviations` object. This object contains
@@ -462,10 +485,13 @@ var leipzig = Leipzig();
 leipzig.abbreviations.COMP = 'comparative';
 ```
 
-### `async : Boolean`
+[Back to Top ↑](#leipzigjs)
+
+### `config.async`
 
 ```javascript
-// default: false
+   Type : Boolean
+Default : false
 ```
 
 Leipzig.js runs synchronously by default, and normally this is fine. However,
@@ -480,22 +506,19 @@ Leipzig.js to run (somewhat) asynchronously.
 You can use the optional callback to `Leipzig#gloss()` to perform actions when
 the glossing has been completed.
 
-### `abbreviations : Object`
+[Back to Top ↑](#leipzigjs)
 
-If you pass in a plain JS object, it will override [the default
-auto-tagging definitions](#default-definitions).
-
-### `lexers : Array<String> | String | RegExp`
+### `config.lexers`
 
 ```javascript
-// default: ['{(.*?)}', '([^\\s]+)']
+   Type : Array<String> | String | RegExp
+Default : ['{(.*?)}', '([^\\s]+)']
 ```
-
 This option controls how Leipzig breaks lines into aligned words.
 
 If passed a `String` or an `Array` of `String`s, Leipzig will convert them into
 a `RegExp` object used for lexing the lines. The following configurations
-produce the same lexing:
+produce the same lexer:
 
 ```javascript
 // Array<String>
@@ -508,18 +531,31 @@ var leipzig = Leipzig({ lexers: '{(.*?)}|([^\\s]+)' });
 var leipzig = Leipzig({ lexers: /{(.*?)}|([^\s]+)/g });
 ```
 
-### `events : Object`
+[Back to Top ↑](#leipzigjs)
 
+### `config.events`
+
+```javascript
+   Type : Object
+Default : { beforeGloss:  'gloss:beforeGloss',
+            afterGloss:   'gloss:afterGloss',
+            beforeLex:    'gloss:beforeLex',
+            afterLex:     'gloss:afterLex',
+            beforeAlign:  'gloss:beforeAlign',
+            afterAlign:   'gloss:afterAlign',
+            beforeFormat: 'gloss:beforeFormat',
+            afterFormat:  'gloss:afterFormat',
+            start:        'gloss:start',
+            complete:     'gloss:complete' }
+```
 Leipzig.js triggers certain events during the glossing process. You can act on
 these events by creating an event listener before calling the glosser:
 
 ```javascript
 var leipzig = Leipzig();
-
-document.addEventListener('gloss:onComplete', function(event) {
+document.addEventListener('gloss:complete', function(event) {
   console.log('Glossing complete!');
 });
-
 leipzig.gloss();
 
 // -> Glossing complete!
@@ -535,7 +571,7 @@ information about each event.
 
 Name                | Triggers...                         | Details Object
 --------------------|-------------------------------------|-----------------
-gloss:start         | Before glossing any `Element`       | `{ glosses: NodeList }`
+gloss:start         | Before glossing the first `Element` | `{ glosses: NodeList }`
 gloss:complete      | After glossing every `Element`      | `{ glosses: NodeList }`
 gloss:beforeGloss   | Before each `Element` is glossed    | --
 gloss:afterGloss    | After each `Element` is glossed     | --
@@ -551,36 +587,40 @@ gloss:afterFormat   | After formatting aligned lines      | --
 
 ```javascript
 var leipzig = Leipzig({
-  events: {
-    complete: 'newOnComplete'
-  }
+  events: { complete: 'newComplete' }
 });
 ```
 
-### `classes : Object`
+[Back to Top ↑](#leipzigjs)
 
-Leipzig.js adds a number of CSS classes to the final gloss, which
+### `config.classes`
+
+```javascript
+   Type : Object
+Default : // See Table Below
+```
+Leipzig.js adds a number of <abbr>CSS</abbr> classes to the final gloss, which
 you can use to style your glosses. The names of these classes can be configured
-by changing the the settings on the `classes` object within the `config`
+by changing the the settings on the `class` object within the `options`
 configuration object.
 
 The names, meaning, and default values of the classes are as follows:
 
 Option            | Default                  | Description
-------------------|--------------------------|-------------
+------------------|--------------------------|------------
 `glossed`         | `gloss--glossed`         | Added to each element in `selector` after the glosser has finished
 `noSpace`         | `gloss--no-space`        | Added to each element in `selector` when the `spacing` option is set to false
 `words`           | `gloss__words`           | Added to the group of words that are aligned
 `word`            | `gloss__word`            | Added to each word in the group of aligned words
+`abbr`            | `gloss__abbr`            | Added to morpheme abbreviations by the auto-tagger
 `line`            | `gloss__line`            | Added to each visible line in the gloss
-`lineNum`         | `gloss__line--#`         | Added to each visible line in the gloss. The number at the end is a zero-indexed index of the line in the gloss, and can be used to style individual lines
+`lineNum`         | `gloss__line--`          | Added to each visible line in the gloss. The zero-indexed line number is automatically appended to the end of this class.
 `freeTranslation` | `gloss__line--free`      | The free translation line
 `original`        | `gloss__line--original`  | The original language line
 `noAlign`         | `gloss__line--no-align`  | Can be manually added to tell the parser to skip a line when aligning words
-`abbr`            | `gloss__abbr`            | Added to morpheme abbreviations by the auto-tagger
 
 The following example shows the class structure of what a gloss looks like after
-being fully parsed and formatted:
+being fully parsed and formatted (excluding automated morpheme tags):
 
 ```html
 <div id="gloss--style" class="example gloss--no-space gloss--glossed">
@@ -620,12 +660,24 @@ not be word-aligned with the other text.
 Original Language line detection. If this happens, you will have to manually
 add the relevant classes to the underlying markup.
 
+### `config.abbreviations`
+
+```javascript
+   Type : Object
+Default : // see Leipzig.abbreviations section below
+```
+
+If you pass in a plain JavaScript object, it will override [the default
+auto-tagging definitions](#default-definitions).
+
+[Back to Top ↑](#leipzigjs)
+
 ---
 
 ## `Leipzig#config()`
 
 ```javascript
-Leipzig.config(config : Object) -> Void
+Leipzig.config(options : Object) -> Void
 ```
 
 This option allows you to configure Leipzig.js after initializing it. The
@@ -640,8 +692,11 @@ var leipzig = Leipzig();
 leipzig.config({ async: true });
 ```
 
-**NB:** The `config` method will only set the options passed in via the
-configuration object. All other settings will return to their default values.
+**NB:** The `config` method will only set the options
+passed in via the configuration object. All other settings will return to their
+default values.
+
+[Back to Top ↑](#leipzigjs)
 
 ---
 
@@ -660,17 +715,13 @@ error):
 
 ```javascript
 var leipzig = Leipzig({ async: true });
-
 console.log('Starting gloss...');
-
 leipzig.gloss(function(err, elements) {
   if (err) {
     console.log(err);
   }
-
   console.log('Glossing complete!' + elements);
 });
-
 console.log('Glosser is running...');
 
 // -> Starting gloss...
@@ -680,6 +731,8 @@ console.log('Glosser is running...');
 
 This callback is especially useful if you're using the asynchronous glosser,
 but you can also use it with the synchronous API.
+
+[Back to Top ↑](#leipzigjs)
 
 ---
 
@@ -702,7 +755,7 @@ leipzig.abbreviations = { ABBREVIATION: 'definition' }
 Or by setting the `abbreviations` config option when initializing Leipzig:
 
 ```javascript
-var newAbbreviations = { ABBREVATION: 'definition' };
+var newAbbreviations = { ABBREVIATION: 'definition' };
 var leipzig = Leipzig({ abbreviations: newAbbreviations });
 ```
 
@@ -804,6 +857,7 @@ The standard list is as follows:
  TR           | transitive
  VOC          | vocative
 
+[Back to Top ↑](#leipzigjs)
 ---
 
 # Tests
@@ -814,6 +868,8 @@ $ cd leipzig.js
 $ npm install
 $ npm test
 ```
+
+[Back to Top ↑](#leipzigjs)
 
 ---
 
