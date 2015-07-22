@@ -105,16 +105,16 @@
       this.abbreviations = opts.abbreviations;
     }
 
-    if (opts.tokenizers === undefined) {
-      this.tokenizers = ['{(.*?)}', '([^\\s]+)'];
-    } else if (opts.tokenizers instanceof Array && hasOnlyStrings(opts.tokenizers)) {
-      this.tokenizers = opts.tokenizers;
-    } else if (opts.tokenizers instanceof RegExp) {
-      this.tokenizers = opts.tokenizers;
-    } else if (typeof opts.tokenizers === 'string') {
-      this.tokenizers = [opts.tokenizers];
+    if (opts.lexers === undefined) {
+      this.lexers = ['{(.*?)}', '([^\\s]+)'];
+    } else if (opts.lexers instanceof Array && hasOnlyStrings(opts.lexers)) {
+      this.lexers = opts.lexers;
+    } else if (opts.lexers instanceof RegExp) {
+      this.lexers = opts.lexers;
+    } else if (typeof opts.lexers === 'string') {
+      this.lexers = [opts.lexers];
     } else {
-      throw new Error('Invalid tokenizer');
+      throw new Error('Invalid lexer');
     }
 
     // css settings
@@ -138,23 +138,23 @@
   };
 
   /**
-   * Tokenizes a line of input
-   * @param {String} phrase - the phrase to be tokenized
+   * Extracts word tokens from a gloss line
+   * @param {String} phrase - the phrase to be lexd
    * @returns {Array} The tokens
    */
-  Leipzig.prototype.tokenize = function tokenize(phrase) {
-    var tokenizer = undefined;
+  Leipzig.prototype.lex = function lex(phrase) {
+    var lexer = undefined;
 
-    if (this.tokenizers instanceof RegExp) {
-      tokenizer = this.tokenizers;
-    } else if (this.tokenizers instanceof Array) {
-      var tokenizers = this.tokenizers.join('|');
-      tokenizer = new RegExp(tokenizers, 'g');
+    if (this.lexers instanceof RegExp) {
+      lexer = this.lexers;
+    } else if (this.lexers instanceof Array) {
+      var lexers = this.lexers.join('|');
+      lexer = new RegExp(lexers, 'g');
     } else {
-      throw new Error('Invalid tokenizer');
+      throw new Error('Invalid lexer');
     }
 
-    var tokens = phrase.match(tokenizer).map(function (token) {
+    var tokens = phrase.match(lexer).map(function (token) {
       // remove braces from groups
       var firstChar = token[0];
       var lastChar = token[token.length - 1];
@@ -312,7 +312,7 @@
         var shouldAlign = !isOrig && !isFree && !shouldSkip;
 
         if (shouldAlign) {
-          linesToAlign.push(_this.tokenize(line.innerHTML));
+          linesToAlign.push(_this.lex(line.innerHTML));
           addClass(line, _this['class'].hidden);
 
           // if _this is the first aligned line, mark the location

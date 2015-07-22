@@ -23,7 +23,7 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
     - [`autoTag`](#autotag--boolean)
     - [`async`](#async--boolean)
     - [`abbreviations`](#abbreviations--object)
-    - [`tokenizers`](#tokenizers--arraystring--string--regexp)
+    - [`lexers`](#lexers--arraystring--string--regexp)
     - [`class`](#class--object)
   - [`Leipzig#config()`](#leipzigconfig)
   - [`Leipzig#gloss()`](#leipziggloss)
@@ -294,7 +294,7 @@ var leipzig = Leipzig({
   autoTag: true,
   async: false,
   abbreviations: {...}, // See Leipzig.abbreviations section
-  tokenizers: [
+  lexers: [
     '{(.*?)}',
     '([^\\s]+)'
   ],
@@ -472,7 +472,7 @@ the glossing has been completed.
 If you pass in a plain JS object, it will override [the default
 auto-tagging definitions](#default-definitions).
 
-### `tokenizers : Array<String> | String | RegExp`
+### `lexers : Array<String> | String | RegExp`
 
 ```javascript
 // default: ['{(.*?)}', '([^\\s]+)']
@@ -481,18 +481,18 @@ auto-tagging definitions](#default-definitions).
 This option controls how Leipzig breaks lines into aligned words.
 
 If passed a `String` or an `Array` of `String`s, Leipzig will convert them into
-a `RegExp` object used for tokenizing the lines. The following configurations
-produce the same tokenizer:
+a `RegExp` object used for lexing the lines. The following configurations
+produce the same lexing:
 
 ```javascript
 // Array<String>
-var leipzig = Leipzig({ tokenizers: ['{(.*?)}', '([^\\s]+)'] });
+var leipzig = Leipzig({ lexers: ['{(.*?)}', '([^\\s]+)'] });
 
 // String
-var leipzig = Leipzig({ tokenizers: '{(.*?)}|([^\\s]+)' });
+var leipzig = Leipzig({ lexers: '{(.*?)}|([^\\s]+)' });
 
 // RegExp
-var leipzig = Leipzig({ tokenizers: /{(.*?)}|([^\s]+)/g });
+var leipzig = Leipzig({ lexers: /{(.*?)}|([^\s]+)/g });
 ```
 
 ### `class : Object`

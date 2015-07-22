@@ -8,7 +8,7 @@ var defaults = {
   spacing: true,
   autoTag: true,
   async: false,
-  tokenizers: [
+  lexers: [
     '{(.*?)}',
     '([^\\s]+)'
   ],
@@ -37,7 +37,7 @@ var testConfig = {
   autoTag: false,
   async: true,
   abbreviations: { foo: 'bar' },
-  tokenizers: [
+  lexers: [
     'test regex'
   ],
   elements: '.test',
@@ -139,25 +139,25 @@ test('should set abbreviations when called with an object', function(t) {
   t.end();
 });
 
-test('should accept a String as a tokenizer', function(t) {
-  var leipzig = Leipzig({ tokenizers: 'test' });
+test('should accept a String as a lexer', function(t) {
+  var leipzig = Leipzig({ lexers: 'test' });
 
-  t.deepEqual(leipzig.tokenizers, ['test']);
+  t.deepEqual(leipzig.lexers, ['test']);
   t.end();
 });
 
-test('should accept a RegExp as a tokenizer', function(t) {
-  var leipzig = Leipzig({ tokenizers: /test/ });
+test('should accept a RegExp as a lexer', function(t) {
+  var leipzig = Leipzig({ lexers: /test/ });
 
-  t.deepEqual(leipzig.tokenizers, /test/);
+  t.deepEqual(leipzig.lexers, /test/);
   t.end();
 });
 
-test('should reject tokenizers that are not arrays of strings', function(t) {
-  var expectedErrorMessage = 'Unknown format for tokenizers';
+test('should reject lexers that are not arrays of strings', function(t) {
+  var expectedErrorMessage = 'Unknown format for lexers';
 
   try {
-    var leipzig = Leipzig({ tokenizers: {} });
+    var leipzig = Leipzig({ lexers: {} });
   } catch (e) {
     if (e.message === expectedErrorMessage) {
       t.pass();
@@ -165,7 +165,7 @@ test('should reject tokenizers that are not arrays of strings', function(t) {
   }
 
   try {
-    var leipzig = Leipzig({ tokenizers: [123] });
+    var leipzig = Leipzig({ lexers: [123] });
   } catch (e) {
     if (e.message === expectedErrorMessage) {
       t.pass();
