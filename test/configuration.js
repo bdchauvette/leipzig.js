@@ -12,7 +12,7 @@ var defaults = {
     '{(.*?)}',
     '([^\\s]+)'
   ],
-  elements: '[data-gloss]',
+  selector: '[data-gloss]',
   events: {
     beforeGloss: 'gloss:beforeGloss',
     afterGloss: 'gloss:afterGloss',
@@ -52,7 +52,7 @@ var testConfig = {
   lexers: [
     'test regex'
   ],
-  elements: '.test',
+  selector: '.test',
   events: {
     beforeGloss: 'test:beforeGloss',
     afterGloss: 'test:afterGloss',
@@ -81,12 +81,12 @@ var testConfig = {
 };
 
 // helper function for testing selector
-function testSelector(t, elements) {
-  var leipzig = Leipzig(elements);
+function testSelector(t, selector) {
+  var leipzig = Leipzig(selector);
 
   Object.keys(leipzig).forEach(function(opt) {
-    if (opt === 'elements') {
-      t.deepEqual(leipzig[opt], elements);
+    if (opt === 'selector') {
+      t.deepEqual(leipzig[opt], selector);
     } else {
       t.deepEqual(leipzig[opt], defaults[opt]);
     }
@@ -104,20 +104,20 @@ test('use all defaults when called with no args', function(t) {
 });
 
 test('only set the selector when called with a string', function(t) {
-  var elements = '.gloss';
-  testSelector(t, elements);
+  var selector = '.gloss';
+  testSelector(t, selector);
   t.end();
 });
 
 test('only set the selector when called with a NodeList', function(t) {
-  var elements = document.querySelectorAll('.gloss');
-  testSelector(t, elements);
+  var selector = document.querySelectorAll('.gloss');
+  testSelector(t, selector);
   t.end();
 });
 
 test('only set the selector when called with an element', function(t) {
-  var elements = document.querySelector('html');
-  testSelector(t, elements);
+  var selector = document.querySelector('html');
+  testSelector(t, selector);
   t.end();
 });
 
@@ -200,12 +200,12 @@ test('should reject lexers that are not arrays of strings', function(t) {
 });
 
 test('set config correctly when called with two arguments', function(t) {
-  var elements = document.querySelectorAll('.gloss');
-  var leipzig = Leipzig(elements, testConfig);
+  var selector = document.querySelectorAll('.gloss');
+  var leipzig = Leipzig(selector, testConfig);
 
   Object.keys(leipzig).forEach(function(opt) {
-    if (opt === 'elements') {
-      t.deepEqual(leipzig[opt], elements);
+    if (opt === 'selector') {
+      t.deepEqual(leipzig[opt], selector);
     } else {
       t.deepEqual(leipzig[opt], testConfig[opt]);
     }

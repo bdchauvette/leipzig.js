@@ -85,24 +85,24 @@ function hasOnlyStrings(arr) {
 /**
  * Creates a Leipzig.js glossing object
  * @constructor
- * @param {String|NodeList|Element} elements - elements to be glossed
+ * @param {String|NodeList|Element} selector - determines elements to be glossed
  * @param {Object} config - configuration object
  */
-var Leipzig = function(elements, config) {
+var Leipzig = function(selector, config) {
   if (!(this instanceof Leipzig)) {
-    return new Leipzig(elements, config);
+    return new Leipzig(selector, config);
   }
 
   let opts = config || {};
 
-  if (typeof elements === 'string' ||
-      elements instanceof NodeList ||
-      elements instanceof Element) {
-    opts.elements = elements;
-  } else if (typeof elements === 'object') {
+  if (typeof selector === 'string' ||
+      selector instanceof NodeList ||
+      selector instanceof Element) {
+    opts.selector = selector;
+  } else if (typeof selector === 'object') {
     // if the first argument is an object, let's assume it's actually a
     // configuration object, and not the selector
-    opts = elements;
+    opts = selector;
   }
 
   this.config(opts);
@@ -113,7 +113,7 @@ var Leipzig = function(elements, config) {
  * @param {Object} config - the options
  */
 Leipzig.prototype.config = function config(opts) {
-  this.elements = opts.elements || '[data-gloss]';
+  this.selector = opts.selector || '[data-gloss]';
   this.spacing = setBool(opts, 'spacing', true);
   this.firstLineOrig = setBool(opts, 'firstLineOrig', false);
   this.lastLineFree = setBool(opts, 'lastLineFree', true);
@@ -316,12 +316,12 @@ Leipzig.prototype.gloss = function gloss(callback) {
   // select the elements to gloss
   let glossElements;
 
-  if (typeof this.elements === 'string') {
-    glossElements = document.querySelectorAll(this.elements);
-  } else if (this.elements instanceof NodeList) {
-    glossElements = this.elements;
-  } else if (this.elements instanceof Element) {
-    glossElements = [this.elements];
+  if (typeof this.selector === 'string') {
+    glossElements = document.querySelectorAll(this.selector);
+  } else if (this.selector instanceof NodeList) {
+    glossElements = this.selector;
+  } else if (this.selector instanceof Element) {
+    glossElements = [this.selector];
   } else {
     throw new Error('Invalid selector');
   }
