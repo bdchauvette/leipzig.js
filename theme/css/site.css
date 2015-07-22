@@ -76,6 +76,10 @@ abbr[title] {
   cursor: help;
 }
 
+code, pre {
+  font-family: 'source code pro', monospace;
+}
+
 code {
   font-size: 0.77778em;
 }
