@@ -572,7 +572,7 @@ information about each event.
 Name                | Triggers...                         | Details Object
 --------------------|-------------------------------------|-----------------
 gloss:start         | Before glossing the first `Element` | `{ glosses: NodeList }`
-gloss:complete      | After glossing every `Element`      | `{ glosses: NodeList }`
+gloss:complete      | After glossing the last `Element`   | `{ glosses: NodeList }`
 gloss:beforeGloss   | Before each `Element` is glossed    | --
 gloss:afterGloss    | After each `Element` is glossed     | --
 gloss:beforeLex     | Before lexing each line             | --
