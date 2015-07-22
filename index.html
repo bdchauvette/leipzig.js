@@ -114,7 +114,7 @@ Leipzig.js gets its name). The Leipzig Glossing rules homepage also contains
 references to other important works on interlinear glossing.</p>
 <hr />
 <h1>Usage</h1>
-<h2>1. Download It</h2>
+<h2>1. Download It (Optional)</h2>
 <p>You can install Leipzig.js using <code>npm</code> or Bower, or by downloading the latest
 version from the github repository:</p>
 <div class="highlight"><pre><span class="nv">$ </span>npm install --save leipzig
@@ -123,6 +123,9 @@ version from the github repository:</p>
 </pre></div>
 
 
+<p>Alternatively, you can skip installing Leipzig.js on your own server, and can
+use the <a href="https://www.jsdelivr.com/">jsDelivr</a> <abbr>CDN</abbr> as described in
+the next step.</p>
 <h2>2. Include It</h2>
 <p>Once you have the files, include the main <code>leipzig.js</code> file somewhere on your
 page, ideally at the bottom of the <code>&lt;body&gt;</code>:</p>
@@ -136,6 +139,24 @@ Leipzig.js stylesheet in the <code>&lt;head&gt;</code> of your page:</p>
 </pre></div>
 
 
+<h3>jsDelivr</h3>
+<p>You can also include the latest version of Leipzig.js automatically by linking
+to the project files on the jsDelivr <abbr>CDN</abbr>:</p>
+<div class="highlight"><pre><span class="c">&lt;!-- CSS --&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;//cdn.jsdelivr.net/leipzig/latest/leipzig.min.css&quot;</span><span class="nt">&gt;</span>
+
+<span class="c">&lt;!-- JavaScript --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;//cdn.jsdelivr.net/leipzig/latest/leipzig.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+
+<p>For more information about jsDelivr, you can visit the <a href="https://www.jsdelivr.com">jsDelivr
+homepage</a>, or read the following blog posts:</p>
+<ul>
+<li><a href="https://hacks.mozilla.org/2014/03/jsdelivr-the-advanced-open-source-public-cdn/">jsDelivr - the advanced open source public
+  CDN</a></li>
+<li><a href="https://www.maxcdn.com/blog/jsdelivr-better/">jsDelivr does it better</a></li>
+</ul>
 <h2>3. Mark Up Your Examples</h2>
 <p>To use the Leipzig.js default configuration, just add a <code>data-gloss</code> attribute
 to the examples you want to be glossed:</p>
