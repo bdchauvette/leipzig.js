@@ -44,6 +44,37 @@ function setBool(opts, opt, defaultValue) {
 }
 
 /**
+ * Helper function for creating custom events
+ * @private
+ */
+function LeipzigEvent(name, data) {
+  let leipzigEvent;
+
+  if (window.CustomEvent) {
+    leipzigEvent = new CustomEvent(name, {
+      detail: data,
+      bubbles: true,
+      cancelable: true
+    });
+  } else {
+    // For Internet Explorer & PhantomJS
+    leipzigEvent = document.createEvent('CustomEvent');
+    leipzigEvent.initCustomEvent(name, true, true, data);
+  }
+
+  return leipzigEvent;
+}
+
+/**
+ * Helper function for triggering custom events
+ * @private
+ */
+function triggerEvent(el, name, data) {
+  const e = new LeipzigEvent(name, data);
+  el.dispatchEvent(e);
+}
+
+/**
  * Helper function for testing whether an array contains only strings
  * @private
  */
@@ -89,10 +120,7 @@ Leipzig.prototype.config = function config(opts) {
   this.autoTag = setBool(opts, 'autoTag', true);
   this.async = setBool(opts, 'async', false);
 
-  if (typeof opts.abbreviations === 'object') {
-    this.abbreviations = opts.abbreviations;
-  }
-
+  // lexer options
   if (opts.lexers === undefined) {
     this.lexers = [
       '{(.*?)}',
@@ -107,6 +135,28 @@ Leipzig.prototype.config = function config(opts) {
   } else {
     throw new Error('Invalid lexer');
   }
+
+  if (typeof opts.abbreviations === 'object') {
+    this.abbreviations = opts.abbreviations;
+  }
+
+  // event names
+  if (!opts.hasOwnProperty('events')) {
+    opts.events = {};
+  }
+
+  this.events = {
+    beforeGloss: opts.events.beforeGloss || 'gloss:beforeGloss',
+    afterGloss: opts.events.afterGloss || 'gloss:afterGloss',
+    beforeLex: opts.events.beforeLex || 'gloss:beforeLex',
+    afterLex: opts.events.afterLex || 'gloss:afterLex',
+    beforeAlign: opts.events.beforeAlign || 'gloss:beforeAlign',
+    afterAlign: opts.events.afterAlign || 'gloss:afterAlign',
+    beforeFormat: opts.events.beforeFormat || 'gloss:beforeFormat',
+    afterFormat: opts.events.afterFormat || 'gloss:afterFormat',
+    start: opts.events.start || 'gloss:start',
+    complete: opts.events.complete || 'gloss:complete'
+  };
 
   // css settings
   if (!opts.hasOwnProperty('classes')) {
@@ -130,10 +180,10 @@ Leipzig.prototype.config = function config(opts) {
 
 /**
  * Extracts word tokens from a gloss line
- * @param {String} phrase - the phrase to be lexd
+ * @param {Element} line - the phrase to be lexed
  * @returns {Array} The tokens
  */
-Leipzig.prototype.lex = function lex(phrase) {
+Leipzig.prototype.lex = function lex(line) {
   let lexer;
 
   if (this.lexers instanceof RegExp) {
@@ -145,7 +195,7 @@ Leipzig.prototype.lex = function lex(phrase) {
     throw new Error('Invalid lexer');
   }
 
-  const tokens = phrase
+  const tokens = line
     .match(lexer)
     .map(token => {
       // remove braces from groups
@@ -225,7 +275,7 @@ Leipzig.prototype.align = function align(lines) {
 
 /**
  * Creates an Element containing the aligned glosses
- * @param {Array} lines - lines to be formatted
+ * @param {Array<Array<String>>} lines - lines to be formatted
  * @returns {Element} html element containing the glosses
  */
 Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
@@ -278,6 +328,7 @@ Leipzig.prototype.gloss = function gloss(callback) {
 
   /** Processes a gloss element */
   function processGloss(_this, gloss, callback) {
+
     if (!(gloss instanceof Element)) {
       callback(new Error('Invalid gloss element'));
     }
@@ -286,6 +337,8 @@ Leipzig.prototype.gloss = function gloss(callback) {
     const linesToAlign = [];
     let firstRawLine = null;
     let firstRawLineNum = 0;
+
+    triggerEvent(gloss, _this.events.beforeGloss);
 
     if (_this.firstLineOrig) {
       const firstLine = lines[0];
@@ -308,7 +361,11 @@ Leipzig.prototype.gloss = function gloss(callback) {
       const shouldAlign = !isOrig && !isFree && !shouldSkip;
 
       if (shouldAlign) {
-        linesToAlign.push(_this.lex(line.innerHTML));
+        triggerEvent(line, _this.events.beforeLex);
+        const tokens = _this.lex(line.innerHTML);
+        triggerEvent(line, _this.events.afterLex, { tokens: tokens });
+
+        linesToAlign.push(tokens);
         addClass(line, _this.classes.hidden);
 
         // if _this is the first aligned line, mark the location
@@ -323,7 +380,9 @@ Leipzig.prototype.gloss = function gloss(callback) {
       }
     });
 
-    const alignedLines = _this.align(linesToAlign);
+    triggerEvent(gloss, _this.events.beforeAlign, { lines: linesToAlign });
+    let alignedLines = _this.align(linesToAlign);
+    triggerEvent(gloss, _this.events.afterAlign, { lines: alignedLines });
 
     // determine which type of element the aligned glosses should be wrapped in
     let alignedWrapper;
@@ -333,7 +392,10 @@ Leipzig.prototype.gloss = function gloss(callback) {
       alignedWrapper = 'div';
     }
 
+    triggerEvent(gloss, _this.events.beforeFormat, { lines: alignedLines });
     const formattedLines = _this.format(alignedLines, alignedWrapper, firstRawLineNum);
+    triggerEvent(formattedLines, _this.events.afterFormat);
+
     gloss.insertBefore(formattedLines, firstRawLine);
 
     // finish up by adding relevant classes to the main container
@@ -342,7 +404,11 @@ Leipzig.prototype.gloss = function gloss(callback) {
     }
 
     addClass(gloss, _this.classes.glossed);
+
+    triggerEvent(gloss, _this.events.afterGloss);
   }
+
+  triggerEvent(document, this.events.start, { glosses: glossElements });
 
   // process each gloss
   const glosses = Array.prototype.slice.call(glossElements);
@@ -354,9 +420,13 @@ Leipzig.prototype.gloss = function gloss(callback) {
     }
   });
 
-  if (typeof callback === 'function') {
-    window.setTimeout(() => callback(null, glossElements));
-  }
+  window.setTimeout(() => {
+    if (typeof callback === 'function') {
+      callback(null, glossElements);
+    }
+
+    triggerEvent(document, this.events.complete, { glosses: glossElements });
+  });
 };
 
 /**

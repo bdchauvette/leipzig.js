@@ -13,6 +13,18 @@ var defaults = {
     '([^\\s]+)'
   ],
   elements: '[data-gloss]',
+  events: {
+    beforeGloss: 'gloss:beforeGloss',
+    afterGloss: 'gloss:afterGloss',
+    beforeLex: 'gloss:beforeLex',
+    afterLex: 'gloss:afterLex',
+    beforeAlign: 'gloss:beforeAlign',
+    afterAlign:'gloss:afterAlign',
+    beforeFormat: 'gloss:beforeFormat',
+    afterFormat:'gloss:afterFormat',
+    start: 'gloss:start',
+    complete: 'gloss:complete'
+  },
   classes: {
     glossed: 'gloss--glossed',
     noSpace: 'gloss--no-space',
@@ -41,6 +53,18 @@ var testConfig = {
     'test regex'
   ],
   elements: '.test',
+  events: {
+    beforeGloss: 'test:beforeGloss',
+    afterGloss: 'test:afterGloss',
+    beforeLex: 'test:beforeLex',
+    afterLex: 'test:afterLex',
+    beforeAlign: 'test:beforeAlign',
+    afterAlign:'test:afterAlign',
+    beforeFormat: 'test:beforeFormat',
+    afterFormat:'test:afterFormat',
+    start: 'test:start',
+    complete: 'test:complete'
+  },
   classes: {
     glossed: 'test--glossed',
     noSpace: 'test--no-space',
