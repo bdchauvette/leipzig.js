@@ -143,6 +143,8 @@ test('remove spacing [async]', function(t) {
 test('events', function(t) {
   var leipzig = Leipzig();
   var gloss = makeElement();
+  var beforeLexCounter = 0;
+  var afterLexCounter = 0;
 
   document.addEventListener('gloss:start', function(e) {
     t.ok(e.detail.glosses instanceof NodeList, 'gloss:start');
@@ -156,14 +158,16 @@ test('events', function(t) {
     t.equal(e.target, gloss, 'gloss:afterGloss');
   });
 
-  // should be called twice
   document.addEventListener('gloss:beforeLex', function(e) {
+    beforeLexCounter++;
     t.equal(e.target.tagName, 'P', 'gloss:beforeLex');
+    t.equal(e.detail.lineNum, beforeLexCounter - 1);
   });
 
-  // should be called twice
   document.addEventListener('gloss:afterLex', function(e) {
+    afterLexCounter++;
     t.ok(e.detail.tokens instanceof Array, 'gloss:afterLex');
+    t.equal(e.detail.lineNum, afterLexCounter - 1);
   });
 
   document.addEventListener('gloss:beforeAlign', function(e) {
@@ -172,7 +176,14 @@ test('events', function(t) {
       ['1', '2']
     ];
 
+    // lexer should have been called twice by now
+    t.equal(beforeLexCounter, 2, 'lexer was called twice');
+    t.equal(afterLexCounter, 2, 'lexer was called twice');
+
+    // alignment tests
     t.deepEqual(e.detail.lines, expectedLines, 'gloss:beforeAlign');
+    t.equal(e.detail.firstLineNum, 0, 'firstLineNum');
+    t.equal(e.detail.lastLineNum, 1, 'lastLineNum');
   });
 
   document.addEventListener('gloss:afterAlign', function(e) {
@@ -182,6 +193,8 @@ test('events', function(t) {
     ];
 
     t.deepEqual(e.detail.lines, expectedLines, 'gloss:afterAlign');
+    t.equal(e.detail.firstLineNum, 0, 'firstLineNum');
+    t.equal(e.detail.lastLineNum, 1, 'lastLineNum');
   });
 
   document.addEventListener('gloss:beforeFormat', function(e) {
@@ -191,10 +204,14 @@ test('events', function(t) {
     ];
 
     t.deepEqual(e.detail.lines, expectedLines, 'gloss:beforeFormat');
+    t.equal(e.detail.firstLineNum, 0, 'firstLineNum');
+    t.equal(e.detail.lastLineNum, 1, 'lastLineNum');
   });
 
   document.addEventListener('gloss:afterFormat', function(e) {
     t.ok(e.target.classList.contains('gloss__words'), 'gloss:afterFormat');
+    t.equal(e.detail.firstLineNum, 0, 'firstLineNum');
+    t.equal(e.detail.lastLineNum, 1, 'lastLineNum');
   });
 
   document.addEventListener('gloss:complete', function(e) {
