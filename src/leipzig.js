@@ -361,9 +361,12 @@ Leipzig.prototype.gloss = function gloss(callback) {
       const shouldAlign = !isOrig && !isFree && !shouldSkip;
 
       if (shouldAlign) {
-        triggerEvent(line, _this.events.beforeLex);
+        triggerEvent(line, _this.events.beforeLex, { lineNum: lineNum });
         const tokens = _this.lex(line.innerHTML);
-        triggerEvent(line, _this.events.afterLex, { tokens: tokens });
+        triggerEvent(line, _this.events.afterLex, {
+          tokens: tokens,
+          lineNum: lineNum
+        });
 
         linesToAlign.push(tokens);
         addClass(line, _this.classes.hidden);
@@ -380,9 +383,21 @@ Leipzig.prototype.gloss = function gloss(callback) {
       }
     });
 
-    triggerEvent(gloss, _this.events.beforeAlign, { lines: linesToAlign });
+    const lastRawLineNum = firstRawLineNum + (linesToAlign.length - 1);
+
+    triggerEvent(gloss, _this.events.beforeAlign, {
+      lines: linesToAlign,
+      firstLineNum: firstRawLineNum,
+      lastLineNum: lastRawLineNum
+    });
+
     let alignedLines = _this.align(linesToAlign);
-    triggerEvent(gloss, _this.events.afterAlign, { lines: alignedLines });
+
+    triggerEvent(gloss, _this.events.afterAlign, {
+      lines: alignedLines,
+      firstLineNum: firstRawLineNum,
+      lastLineNum: lastRawLineNum
+    });
 
     // determine which type of element the aligned glosses should be wrapped in
     let alignedWrapper;
@@ -392,11 +407,19 @@ Leipzig.prototype.gloss = function gloss(callback) {
       alignedWrapper = 'div';
     }
 
-    triggerEvent(gloss, _this.events.beforeFormat, { lines: alignedLines });
-    const formattedLines = _this.format(alignedLines, alignedWrapper, firstRawLineNum);
-    triggerEvent(formattedLines, _this.events.afterFormat);
+    triggerEvent(gloss, _this.events.beforeFormat, {
+      lines: alignedLines,
+      firstLineNum: firstRawLineNum,
+      lastLineNum: lastRawLineNum
+    });
 
+    const formattedLines = _this.format(alignedLines, alignedWrapper, firstRawLineNum);
     gloss.insertBefore(formattedLines, firstRawLine);
+
+    triggerEvent(formattedLines, _this.events.afterFormat, {
+      firstLineNum: firstRawLineNum,
+      lastLineNum: lastRawLineNum
+    });
 
     // finish up by adding relevant classes to the main container
     if (!_this.spacing) {

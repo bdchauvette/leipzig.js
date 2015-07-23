@@ -365,9 +365,12 @@
         var shouldAlign = !isOrig && !isFree && !shouldSkip;
 
         if (shouldAlign) {
-          triggerEvent(line, _this.events.beforeLex);
+          triggerEvent(line, _this.events.beforeLex, { lineNum: lineNum });
           var tokens = _this.lex(line.innerHTML);
-          triggerEvent(line, _this.events.afterLex, { tokens: tokens });
+          triggerEvent(line, _this.events.afterLex, {
+            tokens: tokens,
+            lineNum: lineNum
+          });
 
           linesToAlign.push(tokens);
           addClass(line, _this.classes.hidden);
@@ -384,9 +387,21 @@
         }
       });
 
-      triggerEvent(gloss, _this.events.beforeAlign, { lines: linesToAlign });
+      var lastRawLineNum = firstRawLineNum + (linesToAlign.length - 1);
+
+      triggerEvent(gloss, _this.events.beforeAlign, {
+        lines: linesToAlign,
+        firstLineNum: firstRawLineNum,
+        lastLineNum: lastRawLineNum
+      });
+
       var alignedLines = _this.align(linesToAlign);
-      triggerEvent(gloss, _this.events.afterAlign, { lines: alignedLines });
+
+      triggerEvent(gloss, _this.events.afterAlign, {
+        lines: alignedLines,
+        firstLineNum: firstRawLineNum,
+        lastLineNum: lastRawLineNum
+      });
 
       // determine which type of element the aligned glosses should be wrapped in
       var alignedWrapper = undefined;
@@ -396,11 +411,19 @@
         alignedWrapper = 'div';
       }
 
-      triggerEvent(gloss, _this.events.beforeFormat, { lines: alignedLines });
-      var formattedLines = _this.format(alignedLines, alignedWrapper, firstRawLineNum);
-      triggerEvent(formattedLines, _this.events.afterFormat);
+      triggerEvent(gloss, _this.events.beforeFormat, {
+        lines: alignedLines,
+        firstLineNum: firstRawLineNum,
+        lastLineNum: lastRawLineNum
+      });
 
+      var formattedLines = _this.format(alignedLines, alignedWrapper, firstRawLineNum);
       gloss.insertBefore(formattedLines, firstRawLine);
+
+      triggerEvent(formattedLines, _this.events.afterFormat, {
+        firstLineNum: firstRawLineNum,
+        lastLineNum: lastRawLineNum
+      });
 
       // finish up by adding relevant classes to the main container
       if (!_this.spacing) {
