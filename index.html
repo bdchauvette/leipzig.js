@@ -16,7 +16,8 @@
       <h1 class="page-title">Leipzig.js</h1>
       <h2 class="tagline">Interlinear glossing for the browser</h2>
       <nav id="main-nav">
-        <ul><li class="active"><a href="/leipzig.js/">Home</a></li><li><a href="/leipzig.js/examples">Examples</a></li><li><a href="/leipzig.js/demo">Demo</a></li><li><a href="/leipzig.js/documentation">Documentation</a></li><li><a href="https://github.com/bdchauvette/leipzig.js/">Code</a></li>
+        <ul><li class="active"><a href="/leipzig.js/">Home</a></li><li><a href="/leipzig.js/examples">Examples</a></li><li><a href="/leipzig.js/demo">Demo</a></li><li><a href="https://github.com/bdchauvette/leipzig.js/wiki/Documentation">Documentation</a></li>
+          <li><a href="https://github.com/bdchauvette/leipzig.js/">Code</a></li>
         </ul>
       </nav>
     </header>
@@ -65,54 +66,38 @@ part of documenting and discussing languages.</p>
 use packages like <a href="https://www.ctan.org/pkg/gb4e"><code>gb4e</code></a> and
 <a href="https://www.ctan.org/pkg/linguex"><code>linguex</code></a>, typesetting glosses in <abbr
 title="&lsquo;what you see is what you get&rsquo;">WYSIWYG</abbr> editors like
-Microsoft Word is cumbersome. Likewise, presenting interlinear glosses on
+Microsoft Word is clumsy. Likewise, presenting interlinear glosses on
 websites is also challenging.</p>
 <p>When using <abbr>WYSIWYG</abbr> editors, Linguists typically use either tables
 or a monospaced &lsquo;typewriter&rsquo; font to make aligning words easier.
-While these solutions work, neither one is a decent solution. Tables are
-difficult to create and maintain, especially for longer glosses that need to
-span multiple lines.  Monospaced interlinear glosses are easy to create, but
-maintaining alignment manually is time-consuming, and monospace fonts are not
-suited for reading long runs of text.</p>
+While these solutions do work, neither one is great. Tables are cumbersome to
+create and maintain, especially for longer glosses that need to span multiple
+lines. Monospaced interlinear glosses are easy to create, but maintaining
+alignment manually is time-consuming, especially for long runs of text.</p>
 <p>On the web, linguists also tend to use either tables or monospaced fonts to
 create glosses. Creating tables on the web is more time consuming than creating
-them in <abbr>WYSIWYG</abbr> editors, making them untenable for longer glosses.
-Using monospaced fonts on the web has the same problems of using monospaced
-fonts in <abbr>WYSIWYG</abbr> editors.</p>
-<h2>Existing Solutions</h2>
-<p>There have been some efforts to improve interlinear glossing on the web.</p>
-<p>Both <a href="http://kbmcgowan.github.io/blog/2009/02/28/css-interlinear-glosses.html">Kevin McGowan</a> and <a href="http://jtauber.com/blog/2006/01/28/dynamic_interlinears_with_javascript_and_css/">James Tauber</a> describe methods for styling
-interlinear glosses using pure <abbr>CSS</abbr>. However, marking up glosses by
-hand is cumbersome, and neither solution degrades gracefully if
-<abbr>CSS</abbr> is disabled. (McGowan does hint at a JavaScript solution that
-seems similar to what Leipzig.js is doing, but no code is provided.)</p>
-<p><a href="https://github.com/parryc/interlinear"><code>interlinear</code></a>, like Leipzig.js, is a
-JavaScript + <abbr>css</abbr> utility that automatically formats selected
-<abbr>HTML</abbr> elements. While <code>interlinear</code> is a very functional library
-and currently contains more features than Leipzig.js, I personally dislike the
-glossing syntax, and would prefer a solution that relies more on
-<abbr>HTML</abbr> tags. I would also prefer a solution that degrades more
-gracefully when JavaScript is disabled.</p>
+them in <abbr>WYSIWYG</abbr> editors, making them even more untenable for
+longer glosses.  Using monospaced fonts on the web has the same problems of
+using monospaced fonts in <abbr>WYSIWYG</abbr> editors.</p>
 <h2>Enter Leipzig.js</h2>
 <p>Leipzig.js aims to be a simple, lightweight solution for interlinear glossing
-on the web. By relying on existing <abbr>HTML</abbr> tags, it degrades
-gracefully when JavaScript is not present.</p>
+on the web. By relying on existing HTML tags, it degrades
+gracefully when either JavaScript or CSS is not present.</p>
 <p>While basic usage of Leipzig.js is dead simple (see the Usage section below),
 more customizable glossing can be achieved by using the library's flexible
-<abbr>API</abbr>.</p>
+API.</p>
 <p>Glosses formatted with Leipzig.js are <a href="https://en.wikipedia.org/wiki/Responsive_web_design">responsive</a>, and contain numerous
-<abbr>CSS</abbr> classes that can be used to style individual lines in the
+CSS classes that can be used to style individual lines in the
 gloss.</p>
-<p>My hope is that Leipzig.js strikes the right balance between ease of creation
+<p>Leipzig.js tries to strike a balance between ease of creation
 and beauty of output. It should be easy enough to use for people new to web
 authorship, while remaining powerful and customizable enough for people that
 want more control over their interlinear glosses.</p>
-<h2>Further Reading</h2>
-<p>For more information about interlinear glossing, visit the homepage for the
-<a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php">Leipzig Glossing
-Rules</a> (from which
-Leipzig.js gets its name). The Leipzig Glossing rules homepage also contains
-references to other important works on interlinear glossing.</p>
+<h2>Compatability &amp; Dependencies</h2>
+<p>Leipzig.js has no front-end dependencies, and <em>should</em> work on most modern browsers, including IE9+.</p>
+<h2>Known Issues</h2>
+<p>To view current issues or to file a bug report, please visit the <a href="https://github.com/bdchauvette/leipzig.js/issues">Issues Page
+on GitHub</a>.</p>
 <hr />
 <h1>Usage</h1>
 <h2>1. Download It (Optional)</h2>
@@ -217,9 +202,22 @@ turn them into nicely formatted interlinear glosses.</p>
   <p>‘An example’</p>
 </div>
 
-<h1>Known Issues</h1>
-<p>To view current issues or to file a bug report, please visit the <a href="https://github.com/bdchauvette/leipzig.js/issues">Issues Page
-on GitHub</a>.</p>
+<hr />
+<h1>Other Solutions</h1>
+<p>Both <a href="http://kbmcgowan.github.io/blog/2009/02/28/css-interlinear-glosses.html">Kevin McGowan</a> and <a href="http://jtauber.com/blog/2006/01/28/dynamic_interlinears_with_javascript_and_css/">James Tauber</a> describe methods for styling
+interlinear glosses using pure CSS. McGowan also hints at a JavaScript solution that seems similar to what Leipzig.js is doing, but no code is provided.</p>
+<p><a href="https://github.com/parryc/interlinear"><code>interlinear</code></a>, like Leipzig.js, is a
+JavaScript + CSS utility that automatically formats selected
+HTML elements. While <code>interlinear</code> is a very functional library
+and currently contains a few more features than Leipzig.js, I personally
+dislike the glossing syntax. Nevertheless, if Leipzig.js is not to your liking, I highly recommend taking a look at <code>interlinear</code>.</p>
+<hr />
+<h1>Further Reading</h1>
+<p>For more information about interlinear glossing, visit the homepage for the
+<a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php">Leipzig Glossing
+Rules</a> (from which
+Leipzig.js gets its name). The Leipzig Glossing rules homepage also contains
+references to other important works on interlinear glossing.</p>
 
     <footer id="page-footer">
       <p>&copy; 2015 Benjamin Chauvette</p>
