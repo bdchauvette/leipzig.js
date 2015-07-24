@@ -9,11 +9,12 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
 [![npm badge](https://img.shields.io/npm/v/leipzig.svg)](https://www.npmjs.com/package/leipzig)
 ![bower badge](https://img.shields.io/bower/v/leipzig.svg)
 
-# Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Usage](#usage)
 - [Documentation](#documentation)
+- [Examples](#examples)
 - [Contributing](#contributing)
 - [Tests](#tests)
 - [Other Solutions](#othersolutions)
@@ -21,7 +22,7 @@ Leipzig.js is a small JavaScript utility that makes it easy to add
 
 ---
 
-# Overview
+## Overview
 
 An *interlinear gloss* is a way of presenting linguistic data that helps
 makes it clear what the different words and morphemes of a phrase mean. They
@@ -41,7 +42,7 @@ Interlinear glosses help linguists present language data to audiences that
 might not be familiar with the language being analyzed, and are an integral
 part of documenting and discussing languages.
 
-## Enter Leipzig.js
+### Enter Leipzig.js
 
 Leipzig.js aims to be a simple, lightweight solution for interlinear glossing
 on the web. By relying on existing HTML tags, it degrades
@@ -62,11 +63,11 @@ and beauty of output. It should be easy enough to use for people new to web
 authorship, while remaining powerful and customizable enough for people that
 want more control over their interlinear glosses.
 
-## Compatability & Dependencies
+### Compatability & Dependencies
 
 Leipzig.js has no front-end dependencies, and _should_ work on most modern browsers, including IE9+.
 
-## Further Reading
+### Further Reading
 
 For more information about interlinear glossing, visit the homepage for the
 [Leipzig Glossing
@@ -78,9 +79,9 @@ references to other important works on interlinear glossing.
 
 ---
 
-# Usage
+## Usage
 
-## 1. Download It (Optional)
+### 1. Download It (Optional)
 
 You can install Leipzig.js using [`npm`](https://npmjs.com/package/leipzig) or [`Bower`](https://bower.io), or by downloading the latest version from the github repository:
 
@@ -94,7 +95,7 @@ Alternatively, you can skip installing Leipzig.js on your own server, and can
 use the [jsDelivr](http://www.jsdelivr.com/) CDN as described in
 the next step.
 
-## 2. Include It
+### 2. Include It
 
 Include the main `leipzig.js` file somewhere on your page, ideally at the
 bottom of the `<body>`:
@@ -130,7 +131,7 @@ homepage](http://www.jsdelivr.com) or read the following blog posts:
   CDN](https://hacks.mozilla.org/2014/03/jsdelivr-the-advanced-open-source-public-cdn/)
 - [jsDelivr does it better](https://www.maxcdn.com/blog/jsdelivr-better/)
 
-## 3. Mark Up Your Examples
+### 3. Mark Up Your Examples
 
 To use the Leipzig.js default configuration, just add a `data-gloss` attribute
 to the examples you want to be glossed:
@@ -146,7 +147,7 @@ to the examples you want to be glossed:
 Leipzig.js will find all of the blocks that have the `data-gloss` attribute and
 turn them into nicely formatted interlinear glosses.
 
-## 4. Gloss ’Em
+### 4. Gloss ’Em
 
 Finally, you just need to tell Leipzig.js to go to work by adding the following
 `<script>` somewhere _after_ the one you added in Step 2:
@@ -169,7 +170,7 @@ If you're using [jQuery][], you can use the following script instead:
 
 [jQuery]: https://jquery.com/
 
-## Minimal Example
+### Minimal Example
 
 ```html
 <html>
@@ -196,7 +197,7 @@ If you're using [jQuery][], you can use the following script instead:
 
 ---
 
-# Documentation
+## Documentation
 
 Please see the [Documentation page on the wiki](https://github.com/bdchauvette/leipzig.js/wiki/Documentation).
 
@@ -204,7 +205,16 @@ Please see the [Documentation page on the wiki](https://github.com/bdchauvette/l
 
 ---
 
-# Contributing
+## Examples
+
+Please see the [Examples page on the Leipzig.js
+homepage](https://bdchauvette.github.io/leipzig.js/examples/).
+
+[Back to Top ↑](#leipzigjs)
+
+---
+
+## Contributing
 
 ```sh
 $ git clone https://github.com/bdchauvette/leipzig.js.git
@@ -212,7 +222,7 @@ $ cd leipzig.js
 $ npm install
 ```
 
-## Building
+### Building
 
 The main source files are in `src/`.
 
@@ -233,7 +243,7 @@ You can run these tasks by installing `gulp` (`npm i -g gulp`) then running:
 $ gulp $TASKNAME # e.g. gulp build or gulp watch
 ```
 
-## Testing
+### Testing
 
 Leipzig.js uses a [`tape`](https://github.com/substack/tape)-based testing system.
 
@@ -253,24 +263,47 @@ $ npm test
 
 ---
 
-# Other Solutions
+## Other Solutions
+
+### Plain CSS
 
 Both [Kevin McGowan][] and [James Tauber][] describe methods for styling
-interlinear glosses using pure CSS. McGowan also hints at a JavaScript solution that seems similar to what Leipzig.js is doing, but no code is provided.
+interlinear glosses using pure CSS. McGowan also hints at a JavaScript solution
+that seems similar to what Leipzig.js is doing, but no code is provided.
 
 [Kevin McGowan]: http://kbmcgowan.github.io/blog/2009/02/28/css-interlinear-glosses.html
 [James Tauber]: http://jtauber.com/blog/2006/01/28/dynamic_interlinears_with_javascript_and_css/
 
+### `interlinear`
+
 [`interlinear`](https://github.com/parryc/interlinear), like Leipzig.js, is a
-JavaScript + CSS utility that automatically formats selected
-HTML elements. While `interlinear` is a very functional library
-and currently contains a few more features than Leipzig.js, I personally
-dislike the glossing syntax. Nevertheless, if Leipzig.js is not to your liking, I highly recommend taking a look at `interlinear`.
+JavaScript + CSS utility that automatically formats selected HTML elements.
+`interlinear` has a different feature set than Leipzig.js, and uses a different
+syntax for marking up glosses. If Leipzig.js is not to your liking, I recommend
+taking a look at `interlinear`.
+
+### `glosser`
+[`glosser`](https://doctoralpaca.github.io/glosser/) is a small utility for
+producing interlinear glosses in plaintext or formatted for reddit.
+
+[Back to Top ↑](#leipzigjs)
 
 ---
 
-# License
+## Further Reading
+
+For more information about interlinear glossing, visit the homepage for the
+[Leipzig Glossing
+Rules](https://www.eva.mpg.de/lingua/resources/glossing-rules.php) (from which
+Leipzig.js gets its name). The Leipzig Glossing rules homepage also contains
+references to other important works on interlinear glossing.
+
+[Back to Top ↑](#leipzigjs)
+
+## License
 
 Leipzig.js is licensed under the ISC License.
 
 For details, please see the `LICENSE` file.
+
+[Back to Top ↑](#leipzigjs)
