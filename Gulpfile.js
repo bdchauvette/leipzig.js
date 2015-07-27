@@ -15,8 +15,14 @@ gulp.task('js', function() {
     'github.com/bdchauvette/leipzig.js */'
   ].join(' | ');
 
+  var babelConfig = {
+    modules: 'umd',
+    moduleId: 'Leipzig',
+    plugins: ['object-assign']
+  };
+
   return gulp.src('src/*.js')
-    .pipe(babel({ modules: 'umd', moduleId: 'Leipzig' }))
+    .pipe(babel(babelConfig))
     .pipe(header(headerText + '\n'))
     .pipe(gulp.dest('./dist'))
     .pipe(rename({ suffix: '.min' }))
