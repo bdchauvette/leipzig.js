@@ -19,8 +19,8 @@ function makeElement() {
 test('basic gloss [sync]', function(t) {
   t.plan(2);
 
-  var leipzig = Leipzig();
   var gloss = makeElement();
+  var leipzig = Leipzig();
 
   var expectedHtml = [
     '<div class="gloss__words">',
@@ -51,8 +51,8 @@ test('basic gloss [sync]', function(t) {
 test('basic gloss [async]', function(t) {
   t.plan(2);
 
-  var leipzig = Leipzig({ async: true });
   var gloss = makeElement();
+  var leipzig = Leipzig({ async: true });
 
   var expectedHtml = [
     '<div class="gloss__words">',
@@ -85,8 +85,8 @@ test('basic gloss [async]', function(t) {
 test('first line is original text [sync]', function(t) {
   t.plan(1);
 
-  var leipzig = Leipzig({ firstLineOrig: true });
   var gloss = makeElement();
+  var leipzig = Leipzig({ firstLineOrig: true });
 
   leipzig.gloss();
 
@@ -98,10 +98,8 @@ test('first line is original text [sync]', function(t) {
 test('first line is original text [async]', function(t) {
   t.plan(1);
 
-  var leipzig = Leipzig({ firstLineOrig: true, async: true });
   var gloss = makeElement();
-
-  leipzig.gloss();
+  var leipzig = Leipzig({ firstLineOrig: true, async: true });
 
   leipzig.gloss(function() {
     t.ok(gloss.firstChild.classList.contains('gloss__line--original'));
@@ -113,8 +111,8 @@ test('first line is original text [async]', function(t) {
 test('remove spacing [sync]', function(t) {
   t.plan(1);
 
-  var leipzig = Leipzig({ spacing: false });
   var gloss = makeElement();
+  var leipzig = Leipzig({ spacing: false });
 
   leipzig.gloss();
 
@@ -128,10 +126,8 @@ test('remove spacing [sync]', function(t) {
 test('remove spacing [async]', function(t) {
   t.plan(1);
 
-  var leipzig = Leipzig({ spacing: false, async: true });
   var gloss = makeElement();
-
-  leipzig.gloss();
+  var leipzig = Leipzig({ spacing: false, async: true });
 
   leipzig.gloss(function() {
     t.ok(gloss.classList.contains('gloss--no-space'));
@@ -141,8 +137,8 @@ test('remove spacing [async]', function(t) {
 });
 
 test('events', function(t) {
-  var leipzig = Leipzig();
   var gloss = makeElement();
+  var leipzig = Leipzig();
   var beforeLexCounter = 0;
   var afterLexCounter = 0;
 

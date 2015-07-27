@@ -1,6 +1,93 @@
 var test = require('tape-catch');
 var Leipzig = require('../dist/leipzig');
 
+// abbreviations
+var abbreviations = {
+  1: 'first person',
+  2: 'second person',
+  3: 'third person',
+  A: 'agent-like argument of canonical transitive verb',
+  ABL: 'ablative',
+  ABS: 'absolutive',
+  ACC: 'accusative',
+  ADJ: 'adjective',
+  ADV: 'adverb(ial)',
+  AGR: 'agreement',
+  ALL: 'allative',
+  ANTIP: 'antipassive',
+  APPL: 'applicative',
+  ART: 'article',
+  AUX: 'auxiliary',
+  BEN: 'benefactive',
+  CAUS: 'causative',
+  CLF: 'classifier',
+  COM: 'comitative',
+  COMP: 'complementizer',
+  COMPL: 'completive',
+  COND: 'conditional',
+  COP: 'copula',
+  CVB: 'converb',
+  DAT: 'dative',
+  DECL: 'declarative',
+  DEF: 'definite',
+  DEM: 'demonstrative',
+  DET: 'determiner',
+  DIST: 'distal',
+  DISTR: 'distributive',
+  DU: 'dual',
+  DUR: 'durative',
+  ERG: 'ergative',
+  EXCL: 'exclusive',
+  F: 'feminine',
+  FOC: 'focus',
+  FUT: 'future',
+  GEN: 'genitive',
+  IMP: 'imperative',
+  INCL: 'inclusive',
+  IND: 'indicative',
+  INDF: 'indefinite',
+  INF: 'infinitive',
+  INS: 'instrumental',
+  INTR: 'intransitive',
+  IPFV: 'imperfective',
+  IRR: 'irrealis',
+  LOC: 'locative',
+  M: 'masculine',
+  N: 'neuter',
+  NEG: 'negation / negative',
+  NMLZ: 'nominalizer / nominalization',
+  NOM: 'nominative',
+  OBJ: 'object',
+  OBL: 'oblique',
+  P: 'patient-like argument of canonical transitive verb',
+  PASS: 'passive',
+  PFV: 'perfective',
+  PL: 'plural',
+  POSS: 'possessive',
+  PRED: 'predicative',
+  PRF: 'perfect',
+  PRS: 'present',
+  PROG: 'progressive',
+  PROH: 'prohibitive',
+  PROX: 'proximal / proximate',
+  PST: 'past',
+  PTCP: 'participle',
+  PURP: 'purposive',
+  Q: 'question particle / marker',
+  QUOT: 'quotative',
+  RECP: 'reciprocal',
+  REFL: 'reflexive',
+  REL: 'relative',
+  RES: 'resultative',
+  S: 'single argument of canonical intransitive verb',
+  SBJ: 'subject',
+  SBJV: 'subjunctive',
+  SG: 'singular',
+  TOP: 'topic',
+  TR: 'transitive',
+  VOC: 'vocative'
+};
+
 // default configuration values
 var defaults = {
   lastLineFree: true,
@@ -8,10 +95,7 @@ var defaults = {
   spacing: true,
   autoTag: true,
   async: false,
-  lexers: [
-    '{(.*?)}',
-    '([^\\s]+)'
-  ],
+  lexer: /{(.*?)}|([^\\s]+)/g,
   selector: '[data-gloss]',
   events: {
     beforeGloss: 'gloss:beforeGloss',
@@ -37,7 +121,8 @@ var defaults = {
     noAlign: 'gloss__line--no-align',
     hidden: 'gloss__line--hidden',
     abbr: 'gloss__abbr'
-  }
+  },
+  abbreviations: abbreviations
 };
 
 // used for testing configuration objects
@@ -48,10 +133,7 @@ var testConfig = {
   spacing: false,
   autoTag: false,
   async: true,
-  abbreviations: { foo: 'bar' },
-  lexers: [
-    'test regex'
-  ],
+  lexer: /test/g,
   selector: '.test',
   events: {
     beforeGloss: 'test:beforeGloss',
@@ -77,7 +159,8 @@ var testConfig = {
     noAlign: 'test__line--no-align',
     hidden: 'test__line--hidden',
     abbr: 'test__abbr'
-  }
+  },
+  abbreviations: { foo: 'bar' }
 };
 
 // helper function for testing selector
@@ -155,47 +238,35 @@ test('overrides settings when called with Leipzig#config', function(t) {
 });
 
 test('should set abbreviations when called with an object', function(t) {
-  var abbr = { foo: 'bar' };
-  var leipzig = Leipzig({ abbreviations: abbr });
+  var testAbbr = { foo: 'bar' };
+  var leipzig = Leipzig({ abbreviations: testAbbr });
 
-  t.deepEqual(leipzig.abbreviations, abbr);
+  t.deepEqual(leipzig.abbreviations, testAbbr);
 
   t.end();
 });
 
-test('should accept a String as a lexer', function(t) {
-  var leipzig = Leipzig({ lexers: 'test' });
+test('accepts String as a lexer', function(t) {
+  var leipzig = Leipzig({ lexer: 'test' });
 
-  t.deepEqual(leipzig.lexers, ['test']);
+  t.deepEqual(leipzig.lexer, /test/g);
+  t.end();
+});
+
+test('accept Array as a lexer', function(t) {
+  var leipzig = Leipzig({ lexer: [
+    '{(.*?)}',
+    '([^\\s]+)'
+  ]});
+
+  t.deepEqual(leipzig.lexer, /{(.*?)}|([^\s]+)/g);
   t.end();
 });
 
 test('should accept a RegExp as a lexer', function(t) {
-  var leipzig = Leipzig({ lexers: /test/ });
+  var leipzig = Leipzig({ lexer: /test/ });
 
-  t.deepEqual(leipzig.lexers, /test/);
-  t.end();
-});
-
-test('should reject lexers that are not arrays of strings', function(t) {
-  var expectedErrorMessage = 'Unknown format for lexers';
-
-  try {
-    var leipzig = Leipzig({ lexers: {} });
-  } catch (e) {
-    if (e.message === expectedErrorMessage) {
-      t.pass();
-    }
-  }
-
-  try {
-    var leipzig = Leipzig({ lexers: [123] });
-  } catch (e) {
-    if (e.message === expectedErrorMessage) {
-      t.pass();
-    }
-  }
-
+  t.deepEqual(leipzig.lexer, /test/g);
   t.end();
 });
 

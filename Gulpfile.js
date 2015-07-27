@@ -10,7 +10,7 @@ var uglify = require('gulp-uglify');
 
 gulp.task('js', function() {
   var headerText = [
-    '/*! leipzig.js v0.5.0',
+    '/*! leipzig.js v0.6.2',
     'ISC License',
     'github.com/bdchauvette/leipzig.js */'
   ].join(' | ');
