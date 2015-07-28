@@ -5,6 +5,7 @@ $abbr: #{$prefix}__abbr;
 $no-space:  #{$prefix}--no-space;
 $words: #{$prefix}__words;
 $word: #{$prefix}__word;
+$spacer: #{$word}--spacer;
 $line: #{$prefix}__line;
 $line--original: #{$line}--original;
 $line--free: #{$line}--free;
@@ -48,6 +49,10 @@ ol#{$container} {
 
 #{$no-space} #{$word} {
   margin-right: 0;
+}
+
+#{$no-space} #{$word}#{$spacer} {
+  margin-right: 1.5em;
 }
 
 // add spacing to first and last line

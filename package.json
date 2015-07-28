@@ -1,6 +1,6 @@
 {
   "name": "leipzig",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Interlinear glossing for the browser",
   "main": "dist/leipzig.js",
   "directories": {

@@ -34,6 +34,10 @@ ol.gloss--glossed li {
   margin-right: 0;
 }
 
+.gloss--no-space .gloss__word.gloss__word--spacer {
+  margin-right: 1.5em;
+}
+
 .gloss__words:first-child,
 .gloss--glossed li:first-child {
   margin-top: 1em;

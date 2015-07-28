@@ -219,6 +219,7 @@ Leipzig.prototype.config = function(options) {
       noSpace: 'gloss--no-space',
       words: 'gloss__words',
       word: 'gloss__word',
+      spacer: 'gloss__word--spacer',
       abbr: 'gloss__abbr',
       line: 'gloss__line',
       lineNum: 'gloss__line--',
@@ -355,6 +356,7 @@ Leipzig.prototype.align = function align(lines) {
 Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
   const tag = this.tag;
 
+  const spacing = this.spacing;
   const autoTag = this.autoTag;
   const classes = this.classes;
   const wrapper = document.createElement(wrapperType);
@@ -363,23 +365,37 @@ Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
   addClass(wrapper, classes.words);
 
   groups.forEach(group => {
-    innerHtml.push(`<div class="${classes.word}">`);
+    const groupLines = [];
+    let isEmpty = true;
 
     group.forEach((line, lineNumOffset) => {
       const lineNum = lineNumStart + lineNumOffset;
+      let lineClasses = [
+        classes.line,
+        classes.lineNum + lineNum
+      ];
 
-      // add non-breaking space for empty gloss slots
-      line = line ? line : '&nbsp;';
+      if (line.length) {
+        isEmpty = false;
+      }
 
-      // auto tag morphemes
       if (lineNumOffset > 0 && autoTag) {
         line = this.tag(line);
       }
 
-      innerHtml.push(`<p class="${classes.line} ${classes.lineNum}${lineNum}">${line}</p>`);
+      groupLines.push(`<p class="${lineClasses.join(' ')}">${line}</p>`);
     });
 
-    innerHtml.push('</div>');
+    let wordClasses = classes.word;
+    if (isEmpty && !spacing) {
+      wordClasses += ` ${classes.spacer}`;
+    }
+
+    innerHtml.push(
+      `<div class="${wordClasses}">`,
+      groupLines.join(''),
+      '</div>'
+    );
   });
 
   wrapper.innerHTML = innerHtml.join('');

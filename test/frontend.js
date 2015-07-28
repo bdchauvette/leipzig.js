@@ -16,6 +16,19 @@ function makeElement() {
   return document.querySelector('[data-gloss]');
 }
 
+function makeElementWithSpacer() {
+  var html = [
+    '<div data-gloss>',
+    '<p>{}</p>',
+    '<p>{}</p>',
+    '<p>contains spacers</p>',
+    '</div>'
+  ].join('');
+
+  body.insertAdjacentHTML('beforeend', html);
+  return document.querySelector('[data-gloss]');
+}
+
 test('basic gloss [sync]', function(t) {
   t.plan(2);
 
@@ -77,9 +90,8 @@ test('basic gloss [async]', function(t) {
   leipzig.gloss(function() {
     t.equals(gloss.innerHTML, expectedHtml, 'html is as expected');
     t.ok(gloss.classList.contains('gloss--glossed'), 'class is as expected');
+    body.removeChild(gloss);
   });
-
-  body.removeChild(gloss);
 });
 
 test('first line is original text [sync]', function(t) {
@@ -89,9 +101,7 @@ test('first line is original text [sync]', function(t) {
   var leipzig = Leipzig({ firstLineOrig: true });
 
   leipzig.gloss();
-
   t.ok(gloss.firstChild.classList.contains('gloss__line--original'));
-
   body.removeChild(gloss);
 });
 
@@ -103,9 +113,8 @@ test('first line is original text [async]', function(t) {
 
   leipzig.gloss(function() {
     t.ok(gloss.firstChild.classList.contains('gloss__line--original'));
+    body.removeChild(gloss);
   });
-
-  body.removeChild(gloss);
 });
 
 test('remove spacing [sync]', function(t) {
@@ -119,8 +128,6 @@ test('remove spacing [sync]', function(t) {
   t.ok(gloss.classList.contains('gloss--no-space'));
 
   body.removeChild(gloss);
-
-  t.end();
 });
 
 test('remove spacing [async]', function(t) {
@@ -131,9 +138,30 @@ test('remove spacing [async]', function(t) {
 
   leipzig.gloss(function() {
     t.ok(gloss.classList.contains('gloss--no-space'));
+    body.removeChild(gloss);
   });
+});
 
+test('add spacers [sync]', function(t) {
+  t.plan(1);
+  var gloss = makeElementWithSpacer();
+  var leipzig = Leipzig({ spacing: false });
+
+  leipzig.gloss();
+  t.ok(gloss.firstChild.firstChild.classList.contains('gloss__word--spacer'));
   body.removeChild(gloss);
+});
+
+test('add spacers [async]', function(t) {
+  t.plan(1);
+
+  var gloss = makeElementWithSpacer();
+  var leipzig = Leipzig({ spacing: false, async: true });
+
+  leipzig.gloss(function() {
+    t.ok(gloss.firstChild.firstChild.classList.contains('gloss__word--spacer'));
+    body.removeChild(gloss);
+  });
 });
 
 test('events', function(t) {

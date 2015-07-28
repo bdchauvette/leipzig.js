@@ -1,4 +1,4 @@
-/*! leipzig.js v0.6.2 | ISC License | github.com/bdchauvette/leipzig.js */
+/*! leipzig.js v0.7.0 | ISC License | github.com/bdchauvette/leipzig.js */
 (function (global, factory) {
   if (typeof define === 'function' && define.amd) {
     define('Leipzig', ['exports', 'module'], factory);
@@ -235,6 +235,7 @@
         noSpace: 'gloss--no-space',
         words: 'gloss__words',
         word: 'gloss__word',
+        spacer: 'gloss__word--spacer',
         abbr: 'gloss__abbr',
         line: 'gloss__line',
         lineNum: 'gloss__line--',
@@ -361,6 +362,7 @@
 
     var tag = this.tag;
 
+    var spacing = this.spacing;
     var autoTag = this.autoTag;
     var classes = this.classes;
     var wrapper = document.createElement(wrapperType);
@@ -369,23 +371,30 @@
     addClass(wrapper, classes.words);
 
     groups.forEach(function (group) {
-      innerHtml.push('<div class="' + classes.word + '">');
+      var groupLines = [];
+      var isEmpty = true;
 
       group.forEach(function (line, lineNumOffset) {
         var lineNum = lineNumStart + lineNumOffset;
+        var lineClasses = [classes.line, classes.lineNum + lineNum];
 
-        // add non-breaking space for empty gloss slots
-        line = line ? line : '&nbsp;';
+        if (line.length) {
+          isEmpty = false;
+        }
 
-        // auto tag morphemes
         if (lineNumOffset > 0 && autoTag) {
           line = _this.tag(line);
         }
 
-        innerHtml.push('<p class="' + classes.line + ' ' + classes.lineNum + lineNum + '">' + line + '</p>');
+        groupLines.push('<p class="' + lineClasses.join(' ') + '">' + line + '</p>');
       });
 
-      innerHtml.push('</div>');
+      var wordClasses = classes.word;
+      if (isEmpty && !spacing) {
+        wordClasses += ' ' + classes.spacer;
+      }
+
+      innerHtml.push('<div class="' + wordClasses + '">', groupLines.join(''), '</div>');
     });
 
     wrapper.innerHTML = innerHtml.join('');
