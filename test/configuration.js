@@ -1,6 +1,8 @@
 var test = require('tape-catch');
 var Leipzig = require('../dist/leipzig');
 
+var _extends = Object.assign || function(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 // abbreviations
 var abbreviations = {
   1: 'first person',
@@ -242,6 +244,28 @@ test('overrides settings when called with Leipzig#config', function(t) {
 test('should set abbreviations when called with an object', function(t) {
   var testAbbr = { foo: 'bar' };
   var leipzig = Leipzig({ abbreviations: testAbbr });
+
+  t.deepEqual(leipzig.abbreviations, testAbbr);
+
+  t.end();
+});
+
+test('Leipzig#addAbbreviations should add abbreviations', function(t) {
+  var leipzig = Leipzig();
+  var testAbbr = { foo: 'bar' };
+  var expectedAbbr = _extends({}, leipzig.abbreviations, testAbbr);
+
+  leipzig.addAbbreviations(testAbbr);
+
+  t.deepEqual(leipzig.abbreviations, expectedAbbr);
+
+  t.end();
+});
+
+test('Leipzig#setAbbreviations should replace definitions', function(t) {
+  var leipzig = Leipzig();
+  var testAbbr = { foo: 'bar' };
+  leipzig.setAbbreviations(testAbbr);
 
   t.deepEqual(leipzig.abbreviations, testAbbr);
 

@@ -17,11 +17,11 @@
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
   /**
-   * Adds a class to an element
-   * @private
-   * @param {Element} el - element to add the class to
-   * @param {String} className - class name to add
-   */
+  Adds a class to an element
+  @private
+  @param {Element} el - element to add the class to
+  @param {String} className - class name to add
+  */
   function addClass(el, className) {
     if (el.classList) {
       el.classList.add(className);
@@ -31,11 +31,11 @@
   }
 
   /**
-   * Checks if an element has a given class
-   * @private
-   * @param {Element} el - element to search for the class
-   * @param {String} className - class name to search for
-   */
+  Checks if an element has a given class
+  @private
+  @param {Element} el - element to search for the class
+  @param {String} className - class name to search for
+  */
   function hasClass(el, className) {
     var test;
 
@@ -50,9 +50,9 @@
   }
 
   /**
-   * Helper function for creating custom events
-   * @private
-   */
+  Helper function for creating custom events
+  @private
+  */
   function LeipzigEvent(name, data) {
     var leipzigEvent = undefined;
 
@@ -72,25 +72,26 @@
   }
 
   /**
-   * Helper function for triggering custom events
-   * @private
-   */
+  Helper function for triggering custom events
+  @private
+  */
   function triggerEvent(el, name, data) {
     var e = new LeipzigEvent(name, data);
     el.dispatchEvent(e);
   }
 
   /**
-   * Helper function for cloning an object
-   * @private
-   */
+  Helper function for cloning an object
+  @private
+  */
   function clone(obj) {
     return _extends({}, obj);
   }
 
-  /** Default abbreviations used by the auto tagger
-   * @private
-   */
+  /**
+  Default abbreviations used by the auto tagger
+  @private
+  */
   var abbreviations = {
     1: 'first person',
     2: 'second person',
@@ -178,11 +179,11 @@
   };
 
   /**
-   * Creates a Leipzig.js glossing object
-   * @constructor
-   * @param {String|NodeList|Element} selector - determines elements to be glossed
-   * @param {Object} config - configuration object
-   */
+  Creates a Leipzig.js glossing object
+  @constructor
+  @param {String|NodeList|Element} selector - determines elements to be glossed
+  @param {Object} config - configuration object
+  */
   var Leipzig = function Leipzig(selector) {
     var config = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
@@ -206,9 +207,9 @@
   };
 
   /**
-   * Configures the Leipzig instance
-   * @param {Object} options - the options
-   */
+  Configures the Leipzig instance
+  @param {Object} options - the options
+  */
   Leipzig.prototype.config = function (options) {
     var config = {
       selector: '[data-gloss]',
@@ -273,11 +274,35 @@
   };
 
   /**
-   * Extracts word tokens from a gloss line
-   * @private
-   * @param {Element} line - the phrase to be lexed
-   * @returns {Array} The tokens
-   */
+  Adds abbreviations
+  @param {Object} abbreviations - the abbreviations to add
+  */
+  Leipzig.prototype.addAbbreviations = function (abbreviations) {
+    if (typeof abbreviations === 'object') {
+      _extends(this.abbreviations, abbreviations);
+    } else {
+      throw new Error('Invalid abbreviations');
+    }
+  };
+
+  /**
+  Sets abbreviations, overriding existing ones
+  @param {Object} abbreviations - the abbreviation definitions
+  */
+  Leipzig.prototype.setAbbreviations = function (abbreviations) {
+    if (typeof abbreviations === 'object') {
+      this.abbreviations = abbreviations;
+    } else {
+      throw new Error('Invalid abbreviations');
+    }
+  };
+
+  /**
+  Extracts word tokens from a gloss line
+  @private
+  @param {Element} line - the phrase to be lexed
+  @returns {Array} The tokens
+  */
   Leipzig.prototype.lex = function lex(line) {
     var lexer = this.lexer;
 
@@ -298,11 +323,11 @@
   };
 
   /**
-   * Add HTML abbreviation markup to a word
-   * @private
-   * @param {String} word - the word to be tagged
-   * @returns {String} html-tagged word
-   */
+  Add HTML abbreviation markup to a word
+  @private
+  @param {String} word - the word to be tagged
+  @returns {String} html-tagged word
+  */
   Leipzig.prototype.tag = function tag(word) {
     var classes = this.classes;
     var abbreviations = this.abbreviations;
@@ -334,11 +359,11 @@
   };
 
   /**
-   * Aligns morphemes on different lines
-   * @private
-   * @param {Array} lines - Array of strings to be aligned
-   * @returns {Array} Array of arrays containing aligned words
-   */
+  Aligns morphemes on different lines
+  @private
+  @param {Array} lines - Array of strings to be aligned
+  @returns {Array} Array of arrays containing aligned words
+  */
   Leipzig.prototype.align = function align(lines) {
     var longestLine = lines.reduce(function (a, b) {
       return a.length > b.length ? a : b;
@@ -352,11 +377,11 @@
   };
 
   /**
-   * Creates an Element containing the aligned glosses
-   * @private
-   * @param {Array<Array<String>>} lines - lines to be formatted
-   * @returns {Element} html element containing the glosses
-   */
+  Creates an Element containing the aligned glosses
+  @private
+  @param {Array<Array<String>>} lines - lines to be formatted
+  @returns {Element} html element containing the glosses
+  */
   Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
     var _this = this;
 
@@ -403,8 +428,8 @@
   };
 
   /**
-   * Runs the glosser
-   */
+  Runs the glosser
+  */
   Leipzig.prototype.gloss = function gloss(callback) {
     var _this2 = this;
 

@@ -262,6 +262,30 @@ Leipzig.prototype.config = function(options) {
 };
 
 /**
+Adds abbreviations
+@param {Object} abbreviations - the abbreviations to add
+*/
+Leipzig.prototype.addAbbreviations = function(abbreviations) {
+  if (typeof abbreviations === 'object') {
+    Object.assign(this.abbreviations, abbreviations);
+  } else {
+    throw new Error('Invalid abbreviations');
+  }
+};
+
+/**
+Sets abbreviations, overriding existing ones
+@param {Object} abbreviations - the abbreviation definitions
+*/
+Leipzig.prototype.setAbbreviations = function(abbreviations) {
+  if (typeof abbreviations === 'object') {
+    this.abbreviations = abbreviations;
+  } else {
+    throw new Error('Invalid abbreviations');
+  }
+};
+
+/**
 Extracts word tokens from a gloss line
 @private
 @param {Element} line - the phrase to be lexed
