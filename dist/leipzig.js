@@ -1,4 +1,4 @@
-/*! leipzig.js v0.7.0 | ISC License | github.com/bdchauvette/leipzig.js */
+/*! leipzig.js v0.8.0 | ISC License | github.com/bdchauvette/leipzig.js */
 (function (global, factory) {
   if (typeof define === 'function' && define.amd) {
     define('Leipzig', ['exports', 'module'], factory);
