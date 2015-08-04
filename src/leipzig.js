@@ -1,11 +1,11 @@
 'use strict';
 
 /**
- * Adds a class to an element
- * @private
- * @param {Element} el - element to add the class to
- * @param {String} className - class name to add
- */
+Adds a class to an element
+@private
+@param {Element} el - element to add the class to
+@param {String} className - class name to add
+*/
 function addClass(el, className) {
   if (el.classList) {
     el.classList.add(className);
@@ -15,11 +15,11 @@ function addClass(el, className) {
 }
 
 /**
- * Checks if an element has a given class
- * @private
- * @param {Element} el - element to search for the class
- * @param {String} className - class name to search for
- */
+Checks if an element has a given class
+@private
+@param {Element} el - element to search for the class
+@param {String} className - class name to search for
+*/
 function hasClass(el, className) {
   var test;
 
@@ -34,9 +34,9 @@ function hasClass(el, className) {
 }
 
 /**
- * Helper function for creating custom events
- * @private
- */
+Helper function for creating custom events
+@private
+*/
 function LeipzigEvent(name, data) {
   let leipzigEvent;
 
@@ -56,25 +56,26 @@ function LeipzigEvent(name, data) {
 }
 
 /**
- * Helper function for triggering custom events
- * @private
- */
+Helper function for triggering custom events
+@private
+*/
 function triggerEvent(el, name, data) {
   const e = new LeipzigEvent(name, data);
   el.dispatchEvent(e);
 }
 
 /**
- * Helper function for cloning an object
- * @private
- */
+Helper function for cloning an object
+@private
+*/
 function clone(obj) {
   return Object.assign({}, obj);
 }
 
-/** Default abbreviations used by the auto tagger
- * @private
- */
+/**
+Default abbreviations used by the auto tagger
+@private
+*/
 const abbreviations = {
   1: 'first person',
   2: 'second person',
@@ -162,11 +163,11 @@ const abbreviations = {
 };
 
 /**
- * Creates a Leipzig.js glossing object
- * @constructor
- * @param {String|NodeList|Element} selector - determines elements to be glossed
- * @param {Object} config - configuration object
- */
+Creates a Leipzig.js glossing object
+@constructor
+@param {String|NodeList|Element} selector - determines elements to be glossed
+@param {Object} config - configuration object
+*/
 var Leipzig = function(selector, config = {}) {
   if (!(this instanceof Leipzig)) {
     return new Leipzig(selector, config);
@@ -190,9 +191,9 @@ var Leipzig = function(selector, config = {}) {
 };
 
 /**
- * Configures the Leipzig instance
- * @param {Object} options - the options
- */
+Configures the Leipzig instance
+@param {Object} options - the options
+*/
 Leipzig.prototype.config = function(options) {
   const config = {
     selector: '[data-gloss]',
@@ -261,11 +262,11 @@ Leipzig.prototype.config = function(options) {
 };
 
 /**
- * Extracts word tokens from a gloss line
- * @private
- * @param {Element} line - the phrase to be lexed
- * @returns {Array} The tokens
- */
+Extracts word tokens from a gloss line
+@private
+@param {Element} line - the phrase to be lexed
+@returns {Array} The tokens
+*/
 Leipzig.prototype.lex = function lex(line) {
   const lexer = this.lexer;
 
@@ -288,11 +289,11 @@ Leipzig.prototype.lex = function lex(line) {
 };
 
 /**
- * Add HTML abbreviation markup to a word
- * @private
- * @param {String} word - the word to be tagged
- * @returns {String} html-tagged word
- */
+Add HTML abbreviation markup to a word
+@private
+@param {String} word - the word to be tagged
+@returns {String} html-tagged word
+*/
 Leipzig.prototype.tag = function tag(word) {
   const classes = this.classes;
   const abbreviations = this.abbreviations;
@@ -326,11 +327,11 @@ Leipzig.prototype.tag = function tag(word) {
 };
 
 /**
- * Aligns morphemes on different lines
- * @private
- * @param {Array} lines - Array of strings to be aligned
- * @returns {Array} Array of arrays containing aligned words
- */
+Aligns morphemes on different lines
+@private
+@param {Array} lines - Array of strings to be aligned
+@returns {Array} Array of arrays containing aligned words
+*/
 Leipzig.prototype.align = function align(lines) {
   const longestLine = lines.reduce((a, b) => {
     return (a.length > b.length)
@@ -348,11 +349,11 @@ Leipzig.prototype.align = function align(lines) {
 };
 
 /**
- * Creates an Element containing the aligned glosses
- * @private
- * @param {Array<Array<String>>} lines - lines to be formatted
- * @returns {Element} html element containing the glosses
- */
+Creates an Element containing the aligned glosses
+@private
+@param {Array<Array<String>>} lines - lines to be formatted
+@returns {Element} html element containing the glosses
+*/
 Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
   const tag = this.tag;
 
@@ -404,8 +405,8 @@ Leipzig.prototype.format = function format(groups, wrapperType, lineNumStart) {
 };
 
 /**
- * Runs the glosser
- */
+Runs the glosser
+*/
 Leipzig.prototype.gloss = function gloss(callback) {
   const selector = this.selector;
   const classes = this.classes;
