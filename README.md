@@ -118,10 +118,10 @@ to the project files on the jsDelivr CDN:
 
 ```html
 <!-- CSS -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/leipzig/latest/leipzig.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/leipzig@latest/dist/leipzig.min.css">
 
 <!-- JavaScript -->
-<script src="//cdn.jsdelivr.net/leipzig/latest/leipzig.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leipzig@latest/dist/leipzig.min.js"></script>
 ```
 
 For more information about jsDelivr, you can visit the [jsDelivr
@@ -175,7 +175,7 @@ If you're using [jQuery][], you can use the following script instead:
 ```html
 <html>
   <head>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/leipzig/latest/leipzig.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/leipzig@latest/dist/leipzig.min.css">
   </head>
   <body>
     <div data-gloss>
@@ -183,7 +183,7 @@ If you're using [jQuery][], you can use the following script instead:
       <p>DET.NOM.N.SG example</p>
       <p>‘An example’</p>
     </div>
-    <script src="//cdn.jsdelivr.net/leipzig/latest/leipzig.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/leipzig@latest/dist/leipzig.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         Leipzig().gloss();
