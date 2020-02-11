@@ -1,207 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Leipzig.js: Examples</title>
-  <link rel="stylesheet" href="/leipzig.js/theme/css/normalize.min.css">
-  <link rel="stylesheet" href="/leipzig.js/theme/css/pygments.css">
-  <link rel="stylesheet" href="/leipzig.js/theme/css/site.css">
-  <link rel="stylesheet" href="//unpkg.com/leipzig/dist/leipzig.min.css">
-  <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600&subset=latin,latin-ext'>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leipzig.js: Examples</title>
+    <link rel="stylesheet" href="/leipzig.js/theme/css/normalize.min.css" />
+    <link rel="stylesheet" href="/leipzig.js/theme/css/pygments.css" />
+    <link rel="stylesheet" href="/leipzig.js/theme/css/site.css" />
+    <link rel="stylesheet" href="//unpkg.com/leipzig/dist/leipzig.min.css" />
+    <link
+      rel="stylesheet"
+      href="http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600&subset=latin,latin-ext"
+    />
 
-  <link rel="stylesheet" href="/leipzig.js/theme/css/examples.css">
-</head>
-<body>
-  <div id="wrapper">
-    <header id="masthead">
-      <h1 class="page-title">Leipzig.js</h1>
-      <h2 class="tagline">Interlinear glossing for the browser</h2>
-      <nav id="main-nav">
-        <ul><li><a href="/leipzig.js/">Home</a></li><li class="active"><a href="/leipzig.js/examples">Examples</a></li><li><a href="/leipzig.js/demo">Demo</a></li><li><a href="https://github.com/bdchauvette/leipzig.js/wiki/Documentation">Documentation</a></li>
-          <li><a href="https://github.com/bdchauvette/leipzig.js/">Code</a></li>
-        </ul>
-      </nav>
-    </header>
+    <link rel="stylesheet" href="/leipzig.js/theme/css/examples.css" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <header id="masthead">
+        <h1 class="page-title">Leipzig.js</h1>
+        <h2 class="tagline">Interlinear glossing for the browser</h2>
+        <nav id="main-nav">
+          <ul>
+            <li><a href="/leipzig.js/">Home</a></li>
+            <li class="active"><a href="/leipzig.js/examples">Examples</a></li>
+            <li><a href="/leipzig.js/demo">Demo</a></li>
+            <li>
+              <a
+                href="https://github.com/bdchauvette/leipzig.js/wiki/Documentation"
+                >Documentation</a
+              >
+            </li>
+            <li>
+              <a href="https://github.com/bdchauvette/leipzig.js/">Code</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
 
+      <h1>German</h1>
+      <div class="example" data-gloss>
+        <p>
+          Die Umgangssprache ist ein Teil des menschlichen Organismus und nicht
+          weniger kompliziert als dieser.
+        </p>
+        <p>
+          die umgangssprache ist ein teil des mensch-lich-en organismus und
+          nicht wenig-er komplizeiert als dies-er
+        </p>
+        <p>
+          DET.NOM.F.SG {colloquial language} be.3SG.PRS DET.NOM.M.SG part
+          DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-CMPR
+          complicated CMPR DET-AGR.M.SG
+        </p>
+        <p>
+          the {colloquial language} is a part {of the} human organism and not
+          less complicated than it
+        </p>
+        <p>
+          ‘Colloquial language is a part of the human organism and is not less
+          complicated than it.’ &mdash; Wittgenstein,
+          <i>Tractatus Logico-Philosophicus</i>, 4.002
+        </p>
+      </div>
 
-  <h1>German</h1>
-<div class="example" data-gloss>
-  <p>Die Umgangssprache ist ein Teil des menschlichen Organismus und nicht weniger kompliziert als dieser.</p>
-  <p>die umgangssprache ist ein teil des mensch-lich-en organismus und nicht wenig-er komplizeiert als dies-er</p>
-  <p>DET.NOM.F.SG {colloquial language} be.3SG.PRS DET.NOM.M.SG part DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-CMPR complicated CMPR DET-AGR.M.SG</p>
-  <p>the {colloquial language} is a part {of the} human organism and not less complicated than it</p>
-  <p>‘Colloquial language is a part of the human organism and is not less complicated than it.’ &mdash; Wittgenstein, <i>Tractatus Logico-Philosophicus</i>, 4.002</p>
-</div>
-
-<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">data-gloss</span><span class="nt">&gt;</span>
+      <div class="highlight">
+        <pre><span class="nt">&lt;div</span> <span class="na">data-gloss</span><span class="nt">&gt;</span>
   <span class="nt">&lt;p&gt;</span>Die Umgangssprache ist ein Teil des menschlichen Organismus und nicht weniger kompliziert als dieser.<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>die umgangssprache ist ein teil des mensch-lich-en organismus und nicht wenig-er komplizeiert als dies-er<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>DET.NOM.F.SG {colloquial language} be.3SG.PRS DET.NOM.M.SG part DET.GEN.M.SG human-ADJ-AGR.GEN.M.SG organism and NEG less-CMPR complicated CMPR DET-AGR.M.SG<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>the {colloquial language} is a part {of the} human organism and not less complicated than it<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>‘Colloquial language is a part of the human organism and is not less complicated than it.’ <span class="ni">&amp;mdash;</span> Wittgenstein, <span class="nt">&lt;i&gt;</span>Tractatus Logico-Philosophicus<span class="nt">&lt;/i&gt;</span>, 4.002<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
-</pre></div>
+</pre>
+      </div>
 
+      <div class="highlight">
+        <pre><span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
+</pre>
+      </div>
 
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">({</span> <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
-</pre></div>
+      <hr />
+      <h1>Japanese</h1>
+      <p>
+        Source:
+        <a
+          href="https://en.wikipedia.org/wiki/Japanese_grammar#Japanese_as_a_topic-prominent_language"
+          >Wikipedia</a
+        >
+      </p>
+      <div id="japanese" class="example">
+        <p>太陽が昇る。</p>
+        <p>太陽 が 昇る。</p>
+        <p>taiyō ga noboru</p>
+        <p>sun NTOP rise</p>
+      </div>
 
-
-<hr />
-<h1>Japanese</h1>
-<p>Source:
-<a href="https://en.wikipedia.org/wiki/Japanese_grammar#Japanese_as_a_topic-prominent_language">Wikipedia</a></p>
-<div id="japanese" class="example">
-  <p>太陽が昇る。</p>
-  <p>太陽 が 昇る。</p>
-  <p>taiyō ga noboru</p>
-  <p>sun NTOP rise</p>
-</div>
-
-<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;japanese&quot;</span><span class="nt">&gt;</span>
+      <div class="highlight">
+        <pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;japanese&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;p&gt;</span>太陽が昇る。<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>太陽 が 昇る。<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>taiyō ga noboru<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>sun NTOP rise<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
-</pre></div>
+</pre>
+      </div>
 
-
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#japanese&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <div class="highlight">
+        <pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#japanese&#39;</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">lastLineFree</span><span class="o">:</span> <span class="kc">false</span>
 <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
-</pre></div>
+</pre>
+      </div>
 
+      <hr />
+      <h1>Klingon</h1>
+      <p>
+        Source:
+        <a href="https://en.wikipedia.org/wiki/Klingon_language#Grammar"
+          >Wikipedia</a
+        >
+      </p>
+      <div id="klingon" class="example">
+        <p>    </p>
+        <p>DaH mojaq-mey-vam DI-vuS-nIS-be’ ’e’ vI-Har</p>
+        <p>
+          now suffix-PL-DEM 1PL.A.3PL.P-limit-need-NEG that 1SG.A.3SG.P-believe
+        </p>
+        <p>‘I believe that we do not need to limit these suffixes now.’</p>
+      </div>
 
-<hr />
-<h1>Klingon</h1>
-<p>Source: <a href="https://en.wikipedia.org/wiki/Klingon_language#Grammar">Wikipedia</a></p>
-<div id="klingon" class="example">
-  <p>    </p>
-  <p>DaH mojaq-mey-vam DI-vuS-nIS-be’ ’e’ vI-Har</p>
-  <p>now suffix-PL-DEM 1PL.A.3PL.P-limit-need-NEG that 1SG.A.3SG.P-believe</p>
-  <p>‘I believe that we do not need to limit these suffixes now.’</p>
-</div>
-
-<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;klingon&quot;</span><span class="nt">&gt;</span>
+      <div class="highlight">
+        <pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;klingon&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;p&gt;</span>    <span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>DaH mojaq-mey-vam DI-vuS-nIS-be’ ’e’ vI-Har<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>now suffix-PL-DEM 1PL.A.3PL.P-limit-need-NEG that 1SG.A.3SG.P-believe<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>‘I believe that we do not need to limit these suffixes now.’<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
-</pre></div>
+</pre>
+      </div>
 
+      <div class="highlight">
+        <pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#klingon&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
+</pre>
+      </div>
 
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#klingon&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
-</pre></div>
+      <div class="highlight">
+        <pre><span class="nf">#klingon</span><span class="nc">.gloss__line--original</span> <span class="p">{</span> <span class="k">font-family</span><span class="o">:</span> <span class="n">pIqAd</span><span class="p">;</span> <span class="p">}</span>
+</pre>
+      </div>
 
+      <hr />
+      <h1>Nahuatl</h1>
+      <p>
+        Source:
+        <a href="https://en.wikipedia.org/wiki/Nahuatl#Morphosyntax"
+          >Wikipedia</a
+        >
+      </p>
+      <div id="nahuatl" class="example">
+        <p>Nimitztētlamaquiltīz</p>
+        <p>ni- mits- teː- tla- maki -ltiː -s'</p>
+        <p>1SG- 2SG- someone- something- give -CAUS -FUT</p>
+        <p>‘I shall make somebody give something to you’</p>
+      </div>
 
-<div class="highlight"><pre><span class="nf">#klingon</span><span class="nc">.gloss__line--original</span> <span class="p">{</span> <span class="k">font-family</span><span class="o">:</span> <span class="n">pIqAd</span><span class="p">;</span> <span class="p">}</span>
-</pre></div>
-
-
-<hr />
-<h1>Nahuatl</h1>
-<p>Source: <a href="https://en.wikipedia.org/wiki/Nahuatl#Morphosyntax">Wikipedia</a></p>
-<div id="nahuatl" class="example">
-  <p>Nimitztētlamaquiltīz</p>
-  <p>ni- mits- teː- tla- maki -ltiː -s'</p>
-  <p>1SG- 2SG- someone- something- give -CAUS -FUT</p>
-  <p>‘I shall make somebody give something to you’</p>
-</div>
-
-<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;nahuatl&quot;</span><span class="nt">&gt;</span>
+      <div class="highlight">
+        <pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;nahuatl&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;p&gt;</span>Nimitztētlamaquiltīz<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>ni- mits- teː- tla- maki -ltiː -s&#39;<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>1SG- 2SG- someone- something- give -CAUS -FUT<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>‘I shall make somebody give something to you’<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
-</pre></div>
+</pre>
+      </div>
 
-
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#nahuatl&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <div class="highlight">
+        <pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#nahuatl&#39;</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">spacing</span><span class="o">:</span> <span class="kc">false</span>
 <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
-</pre></div>
+</pre>
+      </div>
 
+      <hr />
+      <h1>Classical Ainu</h1>
+      <p>
+        Source:
+        <a href="https://en.wikipedia.org/wiki/Polysynthetic_language#Examples"
+          >Wikipedia</a
+        >
+      </p>
+      <div id="ainu" class="example">
+        <p>Usaopuspe aeyaykotuymasiramsuypa.</p>
+        <p>usa- opuspe {} a- e- yay- ko- tuyma- si- ram- suy -pa</p>
+        <p>
+          various- rumors {} 1SG- APPL- REFL- APPL- far- REFL- heart- sway -ITER
+        </p>
+        <p>‘I wonder about various rumors.’</p>
+      </div>
 
-<hr />
-<h1>Classical Ainu</h1>
-<p>Source:
-<a href="https://en.wikipedia.org/wiki/Polysynthetic_language#Examples">Wikipedia</a></p>
-<div id="ainu" class="example">
-  <p>Usaopuspe aeyaykotuymasiramsuypa.</p>
-  <p>usa- opuspe {} a- e- yay- ko- tuyma- si- ram- suy -pa</p>
-  <p>various- rumors {} 1SG- APPL- REFL- APPL- far- REFL- heart- sway -ITER
-  <p>‘I wonder about various rumors.’</p>
-</div>
-
-<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;ainu&quot;</span><span class="nt">&gt;</span>
+      <div class="highlight">
+        <pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;ainu&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;p&gt;</span>Usaopuspe aeyaykotuymasiramsuypa.<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>usa- opuspe {} a- e- yay- ko- tuyma- si- ram- suy -pa<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>various- rumors {} 1SG- APPL- REFL- APPL- far- REFL- heart- sway -ITER
   <span class="nt">&lt;p&gt;</span>‘I wonder about various rumors.’<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
-</pre></div>
+</pre>
+      </div>
 
-
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">({</span>
+      <div class="highlight">
+        <pre><span class="nx">Leipzig</span><span class="p">({</span>
   <span class="nx">firstLineOrig</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">spacing</span><span class="o">:</span> <span class="kc">false</span>
 <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
-</pre></div>
+</pre>
+      </div>
 
+      <hr />
+      <h1>Spanish</h1>
+      <div id="spanish" class="example">
+        <p>El perrito está comiendo.</p>
+        <p>the {little dog} is eating.</p>
+      </div>
 
-<hr />
-<h1>Spanish</h1>
-<div id="spanish" class="example">
-  <p>El perrito está comiendo.</p>
-  <p>the {little dog} is eating.</p>
-</div>
-
-<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;spanish&quot;</span><span class="nt">&gt;</span>
+      <div class="highlight">
+        <pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;spanish&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;p&gt;</span>El perrito está comiendo.<span class="nt">&lt;/p&gt;</span>
   <span class="nt">&lt;p&gt;</span>the {little dog} is eating.<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
-</pre></div>
+</pre>
+      </div>
 
+      <div class="highlight">
+        <pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#spanish&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">lastLineFree</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
+</pre>
+      </div>
 
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#spanish&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">lastLineFree</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}).</span><span class="nx">gloss</span><span class="p">();</span>
-</pre></div>
+      <hr />
+      <h1>Town Nyanja</h1>
+      <ul id="nyanja" class="example">
+        <li>Ine ni-mu-kond-a.</li>
+        <li>1SG 1SG.SBJ-3SG.OBJ-love-IND</li>
+        <li>‘Me, I love him/her.’</li>
+      </ul>
 
-
-<hr />
-<h1>Town Nyanja</h1>
-<ul id="nyanja" class="example">
-  <li>Ine ni-mu-kond-a.</li>
-  <li>1SG 1SG.SBJ-3SG.OBJ-love-IND</li>
-  <li>‘Me, I love him/her.’</li>
-</ul>
-
-<div class="highlight"><pre><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;nyanja&quot;</span><span class="nt">&gt;</span>
+      <div class="highlight">
+        <pre><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;nyanja&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;li&gt;</span>Ine ni-mu-kond-a.<span class="nt">&lt;/li&gt;</span>
   <span class="nt">&lt;li&gt;</span>1SG 1SG.SBJ-3SG.OBJ-love-IND<span class="nt">&lt;/li&gt;</span>
   <span class="nt">&lt;li&gt;</span>‘Me, I love him/her.’<span class="nt">&lt;/li&gt;</span>
 <span class="nt">&lt;/ul&gt;</span>
-</pre></div>
+</pre>
+      </div>
 
+      <div class="highlight">
+        <pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#nyanja&#39;</span><span class="p">).</span><span class="nx">gloss</span><span class="p">();</span>
+</pre>
+      </div>
 
-<div class="highlight"><pre><span class="nx">Leipzig</span><span class="p">(</span><span class="s1">&#39;#nyanja&#39;</span><span class="p">).</span><span class="nx">gloss</span><span class="p">();</span>
-</pre></div>
-
-    <footer id="page-footer">
-      <p>&copy; 2015 Benjamin Chauvette</p>
-      <p>Leipzig.js is licensed under the <a href="https://raw.githubusercontent.com/bdchauvette/leipzig.js/master/LICENSE">ISC License</a>.
-      <p>Leipzig.js is not affiliated with the <a href="http://www.zv.uni-leipzig.de/">University of Leipzig</a>, nor with the authors of the <a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php">Leipzig Glossing Rules</a>.</p>
-      <p><a href="#">Back to Top &uarr;</a></p>
-    </footer>
-  </div>
+      <footer id="page-footer">
+        <p>&copy; 2015 Benjamin Chauvette</p>
+        <p>
+          Leipzig.js is licensed under the
+          <a
+            href="https://raw.githubusercontent.com/bdchauvette/leipzig.js/master/LICENSE"
+            >ISC License</a
+          >.
+        </p>
+        <p>
+          Leipzig.js is not affiliated with the
+          <a href="http://www.zv.uni-leipzig.de/">University of Leipzig</a>, nor
+          with the authors of the
+          <a href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php"
+            >Leipzig Glossing Rules</a
+          >.
+        </p>
+        <p><a href="#">Back to Top &uarr;</a></p>
+      </footer>
+    </div>
 
     <script src="//unpkg.com/leipzig/dist/leipzig.min.js"></script>
 
-  <script src="/leipzig.js/theme/js/examples.js"></script>
-</body>
+    <script src="/leipzig.js/theme/js/examples.js"></script>
+  </body>
 </html>
