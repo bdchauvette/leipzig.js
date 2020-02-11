@@ -39,7 +39,7 @@
    */
   function addAbbreviations() {
     var dl = document.querySelector('#demo-abbreviations');
-    var abbreviations = Leipzig.prototype.abbreviations;
+    var abbreviations = Leipzig.prototype.DEFAULT_ABBREVIATIONS;
     var innerHTML = [];
 
     Object.keys(abbreviations).forEach(function(abbr) {
